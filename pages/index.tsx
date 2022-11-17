@@ -13,7 +13,7 @@ export default function Home() {
       <main>
         <h1
           style={{textAlign: 'center'}}
-        >Clay's profile website v.2</h1>
+        >Clays profile website v.2</h1>
       </main>
       </>
   )
