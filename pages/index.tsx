@@ -56,7 +56,8 @@ export default function Home() {
 
 
         <div id={styles['section-1-wrapper']}>
-          <p id={styles['about-me-short-desc']} className={`${descInView ? styles['desc-in-view'] : styles['desc-out-view']}`}>Hi, I'm Clay. I'm a web developer out of Northeast Ohio.</p>
+          {/* entity character fix suggested by next build */}
+          <p id={styles['about-me-short-desc']} className={`${descInView ? styles['desc-in-view'] : styles['desc-out-view']}`}>Hi, I&apos;m Clay. I&apos;m a web developer out of Northeast Ohio.</p>
 
           <div id={styles['social-quick-links']} ref={descRef}>
             {/* https://react-icons.github.io/react-icons */}
