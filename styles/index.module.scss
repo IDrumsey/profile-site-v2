@@ -64,3 +64,89 @@
     border-radius: 50%;
     width: auto;
 }
+
+#about-me-short-desc {
+    margin: 0;
+}
+
+
+
+// section 1
+
+#section-1-wrapper {
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: top;
+    column-gap: 50px;
+}
+
+#about-me-short-desc {
+    font-size: 20px;
+}
+
+#social-quick-links {
+    display: flex;
+    flex-direction: row;
+    column-gap: 25px;
+    margin-top: 10px;
+}
+
+.social-quick-link {
+    font-size: 35px;
+    transition: filter 100ms linear;
+}
+
+.social-quick-link:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+}
+
+#linked-in-social-quick-link {
+    color: #0A66C2;
+}
+
+#github-social-quick-link {
+    color: #a4a4a4;
+}
+
+#youtube-social-quick-link {
+    color: #981C42;
+}
+
+
+
+
+// media queries
+// https://polypane.app/blog/the-breakpoints-we-tested-in-2021-and-the-ones-to-test-in-2022/ - breakpoints
+
+// https://css-tricks.com/a-complete-guide-to-css-media-queries/
+@media screen and (max-width: 768px) {
+    // tablet
+
+    #section-1-wrapper {
+        grid-template-columns: 1fr;
+        row-gap: 50px;
+    }
+
+    #social-quick-links {
+        justify-content: center;
+        margin-top: 0;
+    }
+
+    #about-me-short-desc {
+        text-align: center;
+        font-size: 30px;
+    }
+
+}
+
+
+
+@media screen and (max-width: 550px) {
+
+    #main-nav {
+        column-gap: 30px;
+    }
+
+}

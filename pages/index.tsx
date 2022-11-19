@@ -3,6 +3,11 @@ import Link from 'next/link'
 
 import styles from '../styles/index.module.scss'
 
+// a lot of the brand colors come from the official websites
+
+import { AiFillLinkedin } from 'react-icons/ai'
+import { FaGithubSquare, FaYoutubeSquare } from 'react-icons/fa'
+
 export default function Home() {
   return (
       <>
@@ -29,6 +34,18 @@ export default function Home() {
             alt="Avatar image"
             id={styles['avatar-image']}
           />
+        </div>
+
+
+        <div id={styles['section-1-wrapper']}>
+          <p id={styles['about-me-short-desc']}>Hi, I'm Clay. I'm a web developer out of Northeast Ohio.</p>
+
+          <div id={styles['social-quick-links']}>
+            {/* https://react-icons.github.io/react-icons */}
+            <AiFillLinkedin id={styles['linked-in-social-quick-link']} className={styles['social-quick-link']} />
+            <FaGithubSquare id={styles['github-social-quick-link']} className={styles['social-quick-link']} />
+            <FaYoutubeSquare id={styles['youtube-social-quick-link']} className={styles['social-quick-link']} />
+          </div>
         </div>
       </main>
       </>
