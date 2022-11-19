@@ -92,7 +92,8 @@
 
 .social-quick-link {
     font-size: 35px;
-    transition: filter 100ms linear;
+    // https://thoughtbot.com/blog/transitions-and-transforms#css-syntax-example-for-translate
+    transition: filter 100ms linear, transform 100ms ease-out;
 }
 
 .social-quick-link:hover {
@@ -160,4 +161,15 @@
 
 .desc-in-view {
     opacity: 1;
+}
+
+
+// https://thoughtbot.com/blog/transitions-and-transforms#css-syntax-example-for-translate
+.social-quick-link-out-view {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateX
+    transform: translateX(500px);
+}
+
+.social-quick-link-in-view {
+    transform: translateX(0px);
 }
