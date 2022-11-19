@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from '../styles/index.module.scss'
@@ -24,11 +23,10 @@ export default function Home() {
             </Link>
           </nav>
 
-          <Image 
+          {/* https://stackoverflow.com/a/65509211/17712310 */}
+          <img 
             src="/avatar.png"
             alt="Avatar image"
-            width={300}
-            height={300}
             id={styles['avatar-image']}
           />
         </div>
