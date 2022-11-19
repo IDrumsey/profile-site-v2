@@ -1,5 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+
+import styles from '../styles/index.module.scss'
 
 export default function Home() {
   return (
@@ -11,9 +14,24 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1
-          style={{textAlign: 'center'}}
-        >Clays profile website v.2</h1>
+        <div id={styles['header']}>
+          <nav id={styles['main-nav']}>
+            <Link href="/blog">
+              <h5 className={`${styles['nav-item']} ${styles['blog-text-gradient']}`}>Blog</h5>
+            </Link>
+            <Link href="/about">
+              <h5 className={`${styles['nav-item']} ${styles['about-text-gradient']}`}>About me</h5>
+            </Link>
+          </nav>
+
+          <Image 
+            src="/avatar.png"
+            alt="Avatar image"
+            width={300}
+            height={300}
+            id={styles['avatar-image']}
+          />
+        </div>
       </main>
       </>
   )

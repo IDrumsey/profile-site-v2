@@ -1,0 +1,66 @@
+#header {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 20px;
+    box-sizing: unset;
+}
+
+
+#main-nav {
+    height: 100%;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 75px;
+    align-items: center;
+    flex: 1;
+    overflow-x: scroll;
+}
+
+#main-nav::-webkit-scrollbar {
+    display: none;
+}
+
+
+.nav-item {
+    margin: 0;
+    font-size: 20px;
+    // https://stackoverflow.com/a/44696955/17712310
+    white-space: nowrap;
+    transition: filter 150ms ease-out, text-shadow 150ms ease-out;
+}
+
+
+.nav-item:hover {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/brightness
+    filter: brightness(1.5);
+}
+
+
+.blog-text-gradient {
+    // https://cssgradient.io/blog/css-gradient-text/
+    // https://webkit.org/blog/1424/css3-gradients/
+    background: -webkit-linear-gradient(left, #6499B7, rgba(167, 98, 255, .33));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.about-text-gradient {
+    background: -webkit-linear-gradient(left, #4BFF47, rgba(42, 164, 233, .62));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+#avatar-image {
+    margin-left: auto;
+    height: 35px;
+    border-radius: 50%;
+    width: auto;
+}
