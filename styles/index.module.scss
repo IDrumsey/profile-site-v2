@@ -108,6 +108,14 @@
     cursor: pointer;
 }
 
+.social-quick-link-icon {
+    transition: transform 100ms linear;
+}
+
+.social-quick-link-icon:hover {
+    transform: scale(1.05);
+}
+
 
 
 #section-2 {

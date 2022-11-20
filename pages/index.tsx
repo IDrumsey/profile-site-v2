@@ -192,6 +192,7 @@ export default function Home() {
                         {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#security_and_privacy */}
                         <a href={socialQuickLink.url} target="_blank" rel="noreferrer">
                           <socialQuickLink.logoIcon 
+                            className={`${styles['social-quick-link-icon']}`}
                             color={socialQuickLink.logoColor}
                           />
                         </a>
