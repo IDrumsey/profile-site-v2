@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import styles from '../styles/index.module.scss'
 
-import { useInView } from 'react-intersection-observer'
+import { useInView, InView } from 'react-intersection-observer'
 
 
 import StackSection from '../components/tech-stack/section/section'
@@ -58,11 +58,41 @@ export default function Home() {
     triggerOnce: true
   })
 
-  const { ref: javascriptTechRef, inView: javascriptTechInView, entry: javascriptTechEntry } = useInView({
-    threshold: 1,
-    rootMargin: '0px 100% 0% 100%',
-    triggerOnce: true
-  })
+
+  const technologies: {
+    title: string,
+    items: {
+      name: string,
+      logoIcon: any,
+      logoColor: string
+    }[]
+  }[] = [
+    {
+      title: "Most Used",
+      items: [
+        {
+          name: "Javascript",
+          logoIcon: SiJavascript,
+          logoColor: "#FFE600"
+        },
+        
+        {
+          name: "HTML",
+          logoIcon: FaHtml5,
+          logoColor: "#D26C40"
+        },
+
+        {
+          name: "CSS",
+          logoIcon: FaCss3Alt,
+          logoColor: "#3170CF"
+        }
+      ]
+    }
+  ]
+
+
+  const techStackAnimationDelay = 50
 
 
 
@@ -134,16 +164,46 @@ export default function Home() {
           </div>
         </div>
 
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. In quo itaque reprehenderit molestias, quam repellendus? Minima vero incidunt suscipit at, impedit quibusdam ab dolorum ipsum, amet, ut asperiores voluptas. Repellendus praesentium blanditiis, odit voluptatum fugit id vel ipsum, ipsa, molestiae libero impedit reiciendis eaque? Quod magni doloremque reprehenderit libero, dolorum aliquam doloribus eos nesciunt dignissimos culpa ad quo voluptatem optio odit cum sit dolor quisquam, dolorem beatae. Dolorum placeat ut error modi nostrum ipsa laudantium, aut, unde dolorem qui officiis minima officia temporibus dignissimos amet. Fugiat ut at quo amet. Excepturi eum neque, rem quis provident sint aut enim esse et eaque illo accusantium id error quasi beatae accusamus, ab odio cupiditate fugiat ipsa tempore non dolorum! Recusandae illo unde culpa necessitatibus, dignissimos mollitia optio reiciendis pariatur fugit porro sint minima rem eligendi obcaecati, dolor, sapiente incidunt! Vel quas laborum reprehenderit animi atque. Id dicta quod veniam qui, voluptate neque nam est, numquam suscipit incidunt ipsam, porro molestias? Id magni sit debitis ratione repellendus accusamus minima! Magnam, unde voluptatibus. Exercitationem sapiente officiis magni tempora, ex dicta rerum dignissimos deleniti cumque praesentium facilis at maxime sit, inventore, voluptates nulla repellat animi. Totam eius id ratione, eum dolorem voluptatibus dignissimos provident ducimus!
 
 
         <div id={`${styles['section-2']}`}>
           <div id={`${styles['tech-stack']}`}>
-            <StackSection title="Most Used" ref={mostUsedSectionTitleRef} titleClassNames={[styles['tech-stack-section-title'], mostUsedSectionTitleInView ? styles['tech-stack-section-title-in-view'] : styles['tech-stack-section-title-out-view']]} >
-              <SectionItem LogoIcon={SiJavascript} logoColor="#FFE600" name="Javascript" ref={javascriptTechRef} wrapperClassNames={[styles['tech-stack-item'], javascriptTechInView ? styles['tech-stack-item-in-view'] : styles['tech-stack-item-out-view']]} />
-              {/* <SectionItem LogoIcon={FaHtml5} logoColor="#D26C40" name="HTML" />
-              <SectionItem LogoIcon={FaCss3Alt} logoColor="#3170CF" name="CSS" /> */}
-            </StackSection>
+
+            {
+              // https://reactjs.org/docs/lists-and-keys.html
+              technologies.map((technologySection, sectionI) => {
+                return (
+                  // https://github.com/thebuilder/react-intersection-observer#:~:text=To%20use%20the-,%3CInView%3E%20component,-%2C%20you%20pass%20it
+                  // https://sentry.io/answers/unique-key-prop/#:~:text=Keys%20do%20not%20have%20to%20be%20unique%20globally.%20They%20just%20need%20to%20be%20unique%20across%20sibling%20elements.
+                  <InView key={sectionI} threshold={1} rootMargin='0px 100% 0% 100%' triggerOnce >
+                    {
+                      ({ref, inView}) => (
+                        <StackSection title={technologySection.title} ref={ref} titleClassNames={[styles['tech-stack-section-title'], inView ? styles['tech-stack-section-title-in-view'] : styles['tech-stack-section-title-out-view']]} >
+                          {
+                            technologySection.items.map((item, itemI) => {
+                              return (
+                                <InView key={itemI} threshold={1} rootMargin='0px 100% 0% 100%' triggerOnce >
+                                {({ref, inView}) => (
+                                  <SectionItem 
+                                    LogoIcon={item.logoIcon} 
+                                    logoColor={item.logoColor} 
+                                    name={item.name} 
+                                    ref={ref} 
+                                    wrapperClassNames={[styles['tech-stack-item'], inView ? styles['tech-stack-item-in-view'] : styles['tech-stack-item-out-view']]} 
+                                    animationDelay={techStackAnimationDelay*(itemI+1)*(sectionI+1)}
+                                  />
+                                )}
+                              </InView>
+                              )
+                            })
+                          }
+                        </StackSection>
+                      )
+                    }
+                  </InView>
+                )
+              })
+            }
           </div>
 
           <div id={`${styles['featured-projects']}`}>

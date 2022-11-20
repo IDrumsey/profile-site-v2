@@ -19,8 +19,10 @@ const Section = React.forwardRef<HTMLParagraphElement, Props>(({
     return (
         <>
         {/* https://bobbyhadz.com/blog/javascript-convert-array-to-string-with-spaces */}
-        <p ref={ref} className={`${styles['section-title']} ${titleClassNames.join(' ')}`}>{title}</p>
-        <div className={`${styles['underline']}`}></div>
+        <div className={`${styles["section-header-wrapper"]} ${titleClassNames.join(' ')}`} ref={ref}>
+            <p className={`${styles['section-title']}`}>{title}</p>
+            <div className={`${styles['underline']}`}></div>
+        </div>
         <div className={`${styles['tech-stack']}`}>
             {children}
         </div>

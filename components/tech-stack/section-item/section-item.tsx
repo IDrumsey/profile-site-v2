@@ -7,15 +7,17 @@ interface Props {
     name: string
     // pascal case suggested by next dev
     LogoIcon?: IconType
-    logoColor: string,
+    logoColor: string
     wrapperClassNames: string[]
+    animationDelay: number
 }
 
 const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
     name,
     LogoIcon,
     logoColor,
-    wrapperClassNames
+    wrapperClassNames,
+    animationDelay
 }: Props, ref) => {
 
     // https://reactjs.org/docs/hooks-reference.html#useref
@@ -41,7 +43,14 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
 
     return (
         <>
-        <div ref={ref} className={`${styles['tech-stack-item']} ${wrapperClassNames.join(' ')}`}>
+        <div 
+            ref={ref} 
+            className={`${styles['tech-stack-item']} ${wrapperClassNames.join(' ')}`}
+            style={{
+                // https://youtu.be/8RrTJY_z36c
+                animationDelay: `${animationDelay}ms`
+            }}
+        >
             {
                 LogoIcon &&
 
@@ -68,7 +77,6 @@ const requiresShift = (word: string) => {
         let subLetter = subLetters[i]
         // https://careerkarma.com/blog/javascript-string-contains/#:~:text=You%20can%20check%20if%20a,designed%20specifically%20for%20that%20purpose.
         if(word.includes(subLetter)) {
-            console.log('contains ', subLetter)
             return true
         }
     }

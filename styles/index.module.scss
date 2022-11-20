@@ -200,13 +200,21 @@
 
 
 .tech-stack-item {
-    transition: transform 200ms ease-out;
+    transform: translateX(-500px);
 }
 
 .tech-stack-item-in-view {
-    transform: translateX(0);
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
+    // https://stackoverflow.com/a/12991203/17712310
+    animation: slide-tech-item 500ms forwards;
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function
+    animation-timing-function: ease-out;
 }
 
-.tech-stack-item-out-view {
-    transform: translateX(-500px);
+// https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
+@keyframes slide-tech-item {
+
+    100% {
+        transform: translateX(0px);
+    }
 }
