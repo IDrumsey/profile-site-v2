@@ -27,28 +27,32 @@ export default function Home() {
   })
 
 
-  const socialQuickLinkAnimationDelay = 2000
 
+  const socialQuickLinks: {
+    logoIcon: any,
+    logoColor: string,
+    url?: string
+  }[] = [
+    {
+      logoIcon: AiFillLinkedin,
+      logoColor: '#0a66c2',
+      url: "https://www.linkedin.com/in/clay-casper/"
+    },
 
-  const { ref: linkedInQuickLinkRef, inView: linkedInQuickLinkInView, entry: linkedInQuickLinkEntry } = useInView({
-    // https://stackoverflow.com/a/68714239/17712310
-    rootMargin: '0px 100% -20% 100%',
-    triggerOnce: true,
-    delay: socialQuickLinkAnimationDelay,
-    trackVisibility: true
-  })
+    {
+      logoIcon: FaGithubSquare,
+      logoColor: '#b9bbbd',
+      url: "https://github.com/IDrumsey"
+    },
 
-  const { ref: githubQuickLinkRef, inView: githubQuickLinkInView, entry: githubQuickLinkEntry } = useInView({
-    rootMargin: '0px 100% -20% 100%',
-    triggerOnce: true,
-    delay: socialQuickLinkAnimationDelay + 250
-  })
+    {
+      logoIcon: FaYoutubeSquare,
+      logoColor: '#981C42',
+      url: "https://www.youtube.com/channel/UC9uVJXXGUJB_OP7hN959qbQ"
+    }
+  ]
 
-  const { ref: youtubeQuickLinkRef, inView: youtubeQuickLinkInView, entry: youtubeQuickLinkEntry } = useInView({
-    rootMargin: '0px 100% -20% 100%',
-    triggerOnce: true,
-    delay: socialQuickLinkAnimationDelay + 500
-  })
+  const socialQuickLinkAnimationDelay = 400
 
 
 
@@ -91,7 +95,6 @@ export default function Home() {
     }
   ]
 
-
   const techStackAnimationDelay = 50
 
 
@@ -131,36 +134,28 @@ export default function Home() {
           <p id={styles['about-me-short-desc']} className={`${descInView ? styles['desc-in-view'] : styles['desc-out-view']}`}>Hi, I&apos;m Clay. I&apos;m a web developer out of Northeast Ohio.</p>
 
           <div id={styles['social-quick-links']} ref={descRef}>
-            {/* https://react-icons.github.io/react-icons */}
-            <div  
-              ref={linkedInQuickLinkRef}
-              className={`${styles['social-quick-link']} ${linkedInQuickLinkInView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
-            >
-              <AiFillLinkedin 
-                id={styles['linked-in-social-quick-link']} 
-                className={styles['social-quick-link']} 
-              />
-            </div>
 
-            <div  
-              ref={githubQuickLinkRef}
-              className={`${styles['social-quick-link']} ${githubQuickLinkInView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
-            >
-              <FaGithubSquare 
-                id={styles['github-social-quick-link']} 
-                className={styles['social-quick-link']} 
-              />
-            </div>
-
-            <div  
-              ref={youtubeQuickLinkRef}
-              className={`${styles['social-quick-link']} ${youtubeQuickLinkInView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
-            >
-              <FaYoutubeSquare 
-                id={styles['youtube-social-quick-link']} 
-                className={styles['social-quick-link']} 
-              />
-            </div>
+            {
+              socialQuickLinks.map((socialQuickLink, i) => (
+                // https://stackoverflow.com/a/68714239/17712310
+                <InView rootMargin='0px 100% -20% 100%' triggerOnce>
+                  {
+                    ({ref, inView}) => (
+                      // https://react-icons.github.io/react-icons
+                      <div 
+                        ref={ref}
+                        className={`${styles['social-quick-link']} ${inView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
+                        style={{animationDelay: `${i * socialQuickLinkAnimationDelay}ms`}}
+                      >
+                        <socialQuickLink.logoIcon 
+                          color={socialQuickLink.logoColor}
+                        />
+                      </div>
+                    )
+                  }
+                </InView>
+              ))
+            }
           </div>
         </div>
 

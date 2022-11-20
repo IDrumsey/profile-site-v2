@@ -93,24 +93,12 @@
 .social-quick-link {
     font-size: 35px;
     // https://thoughtbot.com/blog/transitions-and-transforms#css-syntax-example-for-translate
-    transition: filter 100ms linear, transform 100ms ease-out;
+    transition: filter 100ms linear;
 }
 
 .social-quick-link:hover {
     filter: brightness(1.2);
     cursor: pointer;
-}
-
-#linked-in-social-quick-link {
-    color: #0A66C2;
-}
-
-#github-social-quick-link {
-    color: #a4a4a4;
-}
-
-#youtube-social-quick-link {
-    color: #981C42;
 }
 
 
@@ -174,14 +162,26 @@
 }
 
 
-// https://thoughtbot.com/blog/transitions-and-transforms#css-syntax-example-for-translate
-.social-quick-link-out-view {
+
+
+.social-quick-link {
+    // https://thoughtbot.com/blog/transitions-and-transforms#css-syntax-example-for-translate
     // https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateX
     transform: translateX(500px);
 }
 
 .social-quick-link-in-view {
-    transform: translateX(0px);
+    animation-timing-function: ease-out;
+    animation: social-quick-link-slide 200ms forwards;
+}
+
+
+@keyframes social-quick-link-slide {
+
+    100% {
+        transform: translateX(0px);
+    }
+    
 }
 
 
