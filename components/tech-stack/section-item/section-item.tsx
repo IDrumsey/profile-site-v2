@@ -9,7 +9,8 @@ interface Props {
     LogoIcon?: IconType
     logoColor: string
     wrapperClassNames: string[]
-    animationDelay: number
+    animationDelay: number,
+    adjustLogoToTextBottom: boolean
 }
 
 const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
@@ -17,7 +18,8 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
     LogoIcon,
     logoColor,
     wrapperClassNames,
-    animationDelay
+    animationDelay,
+    adjustLogoToTextBottom = false
 }: Props, ref) => {
 
     // https://reactjs.org/docs/hooks-reference.html#useref
@@ -33,7 +35,7 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
                 const nameHeight = nameRef.current.clientHeight
                 const heightToAddToLogo = nameHeight * .2
 
-                if(logoRef.current){
+                if(logoRef.current && adjustLogoToTextBottom){
                     logoRef.current.style.marginBottom = `${heightToAddToLogo}px`
                 }
             }
