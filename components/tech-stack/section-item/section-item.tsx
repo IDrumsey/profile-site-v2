@@ -10,7 +10,7 @@ interface Props {
     logoColor: string
     wrapperClassNames: string[]
     animationDelay: number,
-    adjustLogoToTextBottom: boolean
+    adjustLogoToTextBottom?: boolean
 }
 
 const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
