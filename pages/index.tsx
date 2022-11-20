@@ -123,7 +123,7 @@ export default function Home() {
           <div id={styles['avatar-wrapper']}>
             {/* https://stackoverflow.com/a/65509211/17712310 */}
             <img 
-              src="/IMG_0917.jpg"
+              src="./IMG_0917.jpg"
               alt="Avatar image"
               id={styles['avatar-image']}
             />
