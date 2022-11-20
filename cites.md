@@ -1,5 +1,9 @@
 # Other cites
 
+- designing the site
+    - https://youtu.be/2bA13vdv9h8
+    - https://youtu.be/_w-iYiEXrl0
+
 - replacing multiple id string literals with styles reference using regex
     - https://superuser.com/a/687013
     - https://stackoverflow.com/a/14059453/17712310
@@ -20,3 +24,7 @@
 
 - different environments for dev/prod
     - https://stackoverflow.com/q/72615033/17712310
+
+
+- getting image to render when deployed
+    - https://stackoverflow.com/questions/72851216/why-public-image-is-not-rendered-in-nextjs-when-published-to-github-pages
