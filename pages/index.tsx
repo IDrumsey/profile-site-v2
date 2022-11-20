@@ -5,6 +5,8 @@ import styles from '../styles/index.module.scss'
 
 import { useInView, InView } from 'react-intersection-observer'
 
+import { useEffect, useState } from 'react'
+
 
 import StackSection from '../components/tech-stack/section/section'
 import SectionItem from '../components/tech-stack/section-item/section-item'
@@ -26,6 +28,20 @@ export default function Home() {
     delay: 1000
   })
 
+
+  const [canRunSocialLinksAnimation, canRunSocialLinksAnimationSetter] = useState(false)
+
+
+  useEffect(() => {
+    // https://stackoverflow.com/a/60432519/17712310
+    const timer = setTimeout(() => {
+      canRunSocialLinksAnimationSetter(true)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
 
 
   const socialQuickLinks: {
@@ -146,7 +162,7 @@ export default function Home() {
                       // https://react-icons.github.io/react-icons
                       <div 
                         ref={ref}
-                        className={`${styles['social-quick-link']} ${inView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
+                        className={`${styles['social-quick-link']} ${inView && canRunSocialLinksAnimation ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
                         style={{animationDelay: `${i * socialQuickLinkAnimationDelay}ms`}}
                       >
                         {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#security_and_privacy */}
