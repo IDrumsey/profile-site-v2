@@ -30,4 +30,7 @@ const Section = React.forwardRef<HTMLParagraphElement, Props>(({
     )
 })
 
+// https://stackoverflow.com/a/67993106/17712310
+Section.displayName = "Tech-Stack-Section"
+
 export default Section

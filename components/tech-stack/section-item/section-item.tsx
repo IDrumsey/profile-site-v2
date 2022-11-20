@@ -66,6 +66,9 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
     )
 })
 
+// https://stackoverflow.com/a/67993106/17712310
+SectionItem.displayName = "SectionItem"
+
 export default SectionItem
 
 
