@@ -5,10 +5,15 @@ import styles from '../styles/index.module.scss'
 
 import { useInView } from 'react-intersection-observer'
 
+
+import StackSection from '../components/tech-stack/section/section'
+import SectionItem from '../components/tech-stack/section-item/section-item'
+
 // a lot of the brand colors come from the official websites
 
 import { AiFillLinkedin } from 'react-icons/ai'
-import { FaGithubSquare, FaYoutubeSquare } from 'react-icons/fa'
+import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt } from 'react-icons/fa'
+import {SiJavascript} from 'react-icons/si'
 
 export default function Home() {
 
@@ -43,6 +48,20 @@ export default function Home() {
     rootMargin: '0px 100% -20% 100%',
     triggerOnce: true,
     delay: socialQuickLinkAnimationDelay + 500
+  })
+
+
+
+  const { ref: mostUsedSectionTitleRef, inView: mostUsedSectionTitleInView, entry: mostUsedSectionTitleEntry } = useInView({
+    threshold: 1,
+    rootMargin: '0px 100% 0% 100%',
+    triggerOnce: true
+  })
+
+  const { ref: javascriptTechRef, inView: javascriptTechInView, entry: javascriptTechEntry } = useInView({
+    threshold: 1,
+    rootMargin: '0px 100% 0% 100%',
+    triggerOnce: true
   })
 
 
@@ -112,6 +131,26 @@ export default function Home() {
                 className={styles['social-quick-link']} 
               />
             </div>
+          </div>
+        </div>
+
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. In quo itaque reprehenderit molestias, quam repellendus? Minima vero incidunt suscipit at, impedit quibusdam ab dolorum ipsum, amet, ut asperiores voluptas. Repellendus praesentium blanditiis, odit voluptatum fugit id vel ipsum, ipsa, molestiae libero impedit reiciendis eaque? Quod magni doloremque reprehenderit libero, dolorum aliquam doloribus eos nesciunt dignissimos culpa ad quo voluptatem optio odit cum sit dolor quisquam, dolorem beatae. Dolorum placeat ut error modi nostrum ipsa laudantium, aut, unde dolorem qui officiis minima officia temporibus dignissimos amet. Fugiat ut at quo amet. Excepturi eum neque, rem quis provident sint aut enim esse et eaque illo accusantium id error quasi beatae accusamus, ab odio cupiditate fugiat ipsa tempore non dolorum! Recusandae illo unde culpa necessitatibus, dignissimos mollitia optio reiciendis pariatur fugit porro sint minima rem eligendi obcaecati, dolor, sapiente incidunt! Vel quas laborum reprehenderit animi atque. Id dicta quod veniam qui, voluptate neque nam est, numquam suscipit incidunt ipsam, porro molestias? Id magni sit debitis ratione repellendus accusamus minima! Magnam, unde voluptatibus. Exercitationem sapiente officiis magni tempora, ex dicta rerum dignissimos deleniti cumque praesentium facilis at maxime sit, inventore, voluptates nulla repellat animi. Totam eius id ratione, eum dolorem voluptatibus dignissimos provident ducimus!
+
+
+        <div id={`${styles['section-2']}`}>
+          <div id={`${styles['tech-stack']}`}>
+            <StackSection title="Most Used" ref={mostUsedSectionTitleRef} titleClassNames={[styles['tech-stack-section-title'], mostUsedSectionTitleInView ? styles['tech-stack-section-title-in-view'] : styles['tech-stack-section-title-out-view']]} >
+              <SectionItem LogoIcon={SiJavascript} logoColor="#FFE600" name="Javascript" ref={javascriptTechRef} wrapperClassNames={[styles['tech-stack-item'], javascriptTechInView ? styles['tech-stack-item-in-view'] : styles['tech-stack-item-out-view']]} />
+              {/* <SectionItem LogoIcon={FaHtml5} logoColor="#D26C40" name="HTML" />
+              <SectionItem LogoIcon={FaCss3Alt} logoColor="#3170CF" name="CSS" /> */}
+            </StackSection>
+          </div>
+
+          <div id={`${styles['featured-projects']}`}>
+            <div className={`${styles['featured-project']}`}>asdf</div>
+            <div className={`${styles['featured-project']}`}>asdf</div>
+            <div className={`${styles['featured-project']}`}></div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet dolorem molestias quis distinctio corporis quidem inventore odio repellendus nemo! Quo aperiam quidem consequatur sit quas esse perspiciatis, numquam et ullam, aspernatur velit a beatae? Ad quo quas quisquam distinctio itaque magnam inventore delectus omnis hic eius illum, nihil voluptates corporis nam accusamus doloribus cumque harum impedit ipsam? Aperiam culpa a obcaecati consequuntur expedita? Sapiente adipisci ut repellat, praesentium obcaecati deserunt cum laboriosam quasi, neque repellendus ea eos earum voluptatibus architecto soluta magni aspernatur vel in blanditiis, fugiat quo aut! Accusantium velit qui illum autem veniam, a quos sed optio. Nihil!
           </div>
         </div>
       </main>

@@ -1,0 +1,20 @@
+.tech-stack-item {
+    display: flex;
+    align-items: flex-end;
+    column-gap: 15px;
+    height: auto;
+}
+
+.tech-logo-wrapper {
+    height: 25px;
+}
+
+.tech-logo {
+    font-size: 25px;
+    border-radius: 2px;
+}
+
+.tech-name {
+    margin: 0;
+    color: #fff;
+}

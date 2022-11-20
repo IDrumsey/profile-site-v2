@@ -115,6 +115,16 @@
 
 
 
+#section-2 {
+    width: 100%;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 50px;
+}
+
+
+
 
 // media queries
 // https://polypane.app/blog/the-breakpoints-we-tested-in-2021-and-the-ones-to-test-in-2022/ - breakpoints
@@ -172,4 +182,31 @@
 
 .social-quick-link-in-view {
     transform: translateX(0px);
+}
+
+
+
+.tech-stack-section-title {
+    transition: transform 200ms ease-out;
+}
+
+.tech-stack-section-title-in-view {
+    transform: translateX(0);
+}
+
+.tech-stack-section-title-out-view {
+    transform: translateX(-500px);
+}
+
+
+.tech-stack-item {
+    transition: transform 200ms ease-out;
+}
+
+.tech-stack-item-in-view {
+    transform: translateX(0);
+}
+
+.tech-stack-item-out-view {
+    transform: translateX(-500px);
 }
