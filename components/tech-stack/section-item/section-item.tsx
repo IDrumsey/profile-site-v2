@@ -38,7 +38,8 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(({
                 }
             }
         }
-    }, [])
+    // added dependency as suggested by next build
+    }, [name])
 
 
     return (

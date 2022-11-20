@@ -138,7 +138,7 @@ export default function Home() {
             {
               socialQuickLinks.map((socialQuickLink, i) => (
                 // https://stackoverflow.com/a/68714239/17712310
-                <InView rootMargin='0px 100% -20% 100%' triggerOnce>
+                <InView key={i} rootMargin='0px 100% -20% 100%' triggerOnce>
                   {
                     ({ref, inView}) => (
                       // https://react-icons.github.io/react-icons
