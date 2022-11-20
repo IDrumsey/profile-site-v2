@@ -14,7 +14,7 @@ import SectionItem from '../components/tech-stack/section-item/section-item'
 // a lot of the brand colors come from the official websites
 
 import { AiFillLinkedin } from 'react-icons/ai'
-import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt } from 'react-icons/fa'
+import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaGitAlt, FaPython } from 'react-icons/fa'
 import {SiJavascript} from 'react-icons/si'
 
 export default function Home() {
@@ -57,7 +57,7 @@ export default function Home() {
 
     {
       logoIcon: FaGithubSquare,
-      logoColor: '#b9bbbd',
+      logoColor: '#A1A1A1',
       url: "https://github.com/IDrumsey"
     },
 
@@ -93,19 +93,43 @@ export default function Home() {
         {
           name: "Javascript",
           logoIcon: SiJavascript,
-          logoColor: "#FFE600"
+          logoColor: "yellow"
         },
         
         {
           name: "HTML",
           logoIcon: FaHtml5,
-          logoColor: "#D26C40"
+          logoColor: "#D67228"
         },
 
         {
           name: "CSS",
           logoIcon: FaCss3Alt,
-          logoColor: "#3170CF"
+          logoColor: "#1989C1"
+        },
+
+        {
+          name: "React",
+          logoIcon: FaReact,
+          logoColor: "#61dafb"
+        },
+
+        {
+          name: "NodeJS",
+          logoIcon: FaNodeJs,
+          logoColor: "#689f63"
+        },
+
+        {
+          name: "Git",
+          logoIcon: FaGitAlt,
+          logoColor: "#f54d27"
+        },
+
+        {
+          name: "Python",
+          logoIcon: FaPython,
+          logoColor: "#356f9f"
         }
       ]
     }
