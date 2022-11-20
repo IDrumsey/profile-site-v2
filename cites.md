@@ -7,3 +7,8 @@
 
 
 - powerfully using emmet
+
+
+- using heic images
+    - https://stackoverflow.com/a/71052385/17712310
+    - https://www.digitaltrends.com/computing/how-to-convert-heic-to-jpg-on-pc/

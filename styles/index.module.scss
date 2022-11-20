@@ -58,11 +58,18 @@
 }
 
 
-#avatar-image {
+#avatar-wrapper {
     margin-left: auto;
     height: 35px;
+    width: 35px;
     border-radius: 50%;
-    width: auto;
+    // https://stackoverflow.com/a/28526901/17712310
+    overflow: hidden;
+}
+
+#avatar-image {
+    // https://stackoverflow.com/a/30938958/17712310
+    width: 110%;
 }
 
 

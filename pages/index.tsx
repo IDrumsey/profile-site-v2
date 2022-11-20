@@ -120,12 +120,14 @@ export default function Home() {
             </Link>
           </nav>
 
-          {/* https://stackoverflow.com/a/65509211/17712310 */}
-          <img 
-            src="/avatar.png"
-            alt="Avatar image"
-            id={styles['avatar-image']}
-          />
+          <div id={styles['avatar-wrapper']}>
+            {/* https://stackoverflow.com/a/65509211/17712310 */}
+            <img 
+              src="/IMG_0917.jpg"
+              alt="Avatar image"
+              id={styles['avatar-image']}
+            />
+          </div>
         </div>
 
 
@@ -147,9 +149,12 @@ export default function Home() {
                         className={`${styles['social-quick-link']} ${inView ? styles['social-quick-link-in-view'] : styles['social-quick-link-out-view']}`}
                         style={{animationDelay: `${i * socialQuickLinkAnimationDelay}ms`}}
                       >
-                        <socialQuickLink.logoIcon 
-                          color={socialQuickLink.logoColor}
-                        />
+                        {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#security_and_privacy */}
+                        <a href={socialQuickLink.url} target="_blank" rel="noreferrer">
+                          <socialQuickLink.logoIcon 
+                            color={socialQuickLink.logoColor}
+                          />
+                        </a>
                       </div>
                     )
                   }
