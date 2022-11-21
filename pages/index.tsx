@@ -10,12 +10,14 @@ import { useEffect, useState } from 'react'
 
 import StackSection from '../components/tech-stack/section/section'
 import SectionItem from '../components/tech-stack/section-item/section-item'
+import ProjectCard from '../components/project-card/project-card'
 
 // a lot of the brand colors come from the official websites
 
 import { AiFillLinkedin } from 'react-icons/ai'
 import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaGitAlt, FaPython } from 'react-icons/fa'
 import {SiJavascript} from 'react-icons/si'
+import { Project } from '../models/project'
 
 export default function Home() {
 
@@ -140,6 +142,43 @@ export default function Home() {
 
 
 
+  const featuredProjects: Project[] = [
+    {
+      title: "RoadtripsIO",
+      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+    },
+    {
+      title: "RoadtripsIO",
+      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+    },
+    {
+      title: "RoadtripsIO",
+      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+    },
+    {
+      title: "RoadtripsIO",
+      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+    },
+  ]
+
+  const [featuredProjectWrappers, featuredProjectWrappersSetters] = useState<{
+    project: Project,
+    align: boolean
+  }[]>([])
+
+
+  useEffect(() => {
+    featuredProjectWrappersSetters(featuredProjects.map(featuredProject => {
+      return {
+        project: featuredProject,
+        align: getRandomBool()
+      }
+    }))
+  }, [])
+
+
+
+
 
   return (
       <>
@@ -248,13 +287,43 @@ export default function Home() {
           </div>
 
           <div id={`${styles['featured-projects']}`}>
-            <div className={`${styles['featured-project']}`}>asdf</div>
-            <div className={`${styles['featured-project']}`}>asdf</div>
-            <div className={`${styles['featured-project']}`}></div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet dolorem molestias quis distinctio corporis quidem inventore odio repellendus nemo! Quo aperiam quidem consequatur sit quas esse perspiciatis, numquam et ullam, aspernatur velit a beatae? Ad quo quas quisquam distinctio itaque magnam inventore delectus omnis hic eius illum, nihil voluptates corporis nam accusamus doloribus cumque harum impedit ipsam? Aperiam culpa a obcaecati consequuntur expedita? Sapiente adipisci ut repellat, praesentium obcaecati deserunt cum laboriosam quasi, neque repellendus ea eos earum voluptatibus architecto soluta magni aspernatur vel in blanditiis, fugiat quo aut! Accusantium velit qui illum autem veniam, a quos sed optio. Nihil!
+            {
+              featuredProjectWrappers.map((projectWrapper, i) => (
+
+                projectWrapper &&
+
+                <InView key={i} threshold={.5} rootMargin='0px 100% 0% 100%' triggerOnce >
+                  {
+                    ({ref, inView}) => (
+                      <div 
+                        className={`${styles["featured-project-wrapper"]}`}
+                        style={{
+                          // https://stackoverflow.com/a/30587944/17712310
+                          margin: inView ? (`0 ${projectWrapper.align ? '50px' : 0} 0 ${!projectWrapper.align ? '50px' : 0}`) : (`0 ${!projectWrapper.align ? '50px' : 0} 0 ${projectWrapper.align ? '50px' : 0}`)
+                        }}
+                      >
+                        <ProjectCard 
+                          ref={ref}
+                          project={projectWrapper.project} 
+                          wrapperClassNames={[`${styles['project-card']}`, `${inView ? styles['project-in-view'] : styles['project-out-view']}`]}
+                        />
+                      </div>
+                    )
+                  }
+                </InView>
+
+              ))
+            }
           </div>
         </div>
       </main>
       </>
   )
+}
+
+
+
+const getRandomBool = () => {
+  // https://stackoverflow.com/a/36756480/17712310
+  return Math.random() < 0.5
 }

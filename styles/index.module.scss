@@ -127,6 +127,19 @@
 }
 
 
+#featured-projects {
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+}
+
+
+.featured-project-wrapper {
+    width: 90%;
+    transition: margin-right 200ms linear, margin-left 200ms linear;
+}
+
+
 
 
 // media queries
@@ -232,4 +245,28 @@
     100% {
         transform: translateX(0px);
     }
+}
+
+
+.project-card {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    background-color: #1E1E1E;
+    padding: 5px 25px;
+    border-radius: 4px;
+    opacity: 0;
+}
+
+.project-in-view {
+    animation: project-card-show 500ms forwards;
+    animation-timing-function: ease-out;
+}
+
+
+@keyframes project-card-show {
+    
+    100% {
+        opacity: 1;
+    }
+
 }
