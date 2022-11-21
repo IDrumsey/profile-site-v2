@@ -33,4 +33,7 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
     )
 })
 
+// https://stackoverflow.com/a/67993106/17712310
+ProjectCard.displayName = "ProjectCard"
+
 export default ProjectCard
