@@ -168,12 +168,27 @@ export default function Home() {
 
 
   useEffect(() => {
-    featuredProjectWrappersSetters(featuredProjects.map(featuredProject => {
+    featuredProjectWrappersSetters(featuredProjects.map((featuredProject, i) => {
       return {
         project: featuredProject,
-        align: getRandomBool()
+        align: i % 2 == 0
       }
     }))
+  }, [])
+
+
+  const [canRunProjectCardAnimation, canRunProjectCardAnimationSetter] = useState(false)
+
+
+  useEffect(() => {
+    // https://stackoverflow.com/a/60432519/17712310
+    const timer = setTimeout(() => {
+      canRunProjectCardAnimationSetter(true)
+    }, 2100)
+
+    return () => {
+      clearTimeout(timer)
+    }
   }, [])
 
 
@@ -299,13 +314,13 @@ export default function Home() {
                         className={`${styles["featured-project-wrapper"]}`}
                         style={{
                           // https://stackoverflow.com/a/30587944/17712310
-                          margin: inView ? (`0 ${projectWrapper.align ? '50px' : 0} 0 ${!projectWrapper.align ? '50px' : 0}`) : (`0 ${!projectWrapper.align ? '50px' : 0} 0 ${projectWrapper.align ? '50px' : 0}`)
+                          margin: inView && canRunProjectCardAnimation ? (`0 ${projectWrapper.align ? '50px' : 0} 0 ${!projectWrapper.align ? '50px' : 0}`) : (`0 ${!projectWrapper.align ? '50px' : 0} 0 ${projectWrapper.align ? '50px' : 0}`)
                         }}
                       >
                         <ProjectCard 
                           ref={ref}
                           project={projectWrapper.project} 
-                          wrapperClassNames={[`${styles['project-card']}`, `${inView ? styles['project-in-view'] : styles['project-out-view']}`]}
+                          wrapperClassNames={[`${styles['project-card']}`, `${inView && canRunProjectCardAnimation ? styles['project-in-view'] : styles['project-out-view']}`]}
                         />
                       </div>
                     )
