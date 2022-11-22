@@ -28,3 +28,8 @@
 
 - getting image to render when deployed
     - https://stackoverflow.com/questions/72851216/why-public-image-is-not-rendered-in-nextjs-when-published-to-github-pages
+
+
+
+- generating cubic bezier curves
+    - https://cubic-bezier.com/#.67,.41,.46,.99
