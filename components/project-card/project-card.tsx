@@ -35,6 +35,14 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
         >
             <div className={`${styles['project-card-header']}`}>
                 <p className={`${styles['project-card-title']}`}>{project.title}</p>
+                {
+                    project.hosted && 
+
+                    <span className={`${styles['project-card-hosted-indicated']}`}>
+                        <div className={`${styles['project-card-hosted-indicator-blink-circle']}`}></div>
+                        <p className={`${styles['project-card-hosted-indicator-live-text']}`}>live</p>
+                    </span>
+                }
             </div>
             <div className={`${styles['project-card-body']}`}>
                 <p className={`${styles['project-card-desc']}`}>{project.description}</p>
