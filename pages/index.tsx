@@ -183,18 +183,51 @@ export default function Home() {
     }))
   }, [])
 
+  
+  const projectCardSectionDisplayDelay = 2100
+  const projectCardDisplayStaggerDelay = 400
 
-  const [canRunProjectCardAnimation, canRunProjectCardAnimationSetter] = useState(false)
-
+  const [projectCardSectionDelayFlag, projectCardSectionDelayFlagSetter] = useState(false)
 
   useEffect(() => {
     // https://stackoverflow.com/a/60432519/17712310
     const timer = setTimeout(() => {
-      canRunProjectCardAnimationSetter(true)
-    }, 2100)
+      projectCardSectionDelayFlagSetter(true)
+    }, projectCardSectionDisplayDelay)
 
     return () => {
       clearTimeout(timer)
+    }
+  }, [])
+
+
+  // https://bobbyhadz.com/blog/javascript-create-array-n-elements-same-value
+  const [projectCardDelayFlags, projectCardDelayFlagsSetter] = useState(Array(featuredProjects.length).fill(false))
+
+
+  useEffect(() => {
+    const timers: NodeJS.Timeout[] = []
+
+    featuredProjects.forEach((project, i) => {
+      // https://stackoverflow.com/a/60432519/17712310
+      const timer = setTimeout(() => {
+        // https://dev.to/shareef/how-to-work-with-arrays-in-reactjs-usestate-4cmi
+        // https://stackoverflow.com/questions/65719838/react-usestate-setstate-in-useeffect-not-updating-array#:~:text=1-,You%20should%20use,-setChat(chat%20%3D%3E%20%5B...chat
+        projectCardDelayFlagsSetter(prevFlags => prevFlags.map((projectFlag, j) => {
+          if (i == j) {
+            return true
+          }
+          else return projectFlag
+        }))
+      }, projectCardSectionDisplayDelay + (i+1) * projectCardDisplayStaggerDelay)
+
+      timers.push(timer)
+    })
+
+    return () => {
+      timers.forEach(timer => {
+        clearTimeout(timer)
+      })
     }
   }, [])
 
@@ -321,13 +354,13 @@ export default function Home() {
                         className={`${styles["featured-project-wrapper"]}`}
                         style={{
                           // https://stackoverflow.com/a/30587944/17712310
-                          margin: inView && canRunProjectCardAnimation ? (`0 ${projectWrapper.align ? '50px' : 0} 0 ${!projectWrapper.align ? '50px' : 0}`) : (`0 ${!projectWrapper.align ? '50px' : 0} 0 ${projectWrapper.align ? '50px' : 0}`)
+                          margin: (inView && projectCardSectionDelayFlag && projectCardDelayFlags[i]) ? (`0 ${projectWrapper.align ? '50px' : 0} 0 ${!projectWrapper.align ? '50px' : 0}`) : (`0 ${!projectWrapper.align ? '50px' : 0} 0 ${projectWrapper.align ? '50px' : 0}`)
                         }}
                       >
                         <ProjectCard 
                           ref={ref}
                           project={projectWrapper.project} 
-                          wrapperClassNames={[`${styles['project-card']}`, `${inView && canRunProjectCardAnimation ? styles['project-in-view'] : styles['project-out-view']}`]}
+                          wrapperClassNames={[`${styles['project-card']}`, `${(inView && projectCardSectionDelayFlag && projectCardDelayFlags[i]) ? styles['project-in-view'] : styles['project-out-view']}`]}
                         />
                       </div>
                     )
