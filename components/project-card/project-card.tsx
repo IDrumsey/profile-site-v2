@@ -5,6 +5,8 @@ import React from 'react'
 import { Project } from '../../models/project'
 import { useMantineTheme } from '@mantine/core'
 
+import { FaGithubSquare, FaYoutubeSquare } from 'react-icons/fa'
+
 
 interface Props {
     project: Project,
@@ -37,7 +39,42 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
             <div className={`${styles['project-card-body']}`}>
                 <p className={`${styles['project-card-desc']}`}>{project.description}</p>
             </div>
-            <div className={`${styles['project-card-footer']}`}></div>
+            <div className={`${styles['project-card-footer']}`}>
+                <div className={`${styles['project-quick-links']}`}>
+                    {
+                        project.repoLink && 
+
+                        <a
+                            href={project.repoLink}
+                            className={`${styles['project-quick-link']}`}
+                            target="_blank"
+                            // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#security_and_privacy
+                            rel="noreferrer"
+                        >
+                            <FaGithubSquare
+                                color="#A1A1A1"
+                                className={`${styles['project-quick-link-logo']}`}
+                            />
+                        </a>
+                    }
+
+                    {
+                        project.videoLink && 
+
+                        <a
+                            href={project.videoLink}
+                            className={`${styles['project-quick-link']}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <FaYoutubeSquare
+                                color="#981C42"
+                                className={`${styles['project-quick-link-logo']}`}
+                            />
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
         </>
     )

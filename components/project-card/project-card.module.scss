@@ -1,0 +1,29 @@
+.project-card-title {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.project-card-desc {
+    margin: 0;
+}
+
+.project-quick-links {
+    display: flex;
+    column-gap: 15px;
+    align-items: center;
+    margin-top: 25px;
+}
+
+
+.project-quick-link {
+    font-size: 30px;
+    height: auto;
+    transition: filter 100ms ease-out;
+}
+
+.project-quick-link:hover {
+    filter: brightness(1.3);
+    transform: scale(1.1);
+}

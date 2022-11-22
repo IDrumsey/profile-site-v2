@@ -144,20 +144,26 @@ export default function Home() {
 
   const featuredProjects: Project[] = [
     {
-      title: "RoadtripsIO",
-      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+      title: "Profile Site",
+      description: "Pretty self explanatory.",
+      repoLink: "https://github.com/IDrumsey/profile-site-v2"
     },
     {
       title: "RoadtripsIO",
-      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure.",
+      videoLink: "https://youtu.be/_t-zrlVHXXE",
+      repoLink: "https://github.com/IDrumsey/RoadTripsIO"
     },
     {
-      title: "RoadtripsIO",
-      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+      title: "Poll App",
+      description: "Simple app to create and share polls and have people vote on them.",
+      repoLink: "https://github.com/IDrumsey/PollApp"
     },
     {
-      title: "RoadtripsIO",
-      description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure",
+      title: "Shelf Stock",
+      description: "Web app to help stores to keep track of where products are and help customers locate those products.",
+      videoLink: "https://youtu.be/lhLO08vDvIo",
+      repoLink: "https://github.com/IDrumsey/Shelf-Stock"
     },
   ]
 
