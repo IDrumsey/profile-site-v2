@@ -147,7 +147,8 @@ export default function Home() {
       title: "Profile Site",
       description: "Pretty self explanatory.",
       repoLink: "https://github.com/IDrumsey/profile-site-v2",
-      hosted: true
+      hosted: true,
+      liveLink: "https://idrumsey.github.io/profile-site-v2/"
     },
     {
       title: "RoadtripsIO",

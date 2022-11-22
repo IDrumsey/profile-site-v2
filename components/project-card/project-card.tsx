@@ -40,7 +40,9 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
 
                     <span className={`${styles['project-card-hosted-indicated']}`}>
                         <div className={`${styles['project-card-hosted-indicator-blink-circle']}`}></div>
-                        <p className={`${styles['project-card-hosted-indicator-live-text']}`}>live</p>
+                        <a href={project.liveLink ?? '#'}>
+                            <p className={`${styles['project-card-hosted-indicator-live-text']}`}>live</p>
+                        </a>
                     </span>
                 }
             </div>
