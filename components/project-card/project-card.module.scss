@@ -20,7 +20,7 @@
 .project-quick-link {
     font-size: 30px;
     height: auto;
-    transition: filter 100ms ease-out;
+    transition: filter 100ms ease-out, transform 100ms ease-out;
 }
 
 .project-quick-link:hover {
