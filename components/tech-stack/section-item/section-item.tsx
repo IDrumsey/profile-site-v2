@@ -7,7 +7,7 @@ interface Props {
     name: string
     // pascal case suggested by next dev
     LogoIcon?: IconType
-    logoColor: string
+    logoColor?: string
     wrapperClassNames: string[]
     animationDelay: number,
     adjustLogoToTextBottom?: boolean

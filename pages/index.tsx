@@ -15,7 +15,8 @@ import ProjectCard from '../components/project-card/project-card'
 // a lot of the brand colors come from the official websites
 
 import { AiFillLinkedin } from 'react-icons/ai'
-import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaGitAlt, FaPython } from 'react-icons/fa'
+import { FaGithubSquare, FaYoutubeSquare, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaGitAlt, FaPython, FaPhp, FaAngular, FaLaravel } from 'react-icons/fa'
+import { SiCplusplus } from 'react-icons/si'
 import {SiJavascript} from 'react-icons/si'
 import { Project } from '../models/project'
 
@@ -85,8 +86,8 @@ export default function Home() {
     title: string,
     items: {
       name: string,
-      logoIcon: any,
-      logoColor: string
+      logoIcon?: any,
+      logoColor?: string
     }[]
   }[] = [
     {
@@ -132,6 +133,29 @@ export default function Home() {
           name: "Python",
           logoIcon: FaPython,
           logoColor: "#356f9f"
+        }
+      ]
+    },
+
+    {
+      title: "It's been a minute",
+      items: [
+        {
+          name: "PHP",
+          logoIcon: FaPhp,
+          logoColor: "#6448c2"
+        },
+        
+        {
+          name: "Angular",
+          logoIcon: FaAngular,
+          logoColor: "#c3002f"
+        },
+        
+        {
+          name: "Laravel",
+          logoIcon: FaLaravel,
+          logoColor: "#ff2d20"
         }
       ]
     }
