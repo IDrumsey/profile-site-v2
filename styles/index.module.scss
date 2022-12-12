@@ -36,14 +36,14 @@
 
 .nav-item:hover {
     // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/brightness
-    filter: brightness(1.5);
+    filter: brightness(1.2);
 }
 
 
 .blog-text-gradient {
     // https://cssgradient.io/blog/css-gradient-text/
     // https://webkit.org/blog/1424/css3-gradients/
-    background: -webkit-linear-gradient(left, #6499B7, rgba(167, 98, 255, .33));
+    background: -webkit-linear-gradient(left, #517cc0, #6bb0db);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -51,7 +51,7 @@
 
 
 .about-text-gradient {
-    background: -webkit-linear-gradient(left, #4BFF47, rgba(42, 164, 233, .62));
+    background: -webkit-linear-gradient(left, #3bc285, #7de8b8);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
