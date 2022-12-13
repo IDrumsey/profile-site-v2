@@ -175,6 +175,13 @@ export default function Home() {
       liveLink: "https://idrumsey.github.io/profile-site-v2/"
     },
     {
+      title: "Loan Foresights",
+      description: "Figure out a good time for you to get a loan.",
+      // repoLink: "https://github.com/IDrumsey/profile-site-v2",
+      hosted: false,
+      // liveLink: "https://idrumsey.github.io/profile-site-v2/"
+    },
+    {
       title: "RoadtripsIO",
       description: "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure.",
       videoLink: "https://youtu.be/_t-zrlVHXXE",
