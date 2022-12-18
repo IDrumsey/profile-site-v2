@@ -1,6 +1,6 @@
 import styles from './project-card.module.scss'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Project } from '../../models/project'
 import { useMantineTheme } from '@mantine/core'
@@ -24,6 +24,19 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
     const theme = useMantineTheme()
 
 
+    const [runningLiveIndicatorAnimation, runningLiveIndicatorAnimationSetter] = useState(false)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            runningLiveIndicatorAnimationSetter(true)
+        }, Math.random() * 1000)
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [])
+
+
     return (
         <>
         <div 
@@ -39,7 +52,7 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(({
                     project.hosted && 
 
                     <span className={`${styles['project-card-hosted-indicated']}`}>
-                        <div className={`${styles['project-card-hosted-indicator-blink-circle']}`}></div>
+                        <div className={`${styles['project-card-hosted-indicator-blink-circle']}`} style={{animation: runningLiveIndicatorAnimation ? `${styles['blink-circle']} 3000ms infinite` : ''}}></div>
                         <a href={project.liveLink ?? '#'}>
                             <p className={`${styles['project-card-hosted-indicator-live-text']}`}>live</p>
                         </a>
