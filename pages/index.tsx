@@ -177,9 +177,9 @@ export default function Home() {
     {
       title: "Loan Foresights",
       description: "Figure out a good time for you to get a loan.",
-      // repoLink: "https://github.com/IDrumsey/profile-site-v2",
-      hosted: false,
-      // liveLink: "https://idrumsey.github.io/profile-site-v2/"
+      repoLink: "https://github.com/IDrumsey/Loan-Foresight",
+      hosted: true,
+      liveLink: "https://idrumsey.github.io/Loan-Foresight/"
     },
     {
       title: "RoadtripsIO",
