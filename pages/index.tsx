@@ -298,7 +298,7 @@ export default function Home() {
       </Head>
 
       <Image
-        src="/top-gradient.png"
+        src="./top-gradient.png"
         alt="Gradient"
         id={styles["top-gradient"]}
         width={1000}
