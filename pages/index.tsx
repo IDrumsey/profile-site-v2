@@ -469,11 +469,11 @@ export default function Home() {
                             inView &&
                             projectCardSectionDelayFlag &&
                             projectCardDelayFlags[i]
-                              ? `0 ${projectWrapper.align ? "50px" : 0} 0 ${
-                                  !projectWrapper.align ? "50px" : 0
+                              ? `0 ${projectWrapper.align ? "auto" : 0} 0 ${
+                                  !projectWrapper.align ? "auto" : 0
                                 }`
-                              : `0 ${!projectWrapper.align ? "50px" : 0} 0 ${
-                                  projectWrapper.align ? "50px" : 0
+                              : `0 ${!projectWrapper.align ? "auto" : 0} 0 ${
+                                  projectWrapper.align ? "auto" : 0
                                 }`,
                         }}
                       >
