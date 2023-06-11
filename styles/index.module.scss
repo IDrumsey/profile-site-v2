@@ -1,3 +1,9 @@
+#main-wrapper {
+    padding: 100px;
+    padding-top: 0;
+}
+
+
 #header {
     width: 100%;
     height: auto;
@@ -138,6 +144,13 @@
 .featured-project-wrapper {
     width: 80%;
     transition: margin-right 200ms linear, margin-left 200ms linear;
+}
+
+
+@media screen and (max-width: 600px) {
+    .featured-project-wrapper {
+        width: 100%;
+    }
 }
 
 
