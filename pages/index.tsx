@@ -297,12 +297,10 @@ export default function Home() {
         />
       </Head>
 
-      <Image
+      <img
         src="./top-gradient.png"
         alt="Gradient"
         id={styles["top-gradient"]}
-        width={1000}
-        height={1000}
       />
 
       <main id={styles["main-wrapper"]}>
