@@ -1,21 +1,21 @@
-import Head from "next/head";
-import Link from "next/link";
+import Head from "next/head"
+import Link from "next/link"
 
-import styles from "../styles/index.module.scss";
+import styles from "../styles/index.module.scss"
 
-import { useInView, InView } from "react-intersection-observer";
+import { useInView, InView } from "react-intersection-observer"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"
 
-import StackSection from "../components/tech-stack/section/section";
-import SectionItem from "../components/tech-stack/section-item/section-item";
-import ProjectCard from "../components/project-card/project-card";
+import StackSection from "../components/tech-stack/section/section"
+import SectionItem from "../components/tech-stack/section-item/section-item"
+import ProjectCard from "../components/project-card/project-card"
 
 // a lot of the brand colors come from the official websites
 
-import { AiFillLinkedin } from "react-icons/ai";
+import { AiFillLinkedin } from "react-icons/ai"
 import {
   FaGithubSquare,
   FaYoutubeSquare,
@@ -28,10 +28,11 @@ import {
   FaPhp,
   FaAngular,
   FaLaravel,
-} from "react-icons/fa";
-import { SiCplusplus } from "react-icons/si";
-import { SiJavascript } from "react-icons/si";
-import { Project } from "../models/project";
+} from "react-icons/fa"
+import { SiCplusplus } from "react-icons/si"
+import { SiJavascript } from "react-icons/si"
+import { Project } from "../models/project"
+import Image from "next/image"
 
 export default function Home() {
   // https://youtu.be/r1auJEf9ISo
@@ -45,26 +46,26 @@ export default function Home() {
     rootMargin: "0px 0px -20% 0px",
     triggerOnce: true,
     delay: 1000,
-  });
+  })
 
   const [canRunSocialLinksAnimation, canRunSocialLinksAnimationSetter] =
-    useState(false);
+    useState(false)
 
   useEffect(() => {
     // https://stackoverflow.com/a/60432519/17712310
     const timer = setTimeout(() => {
-      canRunSocialLinksAnimationSetter(true);
-    }, 1000);
+      canRunSocialLinksAnimationSetter(true)
+    }, 1000)
 
     return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+      clearTimeout(timer)
+    }
+  }, [])
 
   const socialQuickLinks: {
-    logoIcon: any;
-    logoColor: string;
-    url?: string;
+    logoIcon: any
+    logoColor: string
+    url?: string
   }[] = [
     {
       logoIcon: AiFillLinkedin,
@@ -83,9 +84,9 @@ export default function Home() {
       logoColor: "#981C42",
       url: "https://www.youtube.com/channel/UC9uVJXXGUJB_OP7hN959qbQ",
     },
-  ];
+  ]
 
-  const socialQuickLinkAnimationDelay = 400;
+  const socialQuickLinkAnimationDelay = 400
 
   const {
     ref: mostUsedSectionTitleRef,
@@ -95,15 +96,15 @@ export default function Home() {
     threshold: 1,
     rootMargin: "0px 100% 0% 100%",
     triggerOnce: true,
-  });
+  })
 
   const technologies: {
-    title: string;
+    title: string
     items: {
-      name: string;
-      logoIcon?: any;
-      logoColor?: string;
-    }[];
+      name: string
+      logoIcon?: any
+      logoColor?: string
+    }[]
   }[] = [
     {
       title: "Most Used",
@@ -174,9 +175,9 @@ export default function Home() {
         },
       ],
     },
-  ];
+  ]
 
-  const techStackAnimationDelay = 50;
+  const techStackAnimationDelay = 50
 
   const featuredProjects: Project[] = [
     {
@@ -213,14 +214,14 @@ export default function Home() {
       videoLink: "https://youtu.be/lhLO08vDvIo",
       repoLink: "https://github.com/IDrumsey/Shelf-Stock",
     },
-  ];
+  ]
 
   const [featuredProjectWrappers, featuredProjectWrappersSetters] = useState<
     {
-      project: Project;
-      align: boolean;
+      project: Project
+      align: boolean
     }[]
-  >([]);
+  >([])
 
   useEffect(() => {
     featuredProjectWrappersSetters(
@@ -228,35 +229,35 @@ export default function Home() {
         return {
           project: featuredProject,
           align: i % 2 == 0,
-        };
+        }
       })
-    );
-  }, []);
+    )
+  }, [])
 
-  const projectCardSectionDisplayDelay = 2100;
-  const projectCardDisplayStaggerDelay = 400;
+  const projectCardSectionDisplayDelay = 2100
+  const projectCardDisplayStaggerDelay = 400
 
   const [projectCardSectionDelayFlag, projectCardSectionDelayFlagSetter] =
-    useState(false);
+    useState(false)
 
   useEffect(() => {
     // https://stackoverflow.com/a/60432519/17712310
     const timer = setTimeout(() => {
-      projectCardSectionDelayFlagSetter(true);
-    }, projectCardSectionDisplayDelay);
+      projectCardSectionDelayFlagSetter(true)
+    }, projectCardSectionDisplayDelay)
 
     return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+      clearTimeout(timer)
+    }
+  }, [])
 
   // https://bobbyhadz.com/blog/javascript-create-array-n-elements-same-value
   const [projectCardDelayFlags, projectCardDelayFlagsSetter] = useState(
     Array(featuredProjects.length).fill(false)
-  );
+  )
 
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
+    const timers: NodeJS.Timeout[] = []
 
     featuredProjects.forEach((project, i) => {
       // https://stackoverflow.com/a/60432519/17712310
@@ -266,21 +267,21 @@ export default function Home() {
         projectCardDelayFlagsSetter((prevFlags) =>
           prevFlags.map((projectFlag, j) => {
             if (i == j) {
-              return true;
-            } else return projectFlag;
+              return true
+            } else return projectFlag
           })
-        );
-      }, projectCardSectionDisplayDelay + (i + 1) * projectCardDisplayStaggerDelay);
+        )
+      }, projectCardSectionDisplayDelay + (i + 1) * projectCardDisplayStaggerDelay)
 
-      timers.push(timer);
-    });
+      timers.push(timer)
+    })
 
     return () => {
       timers.forEach((timer) => {
-        clearTimeout(timer);
-      });
-    };
-  }, []);
+        clearTimeout(timer)
+      })
+    }
+  }, [])
 
   return (
     <>
@@ -295,6 +296,14 @@ export default function Home() {
           href="/favicon.ico"
         />
       </Head>
+
+      <Image
+        src="/top-gradient.png"
+        alt="Gradient"
+        id={styles["top-gradient"]}
+        width={1000}
+        height={1000}
+      />
 
       <main id={styles["main-wrapper"]}>
         <div id={styles["header"]}>
@@ -431,12 +440,12 @@ export default function Home() {
                                 />
                               )}
                             </InView>
-                          );
+                          )
                         })}
                       </StackSection>
                     )}
                   </InView>
-                );
+                )
               })
             }
           </div>
@@ -491,10 +500,10 @@ export default function Home() {
         </div>
       </main>
     </>
-  );
+  )
 }
 
 const getRandomBool = () => {
   // https://stackoverflow.com/a/36756480/17712310
-  return Math.random() < 0.5;
-};
+  return Math.random() < 0.5
+}
