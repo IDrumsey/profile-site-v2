@@ -1,4 +1,4 @@
-const {withContentLayer} = require('next-contentlayer')
+const {withContentlayer} = require('next-contentlayer')
 
 
 /** @type {import('next').NextConfig} */
@@ -10,4 +10,4 @@ const nextConfig = {
   basePath: process.env.NODE_ENV == 'development' ? '' : '/profile-site-v2'
 }
 
-module.exports = withContentLayer(nextConfig)
+module.exports = withContentlayer(nextConfig)
