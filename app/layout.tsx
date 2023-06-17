@@ -1,12 +1,15 @@
-import "../styles/globals.scss"
-import type { AppProps } from "next/app"
-import { MantineProvider } from "@mantine/core"
-import Head from "next/head"
 import { MotionConfig } from "framer-motion"
+import Head from "next/head"
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function RootLayout({
+  // Layouts must accept a children prop.
+  // This will be populated with nested layouts or pages
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <>
+    <html lang="en">
       <Head>
         {/* 
           // https://stackoverflow.com/questions/37924959/why-am-i-getting-different-font-sizes-when-displaying-my-page-in-chrome-android
@@ -20,31 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
           content="width=device-width, initial-scale=1.0"
         ></meta>
       </Head>
-      <MotionConfig reducedMotion="user">
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            colors: {
-              dark: [
-                "#D4D4D4",
-                "#848484",
-                "#505050",
-                "#343434",
-                "#1E1E1E",
-                "#1A1A1A",
-                "#161616",
-                "#131313",
-                "#101010",
-                "#080808",
-              ],
-            },
-            colorScheme: "dark",
-          }}
-        >
-          <Component {...pageProps} />
-        </MantineProvider>
-      </MotionConfig>
-    </>
+      <body>
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      </body>
+    </html>
   )
 }
