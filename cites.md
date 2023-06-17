@@ -42,3 +42,5 @@ what tsconfig include is - https://www.stackchief.com/blog/tsconfig%20%7C%20the%
 - can't use mantineprovider with app dir - https://github.com/mantinedev/mantine/issues/2815
 
 - creating the blog with contentlayer - https://www.contentlayer.dev/docs/getting-started-cddd76b7
+
+- about article tag - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article

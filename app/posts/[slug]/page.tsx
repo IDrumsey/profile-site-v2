@@ -22,6 +22,10 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
       <h1>{post.title}</h1>
       <h6>{post.description}</h6>
       <h6>{format(parseISO(post.date), "LLLL d, yyyy")}</h6>
+
+      <hr />
+
+      <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
     </article>
   )
 }
