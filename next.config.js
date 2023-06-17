@@ -1,3 +1,6 @@
+const {withContentlayer} = require('next-contentlayer')
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -7,4 +10,4 @@ const nextConfig = {
   basePath: process.env.NODE_ENV == 'development' ? '' : '/profile-site-v2'
 }
 
-module.exports = nextConfig
+module.exports = withContentlayer(nextConfig)
