@@ -1,6 +1,13 @@
 import { MotionConfig } from "framer-motion"
 import { Metadata } from "next"
 import "./styles/globals.scss"
+import { Roboto } from "next/font/google"
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+})
 
 // https://stackoverflow.com/questions/37924959/why-am-i-getting-different-font-sizes-when-displaying-my-page-in-chrome-android
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
@@ -22,7 +29,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={roboto.className}
+    >
       <body>
         {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
         {children}
