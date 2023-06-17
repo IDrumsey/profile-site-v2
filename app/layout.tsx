@@ -2,6 +2,7 @@ import { MotionConfig } from "framer-motion"
 import { Metadata } from "next"
 import "./styles/globals.scss"
 import { Roboto } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body>
         {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
         {children}
+        <Analytics />
       </body>
     </html>
   )
