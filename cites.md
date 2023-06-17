@@ -36,3 +36,7 @@
 
 - best fonts for blogs - https://www.nichepursuits.com/best-fonts-for-blogs/
 - nextjs fonts - https://www.nichepursuits.com/best-fonts-for-blogs/
+
+what tsconfig include is - https://www.stackchief.com/blog/tsconfig%20%7C%20the%20missing%20docs
+
+- can't use mantineprovider with app dir - https://github.com/mantinedev/mantine/issues/2815
