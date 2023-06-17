@@ -1,5 +1,6 @@
 import { MotionConfig } from "framer-motion"
 import { Metadata } from "next"
+import "./styles/globals.scss"
 
 // https://stackoverflow.com/questions/37924959/why-am-i-getting-different-font-sizes-when-displaying-my-page-in-chrome-android
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag

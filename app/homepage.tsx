@@ -3,7 +3,7 @@
 import Head from "next/head"
 import Link from "next/link"
 
-import styles from "../styles/index.module.scss"
+import styles from "./styles/index.module.scss"
 
 import { useInView, InView } from "react-intersection-observer"
 
