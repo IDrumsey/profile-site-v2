@@ -1,3 +1,5 @@
+"use client"
+
 import Head from "next/head"
 import Link from "next/link"
 
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
   description: "Profile website for IDrumsey",
 }
 
-export default function Home() {
+export default function HomePage() {
   // https://youtu.be/r1auJEf9ISo
   // https://github.com/thebuilder/react-intersection-observer
   const {
