@@ -2,7 +2,7 @@ import styles from "./project-card.module.scss"
 
 import React, { useState, useEffect } from "react"
 
-import { Project } from "../../models/project"
+import { Project } from "@/models/project"
 
 import { FaGithubSquare, FaYoutubeSquare } from "react-icons/fa"
 

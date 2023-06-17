@@ -22,7 +22,13 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["app/components/*"],
+      "@/styles/*": ["app/styles/*"],
+      "@/models/*": ["app/models/*"],
+    }
   },
   "include": [
     "next-env.d.ts",

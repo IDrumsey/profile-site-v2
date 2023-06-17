@@ -11,9 +11,9 @@ import { useEffect, useState } from "react"
 
 import { motion } from "framer-motion"
 
-import StackSection from "../components/tech-stack/section/section"
-import SectionItem from "../components/tech-stack/section-item/section-item"
-import ProjectCard from "../components/project-card/project-card"
+import StackSection from "@/components/tech-stack/section/section"
+import SectionItem from "@/components/tech-stack/section-item/section-item"
+import ProjectCard from "@/components/project-card/project-card"
 
 // a lot of the brand colors come from the official websites
 
@@ -33,7 +33,7 @@ import {
 } from "react-icons/fa"
 import { SiCplusplus } from "react-icons/si"
 import { SiJavascript } from "react-icons/si"
-import { Project } from "../models/project"
+import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
 
