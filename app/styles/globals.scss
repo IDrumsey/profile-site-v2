@@ -10,6 +10,8 @@ body {
 
 body {
   overflow-x: hidden;
+  background-color: #1E1E1E;
+  color: #D4D4D4;
 }
 
 a {
@@ -21,15 +23,15 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-}
+// @media (prefers-color-scheme: dark) {
+//   html {
+//     color-scheme: dark;
+//   }
+//   body {
+//     color: white;
+//     background: black;
+//   }
+// }
 
 
 
