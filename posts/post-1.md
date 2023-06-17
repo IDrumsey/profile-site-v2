@@ -1,7 +1,13 @@
 ---
-title: My First Post
+title: Bible Contradictions - King Ahaziah's Age
 date: 2023-06-17
-description: This is the first blog post in a series of posts
+description: Did King Ahaziah from the old testament take reign of the kingdom of Israel when he was 22 or 42? The Bible seems to suggest both, but that's not possible.
+tags: ["Bible"]
+draft: true
 ---
 
-# My first post
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum inventore sed qui tempora! Aperiam, exercitationem excepturi distinctio quidem perspiciatis sit commodi dolore quam dolor reiciendis accusamus hic corrupti eaque assumenda! Vitae illo libero, pariatur nemo obcaecati rerum nam, sit, voluptatem tempore excepturi minima inventore doloribus autem unde voluptatibus eius delectus mollitia quidem. Sint vero saepe eaque fugiat, quibusdam ex porro adipisci cum perferendis deleniti. Libero totam consectetur consequuntur ipsa veritatis expedita ad dolorem delectus, provident animi ipsam. Similique id, inventore esse ad eaque exercitationem architecto voluptas in harum possimus beatae nisi alias porro voluptate veritatis cum molestias tempore numquam aperiam.
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum inventore sed qui tempora! Aperiam, exercitationem excepturi distinctio quidem perspiciatis sit commodi dolore quam dolor reiciendis accusamus hic corrupti eaque assumenda! Vitae illo libero, pariatur nemo obcaecati rerum nam, sit, voluptatem tempore excepturi minima inventore doloribus autem unde voluptatibus eius delectus mollitia quidem. Sint vero saepe eaque fugiat, quibusdam ex porro adipisci cum perferendis deleniti. Libero totam consectetur consequuntur ipsa veritatis expedita ad dolorem delectus, provident animi ipsam. Similique id, inventore esse ad eaque exercitationem architecto voluptas in harum possimus beatae nisi alias porro voluptate veritatis cum molestias tempore numquam aperiam.
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum inventore sed qui tempora! Aperiam, exercitationem excepturi distinctio quidem perspiciatis sit commodi dolore quam dolor reiciendis accusamus hic corrupti eaque assumenda! Vitae illo libero, pariatur nemo obcaecati rerum nam, sit, voluptatem tempore excepturi minima inventore doloribus autem unde voluptatibus eius delectus mollitia quidem. Sint vero saepe eaque fugiat, quibusdam ex porro adipisci cum perferendis deleniti. Libero totam consectetur consequuntur ipsa veritatis expedita ad dolorem delectus, provident animi ipsam. Similique id, inventore esse ad eaque exercitationem architecto voluptas in harum possimus beatae nisi alias porro voluptate veritatis cum molestias tempore numquam aperiam.
