@@ -32,7 +32,7 @@ import {
 import { SiCplusplus } from "react-icons/si"
 import { SiJavascript } from "react-icons/si"
 import { Project } from "../models/project"
-import Image from "next/image"
+import Image from "next/legacy/image"
 
 export default function Home() {
   // https://youtu.be/r1auJEf9ISo
