@@ -35,3 +35,4 @@
   - https://cubic-bezier.com/#.67,.41,.46,.99
 
 - best fonts for blogs - https://www.nichepursuits.com/best-fonts-for-blogs/
+- nextjs fonts - https://www.nichepursuits.com/best-fonts-for-blogs/
