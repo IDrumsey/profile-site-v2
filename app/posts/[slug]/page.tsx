@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns"
 import { allPosts } from "contentlayer/generated"
 import styles from "@/styles/blog-post.module.scss"
+import { useMDXComponent } from "next-contentlayer/hooks"
 
 export const generateStaticParams = async () =>
   allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
@@ -18,6 +19,8 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`)
 
+  const MDXContent = useMDXComponent(post.body.code)
+
   return (
     <div className={styles["blog-post"]}>
       <div className={styles["header"]}>
@@ -30,10 +33,9 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
       <hr className={styles["header-break"]} />
 
-      <div
-        dangerouslySetInnerHTML={{ __html: post.body.html }}
-        className={styles["content"]}
-      />
+      <div className={styles["content"]}>
+        <MDXContent />
+      </div>
     </div>
   )
 }
