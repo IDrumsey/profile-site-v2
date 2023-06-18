@@ -3,6 +3,7 @@ import Link from "next/link"
 import { compareDesc, format, parseISO } from "date-fns"
 import { allPosts, Post } from "contentlayer/generated"
 import BlogPostCard from "@/components/blog-post-card/blog-post-card"
+import Navbar from "@/components/navbar/navbar"
 
 type Props = {}
 
@@ -13,6 +14,7 @@ const BlogPage = ({}: Props) => {
 
   return (
     <>
+      <Navbar />
       <div id={styles["blog-post-card-grid"]}>
         {posts.map((post, i) => {
           return (
