@@ -294,12 +294,6 @@ export default function HomePage() {
 
   return (
     <>
-      <img
-        src="./top-gradient.png"
-        alt="Gradient"
-        id={styles["top-gradient"]}
-      />
-
       <main id={styles["main-wrapper"]}>
         <div id={styles["section-1-wrapper"]}>
           {/* entity character fix suggested by next build */}

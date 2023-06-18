@@ -37,6 +37,11 @@ export default function RootLayout({
     >
       <body>
         <Navbar />
+        <img
+          src="./top-gradient.png"
+          alt="Gradient"
+          id="top-gradient"
+        />
         {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
         {children}
         <Analytics />
