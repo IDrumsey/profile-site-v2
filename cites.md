@@ -46,5 +46,10 @@ what tsconfig include is - https://www.stackchief.com/blog/tsconfig%20%7C%20the%
 - about article tag - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article
 
 - fix images not showing on github pages
+
   - https://stackoverflow.com/a/73059798/17712310
   - https://levelup.gitconnected.com/deploy-your-nextjs-application-on-a-different-base-path-i-e-not-root-1c4d210cce8a
+
+- a bunch of stuff - https://developer.mozilla.org/
+
+- making circle profile picture - https://www.youtube.com/watch?v=dF92Ef1eS80

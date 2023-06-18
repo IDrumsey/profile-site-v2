@@ -24,6 +24,12 @@
 
 .footer {
   display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footer-section {
+  display: flex;
   gap: 16px;
   align-items: center;
 }
@@ -44,4 +50,16 @@
   p {
     font-size: 12px;
   }
+}
+
+
+.author-pic {
+  height: 45px;
+  width: auto;
+  clip-path: circle();
+}
+
+
+.author-footer-section {
+  justify-content: flex-end;
 }
