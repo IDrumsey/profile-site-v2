@@ -1,5 +1,7 @@
 # Other cites
 
+- stuff with nextjs - https://nextjs.org/
+
 - designing the site
 
   - https://youtu.be/2bA13vdv9h8
@@ -53,3 +55,23 @@ what tsconfig include is - https://www.stackchief.com/blog/tsconfig%20%7C%20the%
 - a bunch of stuff - https://developer.mozilla.org/
 
 - making circle profile picture - https://www.youtube.com/watch?v=dF92Ef1eS80
+
+- using mdx with contentlayer- https://www.contentlayer.dev/docs/sources/files/mdx-d747e46d#mdx-plugins-remarkrehype
+
+- deploy nextjs app to vercel - https://www.youtube.com/watch?v=2HBIzEx6IZA
+
+- markdown blockquote - https://commonmark.org/help/tutorial/05-blockquotes.html
+
+- using contentlayer - https://www.contentlayer.dev/
+
+research into how to make blog with nextjs
+
+- https://www.youtube.com/watch?v=puIQhnjOfbc
+- https://www.freecodecamp.org/news/how-to-build-your-own-blog-with-next-js-and-mdx/
+- https://www.youtube.com/watch?v=6ih_3m_UPKg
+- https://www.codemotion.com/magazine/frontend/how-to-create-an-mdx-blog-in-typescript-with-next-js/
+- https://dev.to/nitinfab/getting-started-with-mdx-in-nextjs-a-practical-guide-30hf
+- https://mateonunez.dev/blog/hello-blog
+- https://jasongerbes.com/blog/building-a-blog-website-with-nextjs
+- https://www.youtube.com/watch?v=MrjeefD8sac
+- https://www.neorepo.com/blog/how-to-build-a-technical-blog-with-nextjs-and-contentlayer
