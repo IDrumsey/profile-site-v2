@@ -4,6 +4,7 @@ import styles from "@/styles/blog-post.module.scss"
 import { useMDXComponent } from "next-contentlayer/hooks"
 import type { MDXComponents } from "mdx/types"
 import Link from "next/link"
+import Image, { ImageProps } from "next/image"
 
 export const generateStaticParams = async () =>
   allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
@@ -18,6 +19,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 
 const mdxComponents: MDXComponents = {
   a: ({ href, children }) => <Link href={href as string}>{children}</Link>,
+  CenteredImage: (props: ImageProps) => <Image {...props} />,
 }
 
 const PostLayout = ({ params }: { params: { slug: string } }) => {

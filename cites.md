@@ -75,3 +75,9 @@ research into how to make blog with nextjs
 - https://jasongerbes.com/blog/building-a-blog-website-with-nextjs
 - https://www.youtube.com/watch?v=MrjeefD8sac
 - https://www.neorepo.com/blog/how-to-build-a-technical-blog-with-nextjs-and-contentlayer
+
+- render transparent background in blender - https://brandonsdrawings.com/blender-transparent-backgrounds/
+
+- lights in blender - https://www.youtube.com/watch?v=RDbrOpnIY7Q
+- render image with blender - https://www.youtube.com/watch?v=kkwmdb9iLME
+- add color to model in blender - https://www.youtube.com/watch?v=2WSguIVrrKI
