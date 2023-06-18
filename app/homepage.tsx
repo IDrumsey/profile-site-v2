@@ -36,6 +36,7 @@ import { SiJavascript } from "react-icons/si"
 import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
+import Navbar from "@/components/navbar/navbar"
 
 export const metadata: Metadata = {
   title: "IDrumsey",
@@ -293,47 +294,7 @@ export default function HomePage() {
 
   return (
     <>
-      <img
-        src="./top-gradient.png"
-        alt="Gradient"
-        id={styles["top-gradient"]}
-      />
-
       <main id={styles["main-wrapper"]}>
-        <div id={styles["header"]}>
-          <nav id={styles["main-nav"]}>
-            <Link
-              href="/blog"
-              legacyBehavior
-            >
-              <h5
-                className={`${styles["nav-item"]} ${styles["blog-text-gradient"]}`}
-              >
-                Blog
-              </h5>
-            </Link>
-            <Link
-              href="/about"
-              legacyBehavior
-            >
-              <h5
-                className={`${styles["nav-item"]} ${styles["about-text-gradient"]}`}
-              >
-                About me
-              </h5>
-            </Link>
-          </nav>
-
-          <div id={styles["avatar-wrapper"]}>
-            {/* https://stackoverflow.com/a/65509211/17712310 */}
-            <img
-              src="./IMG_0917.jpg"
-              alt="Avatar image"
-              id={styles["avatar-image"]}
-            />
-          </div>
-        </div>
-
         <div id={styles["section-1-wrapper"]}>
           {/* entity character fix suggested by next build */}
           <p

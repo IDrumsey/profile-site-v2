@@ -1,12 +1,20 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import remarkToc from "remark-toc"
+import remarkGfm from "remark-gfm"
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: `**/*.md`,
+  filePathPattern: `**/*.mdx`,
+  contentType: "mdx",
   fields: {
     title: { type: "string", required: true },
     date: { type: "date", required: true },
     description: { type: "string", required: true },
+    tags: { type: "list", of: { type: "string" }, required: false },
+    draft: { type: "boolean", required: true },
+    author: { type: "string", required: true },
+    authorGithubProfileLink: { type: "string", required: false },
+    authorPicURL: { type: "string", required: false },
   },
   computedFields: {
     url: {
@@ -16,4 +24,10 @@ export const Post = defineDocumentType(() => ({
   },
 }))
 
-export default makeSource({ contentDirPath: "posts", documentTypes: [Post] })
+export default makeSource({
+  contentDirPath: "posts",
+  documentTypes: [Post],
+  mdx: {
+    remarkPlugins: [remarkToc, remarkGfm],
+  },
+})

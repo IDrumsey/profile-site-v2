@@ -20,6 +20,7 @@ const BlogPage = ({}: Props) => {
               <BlogPostCard
                 key={i}
                 post={post}
+                bgColor="#406E90"
               />
             </>
           )

@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import "./styles/globals.scss"
 import { Roboto } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import Navbar from "@/components/navbar/navbar"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -35,6 +36,12 @@ export default function RootLayout({
       className={roboto.className}
     >
       <body>
+        <Navbar />
+        <img
+          src="./top-gradient.png"
+          alt="Gradient"
+          id="top-gradient"
+        />
         {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
         {children}
         <Analytics />

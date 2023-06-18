@@ -6,14 +6,23 @@ body {
   height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6, p {
-  margin: 0;
-}
-
 body {
+  padding: 100px;
+  padding-top: 0;
   overflow-x: hidden;
   background-color: #1E1E1E;
   color: #D4D4D4;
+}
+
+@media screen and (max-width: 500px) {
+  body {
+    padding: 15vw;
+    padding-top: 0;
+  }
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
 }
 
 a {
@@ -46,4 +55,14 @@ a {
     padding: inherit 50px;
   }
   
+}
+
+
+#top-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 80vh;
 }
