@@ -1,5 +1,6 @@
 import { format, parseISO } from "date-fns"
 import { allPosts } from "contentlayer/generated"
+import styles from "@/styles/blog-post.module.scss"
 
 export const generateStaticParams = async () =>
   allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
@@ -18,15 +19,22 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`)
 
   return (
-    <article>
-      <h1>{post.title}</h1>
-      <h6>{post.description}</h6>
-      <h6>{format(parseISO(post.date), "LLLL d, yyyy")}</h6>
+    <div className={styles["blog-post"]}>
+      <div className={styles["header"]}>
+        <h1 className={styles["title"]}>{post.title}</h1>
+        <h6 className={styles["description"]}>{post.description}</h6>
+        <h6 className={styles["date"]}>
+          {format(parseISO(post.date), "LLLL d, yyyy")}
+        </h6>
+      </div>
 
-      <hr />
+      <hr className={styles["header-break"]} />
 
-      <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
-    </article>
+      <div
+        dangerouslySetInnerHTML={{ __html: post.body.html }}
+        className={styles["content"]}
+      />
+    </div>
   )
 }
 
