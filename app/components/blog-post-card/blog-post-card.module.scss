@@ -17,11 +17,31 @@
 }
 
 
-.date {
-  font-size: .9rem;
+.footer-break, .header-break {
+  margin: 32px 0;
 }
 
 
-.footer-break, .header-break {
-  margin: 32px 0;
+.footer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.date {
+  font-size: .9rem;
+  display: inline-block;
+}
+
+
+.is-draft-indicator {
+  margin-left: auto;
+  padding: 8px 24px;
+  display: inline-block;
+  background-color: #993f6033;
+  border-radius: 2px;
+
+  p {
+    font-size: 12px;
+  }
 }

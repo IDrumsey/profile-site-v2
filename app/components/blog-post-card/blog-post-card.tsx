@@ -29,6 +29,11 @@ const BlogPostCard = ({ post, bgColor }: Props) => {
             <p className={styles["date"]}>
               {format(parseISO(post.date), "LLLL d, yyyy")}
             </p>
+            {post.draft && (
+              <div className={styles["is-draft-indicator"]}>
+                <p>draft</p>
+              </div>
+            )}
           </div>
         </div>
       </Link>
