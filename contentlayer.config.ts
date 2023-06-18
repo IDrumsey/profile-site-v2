@@ -9,6 +9,8 @@ export const Post = defineDocumentType(() => ({
     description: { type: "string", required: true },
     tags: { type: "list", of: { type: "string" }, required: false },
     draft: { type: "boolean", required: true },
+    author: { type: "string", required: true },
+    authorGithubProfileLink: { type: "string", required: false },
   },
   computedFields: {
     url: {
