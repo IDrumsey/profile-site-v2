@@ -5,19 +5,28 @@ import { parseISO, format } from "date-fns"
 
 type Props = {
   post: Post
+  bgColor: string
 }
 
-const BlogPostCard = ({ post }: Props) => {
+const BlogPostCard = ({ post, bgColor }: Props) => {
   return (
     <>
       <Link href={post.url}>
-        <div className={styles["blog-post-card"]}>
-          <div className={styles["blog-post-card-header"]}>
-            <h2 className={styles["blog-post-card-title"]}>{post.title}</h2>
+        <div
+          className={styles["blog-post-card"]}
+          style={{
+            backgroundColor: `${bgColor}33`,
+            border: `2px solid ${bgColor}`,
+          }}
+        >
+          <div className={styles["header"]}>
+            <h2 className={styles["title"]}>{post.title}</h2>
           </div>
-          <p>{post.description}</p>
-          <div className={styles["blog-post-card-footer"]}>
-            <p className={styles["blog-post-publish-date"]}>
+          <hr className={styles["header-break"]} />
+          <p className={styles["description"]}>{post.description}</p>
+          <hr className={styles["footer-break"]} />
+          <div className={styles["footer"]}>
+            <p className={styles["date"]}>
               {format(parseISO(post.date), "LLLL d, yyyy")}
             </p>
           </div>
