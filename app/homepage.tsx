@@ -301,8 +301,6 @@ export default function HomePage() {
       />
 
       <main id={styles["main-wrapper"]}>
-        <Navbar />
-
         <div id={styles["section-1-wrapper"]}>
           {/* entity character fix suggested by next build */}
           <p
