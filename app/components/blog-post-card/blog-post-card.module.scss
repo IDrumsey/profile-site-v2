@@ -25,7 +25,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .footer-section {
@@ -62,4 +62,14 @@
 
 .author-footer-section {
   justify-content: flex-end;
+}
+
+
+.draft-and-date-footer-section {
+  flex-direction: row-reverse;
+}
+
+.date, .author-name {
+  color: rgb(128, 128, 128);
+  font-weight: bold;
 }

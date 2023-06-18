@@ -33,7 +33,9 @@ const BlogPostCard = ({ post, bgColor }: Props) => {
           <p className={styles["description"]}>{post.description}</p>
           <hr className={styles["footer-break"]} />
           <div className={styles["footer"]}>
-            <div className={styles["footer-section"]}>
+            <div
+              className={`${styles["footer-section"]} ${styles["draft-and-date-footer-section"]}`}
+            >
               <p className={styles["date"]}>
                 {format(parseISO(post.date), "LLLL d, yyyy")}
               </p>
