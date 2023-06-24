@@ -5,3 +5,15 @@
   padding: 0 32px;
   margin-top: 64px;
 }
+
+@media screen and (max-width: 1000px) {
+  #blog-post-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #blog-post-card-grid {
+    padding: 0;
+  }
+}

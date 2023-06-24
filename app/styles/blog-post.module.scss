@@ -39,3 +39,11 @@
   line-height: 300%;
   color: #c0c0c0;
 }
+
+
+
+@media screen and (max-width: 750px) {
+  .blog-post {
+    padding: 0;
+  }
+}
