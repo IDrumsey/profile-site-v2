@@ -83,7 +83,10 @@ research into how to make blog with nextjs
 - add color to model in blender - https://www.youtube.com/watch?v=2WSguIVrrKI
 
 - code highlighting for mdx
+
   - https://www.youtube.com/watch?v=YC6LqIYVHxI&t=242s
   - https://www.youtube.com/watch?v=n2CV6f0vFr4&t=355s
   - https://delba.dev/blog/next-blog-build-time-syntax-highlighting
   - https://dev.to/mikeesto/next-js-mdx-w-code-highlighting-16fi
+
+- self closing tags - https://www.scaler.com/topics/self-closing-tags-in-html/
