@@ -90,3 +90,15 @@ research into how to make blog with nextjs
   - https://dev.to/mikeesto/next-js-mdx-w-code-highlighting-16fi
 
 - self closing tags - https://www.scaler.com/topics/self-closing-tags-in-html/
+
+- tailwind stuff - https://tailwindcss.com/
+
+- setting up tailwind
+  - https://tailwindcss.com/
+  - https://bobbyhadz.com/blog/unknown-at-rule-tailwindcss-warning-solved
+  - https://www.youtube.com/watch?v=w7DExQKZpk0
+  - what is tailwind - https://www.youtube.com/watch?v=mr15Xzb1Ook
+  - https://www.elian.codes/blog/21-04-13-writing-your-own-components-with-tailwind-sass/
+  - what postcss is - https://www.youtube.com/watch?v=WhCXiEwdU1A
+  - https://flaviocopes.com/fix-unknown-at-rule-tailwind/
+  - https://github.com/tailwindlabs/tailwindcss/discussions/8857
