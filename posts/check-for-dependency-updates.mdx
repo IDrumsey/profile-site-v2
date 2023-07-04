@@ -1,0 +1,62 @@
+---
+title: Check your Dependencies
+date: 2023-07-04
+description: If you're code is suddenly throwing errors, check your dependencies. In the world of open source, a lot of people are contributing a lot of code to a lot of projects. Mistakes are made.
+tags: ["Software Development", "Open Source"]
+draft: false
+author: "IDrumsey"
+authorPicURL: "idrumsey-profile-pic.jpg"
+---
+
+<h1 style={{ textAlign: "center" }}>Story Time</h1>
+
+I'm sure you know the feeling of when a seemingly random bug pops into your code. Now we all know it isn't your fault, it's just your computer conspiring against you. But wait, this time it actually might NOT be your fault.
+
+In the world of open source, stuff can go wrong. I experienced this last Friday and have lived to tell the tale. It was a quiet morning, full of the jitters you get by being at the end of a sprint. Then it happened.
+
+```bash
+npm run dev
+```
+
+```bash
+localhost:3000
+```
+
+What could go wrong? It was working 30 minutes ago.
+
+<FallOnFaceGif />
+
+<h2 style={{ display: "inline-block" }}>BOOM!</h2>
+<h2 style={{ color: "#db2a5c", display: "inline-block", marginLeft: 10 }}>
+  Error.
+</h2>
+
+Ok, everything's fine... we just need to figure out what's causing the error and go from there. Follow the 3 step global developer crime unit investigation routine, and you'll be FIIINNNEEEE. Sigh...
+
+Step 1 - Restart the server...
+
+```bash
+^C^C^C
+npm run dev
+```
+
+Hold your breath annnnnndddddddddd, no good
+
+Step 2 - Look at the error callstack and pray that it's simple. Realize that the callstack has 50 frames, goes in and out of all your dependencies after beating the matrix, and hates your guts... Cry.
+
+Step 3 - Start tearing out code piece by piece till it works.
+
+<br />
+<br />
+
+All joking aside, me and my coworker spent about 2-3 hours trying to figure the cause of the error. After awhile, we started realizing it might be one of our dependencies. We noticed it got updated in the last few days, so we tried rolling back to a previous version. No good. Then after a couple hours, I desparately ran `ncu` again and guess what caught my eye? Another patch update. Time: 3 MINUTES AGO. Updated and we're rolling. My coworker and I laughed at how unfortunate the timing of that release was - the fix to the error we we're investigating got released after a couple hours into investigating it. The morale of the story is that not all errors are your fault. Check your dependencies. You never know.
+
+<br />
+
+Looking for an easier way to update your dependencies? I ran across <a href="https://github.com/raineorshine/npm-check-updates" style={{textDecoration: 'underline'}}>npm-check-updates</a> a month or two ago and it makes updating dependencies way more simple. All you gotta do is type `ncu` and it'll show you what updates are available. Then type
+
+```bash
+ncu -u -t patch
+```
+
+to udpate all the patch updates. There are also commands to do this for minor and major updates. That's about all I know about it, so I'll leave it to you to explore it more.
