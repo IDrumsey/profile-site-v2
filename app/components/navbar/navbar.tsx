@@ -8,6 +8,13 @@ const Navbar = ({}: Props) => {
     <>
       <div id={styles["header"]}>
         <nav id={styles["main-nav"]}>
+          <Link href="/">
+            <h5
+              className={`${styles["nav-item"]} ${styles["home-text-gradient"]}`}
+            >
+              Home
+            </h5>
+          </Link>
           <Link href="/blog">
             <h5
               className={`${styles["nav-item"]} ${styles["blog-text-gradient"]}`}
@@ -15,13 +22,13 @@ const Navbar = ({}: Props) => {
               Blog
             </h5>
           </Link>
-          <Link href="/about">
+          {/* <Link href="/about">
             <h5
               className={`${styles["nav-item"]} ${styles["about-text-gradient"]}`}
             >
               About me
             </h5>
-          </Link>
+          </Link> */}
         </nav>
 
         <div id={styles["avatar-wrapper"]}>
