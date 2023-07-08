@@ -48,6 +48,16 @@
 
 
 
+.home-text-gradient {
+  // https://cssgradient.io/blog/css-gradient-text/
+  // https://webkit.org/blog/1424/css3-gradients/
+  background: -webkit-linear-gradient(left, #29b491, #5ecbb0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
 .blog-text-gradient {
   // https://cssgradient.io/blog/css-gradient-text/
   // https://webkit.org/blog/1424/css3-gradients/
