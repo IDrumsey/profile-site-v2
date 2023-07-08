@@ -6,7 +6,7 @@ import type { MDXComponents } from "mdx/types"
 import Link from "next/link"
 import Image, { ImageProps } from "next/image"
 import GiphyGif from "@/components/giphy-gif/giphy-gif"
-import { HeadShakeNoGif } from "@/components/gifs"
+import { FallOnFaceGif, HeadShakeNoGif } from "@/components/gifs"
 
 export const generateStaticParams = async () =>
   allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
@@ -24,6 +24,7 @@ const mdxComponents: MDXComponents = {
   CenteredImage: (props: ImageProps) => <Image {...props} />,
   GiphyGif: GiphyGif,
   HeadShakeNoGif: HeadShakeNoGif,
+  FallOnFaceGif: FallOnFaceGif,
 }
 
 const PostLayout = ({ params }: { params: { slug: string } }) => {
