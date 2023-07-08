@@ -90,3 +90,20 @@ research into how to make blog with nextjs
   - https://dev.to/mikeesto/next-js-mdx-w-code-highlighting-16fi
 
 - self closing tags - https://www.scaler.com/topics/self-closing-tags-in-html/
+
+- help making the new logo in blender
+
+  - https://www.youtube.com/watch?v=laovpUpW9WU
+  - https://www.youtube.com/watch?v=ViqfL0LOwUM
+  - https://www.youtube.com/watch?v=LVeQkKh5z1w
+  - https://www.quora.com/How-do-you-change-the-minor-radius-of-a-torus-in-Blender-2-8-mesh-blender
+
+  - merging faces
+
+    - https://www.youtube.com/watch?v=vw-jFmT_tAY
+    - https://www.youtube.com/watch?v=o6lM-qTwliw
+
+  - https://blender.stackexchange.com/questions/21196/how-to-convert-edge-selection-to-outer-edges-only
+  - https://www.youtube.com/watch?v=Rv3IHlON-VI
+
+- using blender - https://docs.blender.org/
