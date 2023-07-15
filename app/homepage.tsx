@@ -204,6 +204,12 @@ export default function HomePage() {
       liveLink: "https://idrumsey.github.io/Loan-Foresight/",
     },
     {
+      title: "Tab URL Collector",
+      description: "Copy the URLs of all Chrome tabs currently open.",
+      repoLink: "https://github.com/IDrumsey/tab-url-collector",
+      hosted: false,
+    },
+    {
       title: "RoadtripsIO",
       description:
         "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure.",
