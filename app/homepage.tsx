@@ -256,7 +256,7 @@ export default function HomePage() {
     )
   }, [])
 
-  const projectCardSectionDisplayDelay = 2100
+  const projectCardSectionDisplayDelay = 500
   const projectCardDisplayStaggerDelay = 400
 
   const [projectCardSectionDelayFlag, projectCardSectionDelayFlagSetter] =
