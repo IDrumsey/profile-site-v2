@@ -194,7 +194,7 @@ export default function HomePage() {
       description: "Pretty self explanatory.",
       repoLink: "https://github.com/IDrumsey/profile-site-v2",
       hosted: true,
-      liveLink: "https://idrumsey.github.io/profile-site-v2/",
+      liveLink: "https://profile-site-v2.vercel.app/",
     },
     {
       title: "Loan Foresights",
@@ -202,6 +202,13 @@ export default function HomePage() {
       repoLink: "https://github.com/IDrumsey/Loan-Foresight",
       hosted: true,
       liveLink: "https://idrumsey.github.io/Loan-Foresight/",
+    },
+    {
+      title: "Report Potholes",
+      description: "Centralized solution for reporting potholes.",
+      repoLink: "https://github.com/IDrumsey/report-potholes-web-client",
+      hosted: true,
+      liveLink: "https://www.report-potholes.com/",
     },
     {
       title: "Tab URL Collector",
