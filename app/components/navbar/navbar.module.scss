@@ -76,6 +76,14 @@
 }
 
 
+.history-text-gradient {
+  background: -webkit-linear-gradient(left, #c23b88, #cf4d96);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
 
 #avatar-wrapper {
   margin-left: auto;
