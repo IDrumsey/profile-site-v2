@@ -4,6 +4,7 @@ import "./styles/globals.scss"
 import { Roboto } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import Navbar from "@/components/navbar/navbar"
+import { Box } from "@mui/material"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -36,14 +37,16 @@ export default function RootLayout({
       className={roboto.className}
     >
       <body>
-        <Navbar />
-        <img
-          src="./top-gradient.png"
-          alt="Gradient"
-          id="top-gradient"
-        />
-        {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
-        {children}
+        <Box sx={{ paddingBottom: 8 }}>
+          <Navbar />
+          <img
+            src="./top-gradient.png"
+            alt="Gradient"
+            id="top-gradient"
+          />
+          {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
+          {children}
+        </Box>
         <Analytics />
       </body>
     </html>

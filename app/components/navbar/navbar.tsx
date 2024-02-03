@@ -22,11 +22,11 @@ const Navbar = ({}: Props) => {
               Blog
             </h5>
           </Link>
-          <Link href="/history">
+          <Link href="/history/career">
             <h5
               className={`${styles["nav-item"]} ${styles["history-text-gradient"]}`}
             >
-              History
+              Career History
             </h5>
           </Link>
         </nav>
