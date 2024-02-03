@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "get-updates": "npx npm-check-updates"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "eslint-config-next": "^13.4.6",
+    "npm-check-updates": "^16.14.14",
     "sass": "^1.56.1"
   }
 }
