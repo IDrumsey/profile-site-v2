@@ -36,7 +36,7 @@ const HistoryPage = ({}: Props) => {
           </Typography>
         </HistoryItem>
         <HistoryItem
-          color="#fc0394"
+          color="#23c28d"
           date="Spring 2022"
         >
           <Typography
