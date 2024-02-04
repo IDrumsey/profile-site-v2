@@ -37,7 +37,7 @@ export default function RootLayout({
       className={roboto.className}
     >
       <body>
-        <Box sx={{ paddingBottom: 8 }}>
+        <div>
           <Navbar />
           <img
             src="./top-gradient.png"
@@ -46,7 +46,7 @@ export default function RootLayout({
           />
           {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
           {children}
-        </Box>
+        </div>
         <Analytics />
       </body>
     </html>

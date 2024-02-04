@@ -17,11 +17,11 @@ const TimelineCard = ({ children, baseColor, date }: Props) => {
   }
 
   return (
-    <Box
-      paddingX={4}
-      paddingY={2}
-      borderRadius={2}
-      sx={{
+    <div
+      style={{
+        paddingInline: 32,
+        paddingBlock: 16,
+        borderRadius: 5,
         backgroundColor: getBgColor(),
         border: `1.5px solid ${baseColor}`,
         boxShadow: `0 0 1px ${baseColor}, inset 0 0 1px ${baseColor}`,
@@ -34,7 +34,7 @@ const TimelineCard = ({ children, baseColor, date }: Props) => {
         {date}
       </Typography>
       {children}
-    </Box>
+    </div>
   )
 }
 
