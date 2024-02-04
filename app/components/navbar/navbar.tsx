@@ -22,13 +22,13 @@ const Navbar = ({}: Props) => {
               Blog
             </h5>
           </Link>
-          {/* <Link href="/about">
+          <Link href="/history/career">
             <h5
-              className={`${styles["nav-item"]} ${styles["about-text-gradient"]}`}
+              className={`${styles["nav-item"]} ${styles["history-text-gradient"]}`}
             >
-              About me
+              Career History
             </h5>
-          </Link> */}
+          </Link>
         </nav>
 
         <div id={styles["avatar-wrapper"]}>
