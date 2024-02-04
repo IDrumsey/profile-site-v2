@@ -28,15 +28,13 @@
       "@/components/*": ["app/components/*"],
       "@/styles/*": ["app/styles/*"],
       "@/models/*": ["app/models/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".contentlayer/generated"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
