@@ -15,13 +15,13 @@ const Navbar = ({}: Props) => {
               Home
             </h5>
           </Link>
-          <Link href="/blog">
+          {/* <Link href="/blog">
             <h5
               className={`${styles["nav-item"]} ${styles["blog-text-gradient"]}`}
             >
               Blog
             </h5>
-          </Link>
+          </Link> */}
           <Link href="/history/career">
             <h5
               className={`${styles["nav-item"]} ${styles["history-text-gradient"]}`}
