@@ -1,10 +1,17 @@
 import styles from "./project-card.module.scss"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 
 import { Project } from "@/models/project"
 
 import { FaGithubSquare, FaYoutubeSquare } from "react-icons/fa"
+import { motion } from "framer-motion"
+
+const card_border_color = {
+  name: "blue",
+  nonHover: "#4b80e3",
+  hover: "#ff00f7",
+}
 
 interface Props {
   project: Project
@@ -30,11 +37,16 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(
 
     return (
       <>
-        <div
+        <motion.div
           ref={ref}
           className={`${wrapperClassNames.join(" ")}`}
           style={{
-            boxShadow: `0 2px 5px #000`,
+            boxShadow: `0 0 5px ${card_border_color.nonHover}ff`,
+          }}
+          whileHover={{
+            scale: 1.02,
+            cursor: "pointer",
+            boxShadow: `0 0 5px ${card_border_color.hover}ff`,
           }}
         >
           <div className={`${styles["project-card-header"]}`}>
@@ -96,7 +108,7 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </>
     )
   }
