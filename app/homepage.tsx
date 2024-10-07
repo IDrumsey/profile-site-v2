@@ -39,6 +39,8 @@ import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
 import Navbar from "@/components/navbar/navbar"
+import { Typography } from "@mui/material"
+import { ProtestStrikeFont } from "./styles/fonts/fonts"
 
 export const metadata: Metadata = {
   title: "IDrumsey",
@@ -440,6 +442,19 @@ export default function HomePage() {
           </div>
 
           <div id={`${styles["featured-projects"]}`}>
+            <Typography
+              variant="h4"
+              component={motion.h4}
+              className={ProtestStrikeFont.className}
+              sx={{
+                textDecoration: "underline",
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.5 }}
+            >
+              Projects
+            </Typography>
             {featuredProjectWrappers.map(
               (projectWrapper, i) =>
                 projectWrapper && (
