@@ -7,13 +7,15 @@ import styles from "./styles/index.module.scss"
 
 import { useInView, InView } from "react-intersection-observer"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { motion } from "framer-motion"
 
 import StackSection from "@/components/tech-stack/section/section"
 import SectionItem from "@/components/tech-stack/section-item/section-item"
 import ProjectCard from "@/components/project-card/project-card"
+
+import Typed from "typed.js"
 
 // a lot of the brand colors come from the official websites
 
@@ -305,19 +307,32 @@ export default function HomePage() {
     }
   }, [])
 
+  const introTextRef = useRef(null)
+
+  useEffect(() => {
+    const typed = new Typed(introTextRef.current, {
+      strings: ["Hi, I&apos;m Clay, a full-stack software engineer"],
+      typeSpeed: 20,
+    })
+
+    return () => {
+      typed.destroy()
+    }
+  }, [])
+
   return (
     <>
       <main id={styles["main-wrapper"]}>
         <div id={styles["section-1-wrapper"]}>
           {/* entity character fix suggested by next build */}
-          <p
+          <span
             id={styles["about-me-short-desc"]}
             className={`${
               descInView ? styles["desc-in-view"] : styles["desc-out-view"]
             }`}
           >
-            Hi, I&apos;m Clay. I&apos;m a web developer out of Northeast Ohio.
-          </p>
+            <span ref={introTextRef}></span>
+          </span>
 
           <div
             id={styles["social-quick-links"]}
