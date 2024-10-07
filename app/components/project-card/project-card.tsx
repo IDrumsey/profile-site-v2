@@ -35,6 +35,12 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(
       }
     }, [])
 
+    function getClickLink(): string | undefined {
+      return (
+        project.liveLink ?? project.videoLink ?? project.repoLink ?? undefined
+      )
+    }
+
     return (
       <>
         <motion.div
@@ -47,6 +53,13 @@ const ProjectCard = React.forwardRef<HTMLParagraphElement, Props>(
             scale: 1.02,
             cursor: "pointer",
             boxShadow: `0 0 5px ${card_border_color.hover}ff`,
+          }}
+          onClick={() => {
+            const linkToGoTo = getClickLink()
+
+            if (linkToGoTo) {
+              window.open(linkToGoTo, "_blank")
+            }
           }}
         >
           <div className={`${styles["project-card-header"]}`}>
