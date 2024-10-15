@@ -18,7 +18,10 @@ const BlogHomePage = () => {
       }}
     >
       {posts.map((post, postI) => (
-        <BlogPostCard post={post} />
+        <BlogPostCard
+          post={post}
+          key={postI}
+        />
       ))}
     </Stack>
   )

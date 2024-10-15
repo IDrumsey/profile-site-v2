@@ -258,7 +258,7 @@ export default function HomePage() {
         }
       })
     )
-  }, [])
+  }, [featuredProjects])
 
   const projectCardSectionDisplayDelay = 500
   const projectCardDisplayStaggerDelay = 400
@@ -307,7 +307,7 @@ export default function HomePage() {
         clearTimeout(timer)
       })
     }
-  }, [])
+  }, [featuredProjects])
 
   const introTextRef = useRef(null)
 

@@ -1,5 +1,5 @@
 import { getPostContents } from "app/lib/posts"
-import { Box, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import md from "markdown-it"
 import styles from "@/styles/_blog.module.scss"
 import { PoppinsFont } from "@/styles/fonts/fonts"
@@ -16,9 +16,11 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
       }}
       className={`${PoppinsFont.className} ${styles.blogWrapper}`}
     >
-      <Box
-        mt={4}
-        mb={8}
+      <div
+        style={{
+          marginTop: 32,
+          marginBottom: 64,
+        }}
       >
         <Typography
           variant="h3"
@@ -44,7 +46,7 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
         </Typography>
 
         {/* TODO: tags */}
-      </Box>
+      </div>
 
       {/* https://dev.to/ethand91/creating-a-markdown-blog-with-nextjs-1dci */}
       <div
