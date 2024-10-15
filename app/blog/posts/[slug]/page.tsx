@@ -28,7 +28,7 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
             lineHeight: 1.5,
             // https://css-tricks.com/how-to-create-neon-text-with-css/
             textShadow:
-              "0 0 2px #fff, 0 0 10px #0fa, 0 0 10px #0fa, 0 0 10px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;",
+              "0 0 2px #fff, 0 0 10px #cf34eb, 0 0 102px #cf34eb, 0 0 151px #cf34eb;",
           }}
           mb={2}
         >
