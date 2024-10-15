@@ -213,7 +213,7 @@ export default function HomePage() {
         description: "Centralized solution for reporting potholes.",
         repoLink: "https://github.com/IDrumsey/report-potholes-web-client",
         hosted: true,
-        liveLink: "https://www.report-potholes.com/",
+        liveLink: "https://report-potholes.vercel.app/",
       },
       {
         title: "Tab URL Collector",
