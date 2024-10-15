@@ -12,6 +12,10 @@
     line-height: 3;
   }
 
+  li {
+    line-height: 2
+  }
+
   code {
     background-color: #292929;
     padding: 16px;
@@ -26,5 +30,9 @@
 
   a {
     color: #8af3ff;
+  }
+
+  li {
+    opacity: .6
   }
 }
