@@ -7,7 +7,7 @@ import styles from "./styles/index.module.scss"
 
 import { useInView, InView } from "react-intersection-observer"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo } from "react"
 
 import { motion } from "framer-motion"
 
@@ -192,55 +192,57 @@ export default function HomePage() {
 
   const techStackAnimationDelay = 50
 
-  const featuredProjects: Project[] = [
-    {
-      title: "Profile Site",
-      description: "Pretty self explanatory.",
-      repoLink: "https://github.com/IDrumsey/profile-site-v2",
-      hosted: true,
-      liveLink: "https://profile-site-v2.vercel.app/",
-    },
-    {
-      title: "Loan Foresights",
-      description: "Figure out a good time for you to get a loan.",
-      repoLink: "https://github.com/IDrumsey/Loan-Foresight",
-      hosted: true,
-      liveLink: "https://idrumsey.github.io/Loan-Foresight/",
-    },
-    {
-      title: "Report Potholes",
-      description: "Centralized solution for reporting potholes.",
-      repoLink: "https://github.com/IDrumsey/report-potholes-web-client",
-      hosted: true,
-      liveLink: "https://www.report-potholes.com/",
-    },
-    {
-      title: "Tab URL Collector",
-      description: "Copy the URLs of all Chrome tabs currently open.",
-      repoLink: "https://github.com/IDrumsey/tab-url-collector",
-      hosted: false,
-    },
-    {
-      title: "RoadtripsIO",
-      description:
-        "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure.",
-      videoLink: "https://youtu.be/_t-zrlVHXXE",
-      repoLink: "https://github.com/IDrumsey/RoadTripsIO",
-    },
-    {
-      title: "Poll App",
-      description:
-        "Simple app to create and share polls and have people vote on them.",
-      repoLink: "https://github.com/IDrumsey/PollApp",
-    },
-    {
-      title: "Shelf Stock",
-      description:
-        "Web app to help stores to keep track of where products are and help customers locate those products.",
-      videoLink: "https://youtu.be/lhLO08vDvIo",
-      repoLink: "https://github.com/IDrumsey/Shelf-Stock",
-    },
-  ]
+  const featuredProjects: Project[] = useMemo(() => {
+    return [
+      {
+        title: "Profile Site",
+        description: "Pretty self explanatory.",
+        repoLink: "https://github.com/IDrumsey/profile-site-v2",
+        hosted: true,
+        liveLink: "https://profile-site-v2.vercel.app/",
+      },
+      {
+        title: "Loan Foresights",
+        description: "Figure out a good time for you to get a loan.",
+        repoLink: "https://github.com/IDrumsey/Loan-Foresight",
+        hosted: true,
+        liveLink: "https://idrumsey.github.io/Loan-Foresight/",
+      },
+      {
+        title: "Report Potholes",
+        description: "Centralized solution for reporting potholes.",
+        repoLink: "https://github.com/IDrumsey/report-potholes-web-client",
+        hosted: true,
+        liveLink: "https://www.report-potholes.com/",
+      },
+      {
+        title: "Tab URL Collector",
+        description: "Copy the URLs of all Chrome tabs currently open.",
+        repoLink: "https://github.com/IDrumsey/tab-url-collector",
+        hosted: false,
+      },
+      {
+        title: "RoadtripsIO",
+        description:
+          "Crowd sourced roadtrips. Create and share roadtrips and go on your next adventure.",
+        videoLink: "https://youtu.be/_t-zrlVHXXE",
+        repoLink: "https://github.com/IDrumsey/RoadTripsIO",
+      },
+      {
+        title: "Poll App",
+        description:
+          "Simple app to create and share polls and have people vote on them.",
+        repoLink: "https://github.com/IDrumsey/PollApp",
+      },
+      {
+        title: "Shelf Stock",
+        description:
+          "Web app to help stores to keep track of where products are and help customers locate those products.",
+        videoLink: "https://youtu.be/lhLO08vDvIo",
+        repoLink: "https://github.com/IDrumsey/Shelf-Stock",
+      },
+    ]
+  }, [])
 
   const [featuredProjectWrappers, featuredProjectWrappersSetters] = useState<
     {

@@ -54,7 +54,10 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
           mt={1}
         >
           {articleData.tags.map((tag, tagI) => (
-            <PostTag tag={tag} />
+            <PostTag
+              tag={tag}
+              key={tagI}
+            />
           ))}
         </Stack>
       </div>

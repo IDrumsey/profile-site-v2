@@ -17,12 +17,16 @@ const BlogHomePage = () => {
         marginTop: 4,
       }}
     >
-      {posts.map((post, postI) => (
-        <BlogPostCard
-          post={post}
-          key={postI}
-        />
-      ))}
+      {posts.map((post, postI) =>
+        post.hide == true ? (
+          <></>
+        ) : (
+          <BlogPostCard
+            post={post}
+            key={postI}
+          />
+        )
+      )}
     </Stack>
   )
 }
