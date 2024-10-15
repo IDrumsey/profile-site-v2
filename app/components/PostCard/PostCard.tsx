@@ -32,6 +32,10 @@ const BlogPostCard = ({ post }: Props) => {
         variant="body1"
         fontWeight="bold"
         color="#c9eaff"
+        sx={{
+          // https://css-tricks.com/how-to-create-neon-text-with-css/
+          textShadow: "0 0 1px #fff, 0 0 5px #cf34eb, 0 0 15px #cf34eb",
+        }}
       >
         {post.title}
       </Typography>
