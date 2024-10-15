@@ -1,19 +1,22 @@
-#blog-post-card-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  padding: 0 32px;
-  margin-block: 64px;
-}
-
-@media screen and (max-width: 1000px) {
-  #blog-post-card-grid {
-    grid-template-columns: 1fr;
+.blogWrapper {
+  padding-bottom: 64px;
+  p {
+    line-height: 3;
   }
-}
 
-@media screen and (max-width: 1000px) {
-  #blog-post-card-grid {
-    padding: 0;
+  code {
+    background-color: #292929;
+    padding: 16px;
+    border-radius: 4px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 64px;
+  }
+
+  a {
+    color: #8af3ff;
   }
 }
