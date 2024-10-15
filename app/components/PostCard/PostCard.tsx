@@ -13,8 +13,6 @@ type Props = {
 const BlogPostCard = ({ post }: Props) => {
   const router = useRouter()
 
-  console.log(post)
-
   return (
     <Box
       component={motion.div}

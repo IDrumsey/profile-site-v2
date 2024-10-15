@@ -1,7 +1,7 @@
 import BlogPostCard from "@/components/PostCard/PostCard"
-import { Grid } from "@mui/material"
 import { getSortedArticles } from "app/lib/posts"
 import { useMemo } from "react"
+import Stack from "@mui/material/Stack"
 
 const BlogHomePage = () => {
   const posts = useMemo(() => {
@@ -9,24 +9,18 @@ const BlogHomePage = () => {
   }, [])
 
   return (
-    <Grid
-      container
+    <Stack
+      direction="column"
       spacing={3}
       sx={{
-        width: "50%",
         marginInline: "auto",
         marginTop: 4,
       }}
     >
       {posts.map((post, postI) => (
-        <Grid
-          item
-          xs={12}
-        >
-          <BlogPostCard post={post} />
-        </Grid>
+        <BlogPostCard post={post} />
       ))}
-    </Grid>
+    </Stack>
   )
 }
 
