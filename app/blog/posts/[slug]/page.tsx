@@ -1,9 +1,10 @@
 import { getPostContents } from "app/lib/posts"
-import { Typography } from "@mui/material"
+import { Typography, Stack } from "@mui/material"
 import md from "markdown-it"
 import styles from "@/styles/_blog.module.scss"
 import { PoppinsFont } from "@/styles/fonts/fonts"
 import moment from "moment"
+import PostTag from "@/components/PostTag/PostTag"
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
   const articleData = await getPostContents(params.slug)
@@ -41,11 +42,21 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
         <Typography
           variant="body2"
           fontStyle="italic"
+          ml={1}
         >
           {moment(articleData.date).format("MMMM Do, YYYY")}
         </Typography>
 
         {/* TODO: tags */}
+        <Stack
+          direction="row"
+          spacing={2}
+          mt={1}
+        >
+          {articleData.tags.map((tag, tagI) => (
+            <PostTag tag={tag} />
+          ))}
+        </Stack>
       </div>
 
       {/* https://dev.to/ethand91/creating-a-markdown-blog-with-nextjs-1dci */}

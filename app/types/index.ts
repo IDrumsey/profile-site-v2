@@ -3,4 +3,6 @@ export type PostItem = {
   title: string
   date: string
   category?: string
+  tags: Array<string>
+  hide: boolean
 }

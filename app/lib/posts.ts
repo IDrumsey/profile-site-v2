@@ -29,6 +29,8 @@ export const getSortedArticles = (): Array<PostItem> => {
       title: matterResult.data.title,
       date: matterResult.data.date,
       content: matterResult.data.content,
+      tags: matterResult.data.tags ?? [],
+      hide: matterResult.data.hide ?? false,
     }
   })
 
@@ -59,5 +61,7 @@ export const getPostContents = async (
     title: matterResult.data.title,
     date: matterResult.data.date,
     content: matterResult.content,
+    tags: matterResult.data.tags ?? [],
+    hide: matterResult.data.hide ?? false,
   }
 }
