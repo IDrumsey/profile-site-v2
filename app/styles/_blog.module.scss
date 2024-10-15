@@ -1,5 +1,13 @@
 .blogWrapper {
   padding-bottom: 64px;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+
+  width: 80%;
+  margin-inline: auto;
+
   p {
     line-height: 3;
   }

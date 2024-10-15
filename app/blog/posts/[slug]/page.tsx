@@ -5,16 +5,15 @@ import styles from "@/styles/_blog.module.scss"
 import { PoppinsFont } from "@/styles/fonts/fonts"
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
-  console.log("slug : ", params.slug)
   const articleData = await getPostContents(params.slug)
 
   return (
     <div
       style={{
-        width: "80%",
         marginInline: "auto",
         marginTop: 8,
       }}
+      className={`${PoppinsFont.className} ${styles.blogWrapper}`}
     >
       <Typography
         variant="h3"
@@ -33,7 +32,6 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
       </Typography>
       {/* https://dev.to/ethand91/creating-a-markdown-blog-with-nextjs-1dci */}
       <div
-        className={`${PoppinsFont.className} ${styles.blogWrapper}`}
         dangerouslySetInnerHTML={{
           __html: md({
             html: true,
