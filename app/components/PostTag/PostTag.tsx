@@ -8,7 +8,11 @@ const PostTag = ({ tag }: Props) => {
   return (
     <Chip
       label={tag}
-      sx={{ backgroundColor: "#ddb1e619", color: "#ddb1e6" }}
+      sx={{
+        backgroundColor: "#ddb1e619",
+        color: "#ddb1e6",
+        fontWeight: "bold",
+      }}
     />
   )
 }
