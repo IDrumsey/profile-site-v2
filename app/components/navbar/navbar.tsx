@@ -34,7 +34,7 @@ const Navbar = ({}: Props) => {
         <div id={styles["avatar-wrapper"]}>
           {/* https://stackoverflow.com/a/65509211/17712310 */}
           <img
-            src="./professional-pic.png"
+            src="/professional-pic.png"
             alt="Avatar image"
             id={styles["avatar-image"]}
           />

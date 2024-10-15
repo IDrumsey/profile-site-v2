@@ -40,7 +40,7 @@ export default function RootLayout({
         <div>
           <Navbar />
           <img
-            src="./top-gradient.png"
+            src="/top-gradient.png"
             alt="Gradient"
             id="top-gradient"
           />
