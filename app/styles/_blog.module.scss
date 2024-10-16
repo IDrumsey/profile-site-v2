@@ -29,15 +29,36 @@
     display: none;
   }
 
+  code:not(pre code) {
+    background-color: #292929;
+    padding-block: 4px;
+    padding-inline: 8px;
+    border-radius: 4px;
+    margin-inline: 4px;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     margin-top: 64px;
   }
 
   a {
     color: #8af3ff;
+    text-decoration: underline;
   }
 
   li {
     opacity: .6
+  }
+
+  blockquote {
+    color: #808080;
+
+    border-left: 5px solid #727272;
+    margin-left: 0;
+    padding-left: 32px;
+    
+    p {
+      line-height: 2;
+    }
   }
 }

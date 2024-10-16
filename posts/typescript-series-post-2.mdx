@@ -1,0 +1,109 @@
+---
+title: Typescript - How to start using typescript?
+date: 2024-10-16
+description: How do we get started with typescript?
+tags: ["typescript"]
+draft: false
+author: IDrumsey
+authorPicURL: idrumsey-profile-pic.jpg
+---
+
+# Install with npm
+
+```bash
+npm install -g typescript
+```
+
+# Use `.ts` instead of `.js`
+
+Instead of creating a file with the `.js` extension, use the `.ts` extension.
+
+# Use the typescript compiler, `tsc`, to compile the file to javascript.
+
+`tsc` just takes the typescript file and converts everything to javascript.
+
+<br>
+For example, say you had this ts file
+
+```typescript
+// file users.ts
+
+type User = {
+  fn: string
+  ln: string
+}
+
+const John: User = {
+  fn: "John",
+  ln: "Doe",
+}
+```
+
+and then you ran `tsc users.ts`, you would end up with a js file like this
+
+```javascript
+// file users.js
+
+var John = {
+  fn: "John",
+  ln: "Doe",
+}
+```
+
+<br>
+<br>
+
+# Compiling with errors
+
+Say now that you assigned the wrong value type to John's last name, what will happen?
+
+```typescript
+// file users.ts
+
+type User = {
+  fn: string
+  ln: string
+}
+
+const John: User = {
+  fn: "John",
+  ln: 1234,
+}
+```
+
+It turns out the `users.js` file is still generated, but the compiler gives an error message.
+
+```javascript
+// generated file - users.js
+
+var John = {
+  fn: "John",
+  ln: "Doe",
+}
+```
+
+##### Console message
+
+```bash
+$ tsc users.ts
+users.ts:8:3 - error TS2322: Type 'number' is not assignable to type 'string'.
+
+8   ln: 1234,
+    ~~
+
+  users.ts:3:3
+    3   ln: string
+        ~~
+    The expected type comes from property 'ln' which is declared here on type 'User'
+
+
+Found 1 error.
+```
+
+[The typescript docs](https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html#:~:text=Notice%20that%20although%20there%20were%20errors%2C%20the%20greeter.js%20file%20is%20still%20created.%20You%20can%20use%20TypeScript%20even%20if%20there%20are%20errors%20in%20your%20code.%20But%20in%20this%20case%2C%20TypeScript%20is%20warning%20that%20your%20code%20will%20likely%20not%20run%20as%20expected.) specify that this will happen.
+
+> Notice that although there were errors, the greeter.js file is still created. You can use TypeScript even if there are errors in your code. But in this case, TypeScript is warning that your code will likely not run as expected.
+
+### Sources
+
+- [Typescript Tooling Docs](https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html)
