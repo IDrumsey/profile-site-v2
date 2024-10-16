@@ -5,6 +5,7 @@ import styles from "@/styles/_blog.module.scss"
 import { PoppinsFont } from "@/styles/fonts/fonts"
 import moment from "moment"
 import PostTag from "@/components/PostTag/PostTag"
+import { TagIconResolver } from "@/library/TagIconResolver"
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
   const articleData = await getPostContents(params.slug)
@@ -49,14 +50,18 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
 
         {/* TODO: tags */}
         <Stack
+          width="100%"
           direction="row"
-          spacing={2}
+          gap={2}
           mt={1}
+          flexWrap="wrap"
         >
           {articleData.tags.map((tag, tagI) => (
             <PostTag
               tag={tag}
               key={tagI}
+              Icon={TagIconResolver.getTagIcon(tag)}
+              tagColor={TagIconResolver.getTagIconColor(tag)}
             />
           ))}
         </Stack>
