@@ -66,27 +66,3 @@ a {
   width: 100vw;
   height: 80vh;
 }
-
-
-pre > code {
-  display: grid;
-}
-
-
-div[data-rehype-pretty-code-fragment] {
-  overflow: hidden;
-}
-
-
-div[data-rehype-pretty-code-fragment] pre {
-  border-radius: 5px;
-  overflow-x: auto;
-  padding: 25px;
-  font-size: .95rem;
-  line-height: 1.5rem;
-}
-
-
-div[data-rehype-pretty-code-fragment] pre::-webkit-scrollbar {
-  display: none;
-}

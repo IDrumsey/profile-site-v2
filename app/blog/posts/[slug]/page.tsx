@@ -6,6 +6,8 @@ import { PoppinsFont } from "@/styles/fonts/fonts"
 import moment from "moment"
 import PostTag from "@/components/PostTag/PostTag"
 import { TagIconResolver } from "@/library/TagIconResolver"
+import hljs from "highlight.js"
+import "highlight.js/styles/github-dark.css"
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
   const articleData = await getPostContents(params.slug)
@@ -74,6 +76,19 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
             html: true,
             linkify: false,
             typographer: true,
+            highlight: function (str, lang) {
+              if (lang && hljs.getLanguage(lang)) {
+                try {
+                  const highlightedCode = hljs.highlight(str, {
+                    language: lang,
+                  }).value
+
+                  return highlightedCode
+                } catch (__) {}
+              }
+
+              return "" // use external default escaping
+            },
           }).render(articleData.content),
         }}
       />

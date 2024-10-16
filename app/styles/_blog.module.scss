@@ -16,12 +16,17 @@
     line-height: 2
   }
 
-  code {
+  pre {
     background-color: #292929;
     padding: 16px;
     border-radius: 4px;
     margin-top: 32px;
     margin-bottom: 32px;
+    overflow-x: scroll;
+  }
+
+  pre::-webkit-scrollbar {
+    display: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
