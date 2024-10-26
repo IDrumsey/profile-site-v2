@@ -11,7 +11,7 @@ import {
 
 import { RiNextjsFill } from "react-icons/ri"
 import { SiJavascript } from "react-icons/si"
-import { BiLogoTypescript } from "react-icons/bi"
+import { BiLogoTypescript, BiBible } from "react-icons/bi"
 import { FaNpm } from "react-icons/fa"
 import { LuListTree } from "react-icons/lu"
 
@@ -85,6 +85,12 @@ const PostTagMeta: Array<{ tag: string; Icon?: IconType; iconColor: Color }> = [
     tag: "cloud",
     Icon: FaCloud,
     iconColor: Color("#fff"),
+  },
+
+  {
+    tag: "Bible",
+    Icon: BiBible,
+    iconColor: Color("#a28e78"),
   },
 ]
 

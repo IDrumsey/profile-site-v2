@@ -3,11 +3,11 @@ import { IconType } from "react-icons"
 
 type Props = {
   Icon: IconType
-  color: Color | null
+  color: string | null
 }
 
 const ColoredIcon = ({ Icon, color }: Props) => {
-  return <Icon style={{ color: color?.hex() ?? undefined }} />
+  return <Icon color={color ?? undefined} />
 }
 
 export default ColoredIcon

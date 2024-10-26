@@ -59,14 +59,16 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
           mt={1}
           flexWrap="wrap"
         >
-          {articleData.tags.map((tag, tagI) => (
-            <PostTag
-              tag={tag}
-              key={tagI}
-              Icon={TagIconResolver.getTagIcon(tag)}
-              tagColor={TagIconResolver.getTagIconColor(tag)}
-            />
-          ))}
+          {articleData.tags.map((tag, tagI) => {
+            return (
+              <PostTag
+                tag={tag}
+                key={tagI}
+                Icon={TagIconResolver.getTagIcon(tag)}
+                tagColor={TagIconResolver.getTagIconColor(tag)}
+              />
+            )
+          })}
         </Stack>
       </div>
 
