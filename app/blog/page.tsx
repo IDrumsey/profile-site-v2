@@ -37,6 +37,21 @@ const BlogHomePage = () => {
 
   const [selectedTag, selectedTagSetter] = useState<string | null>(null)
 
+  /**
+   * filter the posts down to just the ones to show
+   */
+  const postsToShow = useMemo<Array<PostItem>>(() => {
+    let finalPostsList = posts
+    // filter by the selected tag if one has been selected
+    if (selectedTag) {
+      finalPostsList = finalPostsList.filter((post) =>
+        post.tags.includes(selectedTag)
+      )
+    }
+
+    return finalPostsList
+  }, [posts, selectedTag])
+
   return (
     <div>
       <Stack
@@ -76,7 +91,7 @@ const BlogHomePage = () => {
           marginTop: 4,
         }}
       >
-        {posts.map((post, postI) =>
+        {postsToShow.map((post, postI) =>
           post.hide == true || post.draft ? (
             <></>
           ) : (
