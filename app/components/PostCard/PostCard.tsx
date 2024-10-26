@@ -19,14 +19,6 @@ type Props = {
 const BlogPostCard = ({ post }: Props) => {
   const router = useRouter()
 
-  const getHighlightColor = useCallback((): string => {
-    return determinePostHighlightColor(post, DEFAULT_HIGHLIGHT_COLOR)
-  }, [post])
-
-  const highlightColor = useMemo(() => {
-    return getHighlightColor()
-  }, [getHighlightColor])
-
   return (
     <Box
       component={motion.div}
@@ -48,7 +40,7 @@ const BlogPostCard = ({ post }: Props) => {
         color="#c9eaff"
         sx={{
           // https://css-tricks.com/how-to-create-neon-text-with-css/
-          textShadow: `0 0 1px #fff, 0 0 5px ${highlightColor}, 0 0 15px ${highlightColor}`,
+          textShadow: `0 0 1px #fff`,
         }}
       >
         {post.title}
