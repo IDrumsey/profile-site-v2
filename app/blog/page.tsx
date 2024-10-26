@@ -18,7 +18,7 @@ const BlogHomePage = () => {
       }}
     >
       {posts.map((post, postI) =>
-        post.hide == true ? (
+        post.hide == true || post.draft ? (
           <></>
         ) : (
           <BlogPostCard
