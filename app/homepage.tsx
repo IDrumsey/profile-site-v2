@@ -19,7 +19,7 @@ import Typed from "typed.js"
 
 // a lot of the brand colors come from the official websites
 
-import { AiFillLinkedin } from "react-icons/ai"
+import { AiFillLinkedin, AiOutlineDotNet } from "react-icons/ai"
 import {
   FaGithubSquare,
   FaYoutubeSquare,
@@ -32,9 +32,24 @@ import {
   FaPhp,
   FaAngular,
   FaLaravel,
+  FaAws,
 } from "react-icons/fa"
-import { SiCplusplus } from "react-icons/si"
+import {
+  SiBlender,
+  SiCplusplus,
+  SiDocker,
+  SiFigma,
+  SiGnubash,
+  SiMicrosoftazure,
+  SiPowershell,
+  SiVisualstudio,
+} from "react-icons/si"
 import { SiJavascript } from "react-icons/si"
+import { RiNextjsFill } from "react-icons/ri"
+import { SiMicrosoftsqlserver } from "react-icons/si"
+import { FaNpm } from "react-icons/fa"
+import { VscVscode } from "react-icons/vsc"
+
 import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
@@ -117,17 +132,12 @@ export default function HomePage() {
       name: string
       logoIcon?: any
       logoColor?: string
+      bottomBreak?: boolean
     }[]
   }[] = [
     {
       title: "Most Used",
       items: [
-        {
-          name: "Javascript",
-          logoIcon: SiJavascript,
-          logoColor: "yellow",
-        },
-
         {
           name: "HTML",
           logoIcon: FaHtml5,
@@ -139,11 +149,28 @@ export default function HomePage() {
           logoIcon: FaCss3Alt,
           logoColor: "#1989C1",
         },
-
+        {
+          name: "Javascript",
+          logoIcon: SiJavascript,
+          logoColor: "yellow",
+          bottomBreak: true,
+        },
         {
           name: "React",
           logoIcon: FaReact,
           logoColor: "#61dafb",
+        },
+        {
+          name: "Next.js",
+          logoIcon: RiNextjsFill,
+          logoColor: "#c7c7c7",
+          bottomBreak: true,
+        },
+
+        {
+          name: "SQL Server",
+          logoIcon: SiMicrosoftsqlserver,
+          logoColor: "#d24458",
         },
 
         {
@@ -153,21 +180,57 @@ export default function HomePage() {
         },
 
         {
+          name: "Python",
+          logoIcon: FaPython,
+          logoColor: "#356f9f",
+          bottomBreak: true,
+        },
+
+        {
+          name: "Docker",
+          logoIcon: SiDocker,
+          logoColor: "#1c60e6",
+        },
+
+        {
+          name: "Azure",
+          logoIcon: SiMicrosoftazure,
+          logoColor: "#31b1e5",
+        },
+
+        {
           name: "Git",
           logoIcon: FaGitAlt,
           logoColor: "#f54d27",
         },
 
         {
-          name: "Python",
-          logoIcon: FaPython,
-          logoColor: "#356f9f",
+          name: "npm",
+          logoIcon: FaNpm,
+          logoColor: "#c53635",
+        },
+        {
+          name: "Blender",
+          logoIcon: SiBlender,
+          logoColor: "#e56b00",
+        },
+
+        {
+          name: "VSCode",
+          logoIcon: VscVscode,
+          logoColor: "#2aaaf2",
+        },
+
+        {
+          name: "Figma",
+          logoIcon: SiFigma,
+          logoColor: "#ea4c1d",
         },
       ],
     },
 
     {
-      title: "It's been a minute",
+      title: "Used",
       items: [
         {
           name: "PHP",
@@ -182,9 +245,47 @@ export default function HomePage() {
         },
 
         {
+          name: "C++",
+          logoIcon: SiCplusplus,
+          logoColor: "#00427e",
+        },
+
+        {
+          name: "C#",
+          logoIcon: AiOutlineDotNet,
+          logoColor: "#72489f",
+        },
+
+        {
           name: "Laravel",
           logoIcon: FaLaravel,
           logoColor: "#ff2d20",
+          bottomBreak: true,
+        },
+
+        {
+          name: "AWS",
+          logoIcon: FaAws,
+          logoColor: "#ff9c08",
+          bottomBreak: true,
+        },
+
+        {
+          name: "Bash",
+          logoIcon: SiGnubash,
+          logoColor: "#35cb52",
+        },
+
+        {
+          name: "PowerShell",
+          logoIcon: SiPowershell,
+          logoColor: "#2d4260",
+        },
+
+        {
+          name: "Visual Studio",
+          logoIcon: SiVisualstudio,
+          logoColor: "#7f47b7",
         },
       ],
     },
@@ -425,6 +526,11 @@ export default function HomePage() {
                                       ? styles["tech-stack-item-in-view"]
                                       : styles["tech-stack-item-out-view"],
                                   ]}
+                                  wrapperStyles={{
+                                    marginBottom: item.bottomBreak
+                                      ? 20
+                                      : undefined,
+                                  }}
                                   animationDelay={
                                     techStackAnimationDelay *
                                     (itemI + 1) *

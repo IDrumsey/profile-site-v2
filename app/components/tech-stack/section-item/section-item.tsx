@@ -1,5 +1,5 @@
 import styles from "./section-item.module.scss"
-import React, { useEffect, useRef } from "react"
+import React, { CSSProperties, useEffect, useRef } from "react"
 
 import { IconType } from "react-icons"
 
@@ -11,6 +11,7 @@ interface Props {
   wrapperClassNames: string[]
   animationDelay: number
   adjustLogoToTextBottom?: boolean
+  wrapperStyles?: CSSProperties
 }
 
 const SectionItem = React.forwardRef<HTMLDivElement, Props>(
@@ -22,6 +23,7 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(
       wrapperClassNames,
       animationDelay,
       adjustLogoToTextBottom = false,
+      wrapperStyles,
     }: Props,
     ref
   ) => {
@@ -55,6 +57,7 @@ const SectionItem = React.forwardRef<HTMLDivElement, Props>(
           style={{
             // https://youtu.be/8RrTJY_z36c
             animationDelay: `${animationDelay}ms`,
+            ...wrapperStyles,
           }}
         >
           {
