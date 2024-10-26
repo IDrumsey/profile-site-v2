@@ -8,6 +8,7 @@ import PostTag from "@/components/PostTag/PostTag"
 import { TagIconResolver } from "@/library/TagIconResolver"
 import hljs from "highlight.js"
 import "highlight.js/styles/github-dark.css"
+import { IoIosPaper } from "react-icons/io"
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
   const articleData = await getPostContents(params.slug)
@@ -68,6 +69,26 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
           ))}
         </Stack>
       </div>
+
+      {/* if draft show alert */}
+      {articleData.draft && (
+        <div
+          style={{
+            opacity: 0.2,
+            marginInline: "auto",
+            width: "max-content",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <IoIosPaper
+            size={100}
+            style={{}}
+          />
+          <p>This is a draft post.</p>
+        </div>
+      )}
 
       {/* https://dev.to/ethand91/creating-a-markdown-blog-with-nextjs-1dci */}
       <div

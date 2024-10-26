@@ -1,0 +1,76 @@
+---
+title: SQL - Creating a table
+date: 2024-10-25
+description: Shows how to create a table using sql
+tags: ["SQL"]
+draft: false
+author: IDrumsey
+authorPicURL: idrumsey-profile-pic.jpg
+---
+
+Let's create a table with SQL, specifically MySQL.
+
+Use the `CREATE TABLE` command followed by the name of the table you want to create.
+
+```sql
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+<br>
+<br>
+
+_Note - The keywords like `CREATE` and `TABLE` are **NOT** case sensitive meaning you can write them in lowercase, uppercase, or however you want._
+
+`CREATE TABLE <table_name>`
+`Create Table <table_name>`
+`create table <table_name>`
+
+<br>
+<br>
+<br>
+<br>
+
+Inside the parenthesis are the columns you want in the table. It follows the following syntax for each column;
+
+```
+<column_name> <column_definition>
+```
+
+where _column_definition_ follows what is seen below (from [here](https://dev.mysql.com/doc/refman/8.4/en/create-table.html))
+
+```
+column_definition: {
+    data_type [NOT NULL | NULL] [DEFAULT {literal | (expr)} ]
+      [VISIBLE | INVISIBLE]
+      [AUTO_INCREMENT] [UNIQUE [KEY]] [[PRIMARY] KEY]
+      [COMMENT 'string']
+      [COLLATE collation_name]
+      [COLUMN_FORMAT {FIXED | DYNAMIC | DEFAULT}]
+      [ENGINE_ATTRIBUTE [=] 'string']
+      [SECONDARY_ENGINE_ATTRIBUTE [=] 'string']
+      [STORAGE {DISK | MEMORY}]
+      [reference_definition]
+      [check_constraint_definition]
+  | data_type
+      [COLLATE collation_name]
+      [GENERATED ALWAYS] AS (expr)
+      [VIRTUAL | STORED] [NOT NULL | NULL]
+      [VISIBLE | INVISIBLE]
+      [UNIQUE [KEY]] [[PRIMARY] KEY]
+      [COMMENT 'string']
+      [reference_definition]
+      [check_constraint_definition]
+}
+```
+
+The most important option out of this mess is the nullish constraints and the primary/foreign key constraints.
+
+When you attach `NOT NULL` to a column definition, that column is not able to have the value `null`. This allows you to specify what data is required when inserting new rows into the table.
+
+To learn about primary keys, see [this blog post](/blog/posts/sql-primary-key).

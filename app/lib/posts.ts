@@ -31,6 +31,7 @@ export const getSortedArticles = (): Array<PostItem> => {
       content: matterResult.data.content,
       tags: matterResult.data.tags ?? [],
       hide: matterResult.data.hide ?? false,
+      draft: matterResult.data.draft ?? false,
     }
   })
 
@@ -63,5 +64,6 @@ export const getPostContents = async (
     content: matterResult.content,
     tags: matterResult.data.tags ?? [],
     hide: matterResult.data.hide ?? false,
+    draft: matterResult.data.draft ?? false,
   }
 }
