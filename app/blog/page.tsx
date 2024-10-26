@@ -58,7 +58,7 @@ const BlogHomePage = () => {
   }, [posts, selectedTag])
 
   return (
-    <div>
+    <div style={{ marginBottom: 64 }}>
       <Stack
         direction="row"
         flexWrap="wrap"
