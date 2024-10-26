@@ -554,9 +554,6 @@ export default function HomePage() {
               variant="h4"
               component={motion.h4}
               className={ProtestStrikeFont.className}
-              sx={{
-                textDecoration: "underline",
-              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.5 }}
