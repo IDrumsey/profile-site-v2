@@ -20,9 +20,14 @@ const BlogHomePage = () => {
     postsLoader()
   }, [])
 
-  const uniqueTags: Array<string> = useMemo(() => {
+  const tagsToShow: Array<string> = useMemo(() => {
     const tags: Array<string> = []
+
+    // tags that are actually used on at least one post
     for (const post of posts) {
+      // don't consider posts that are hidden or drafts
+      if (post.draft || post.hide) continue
+
       for (const tag of post.tags) {
         if (tags.includes(tag)) {
           continue
@@ -61,7 +66,7 @@ const BlogHomePage = () => {
         gap={2}
         my={4}
       >
-        {uniqueTags.map((tag, tagI) => {
+        {tagsToShow.map((tag, tagI) => {
           return (
             <PostTag
               tag={tag}
