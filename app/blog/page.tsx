@@ -54,7 +54,13 @@ const BlogHomePage = () => {
               Icon={TagIconResolver.getTagIcon(tag)}
               tagColor={TagIconResolver.getTagIconColor(tag)}
               onClick={() => {
-                selectedTagSetter(tag)
+                const thisTagIsAlreadySelected = selectedTag == tag
+
+                if (thisTagIsAlreadySelected) {
+                  selectedTagSetter(null)
+                } else {
+                  selectedTagSetter(tag)
+                }
               }}
               cursor="pointer"
               showHalo={selectedTag == tag}
