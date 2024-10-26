@@ -11,15 +11,25 @@ type Props = {
   showHalo?: boolean
   onClick?: ChipProps["onClick"]
   cursor?: CSSProperties["cursor"]
+  size?: ChipProps["size"]
 }
 
-const PostTag = ({ tag, Icon, tagColor, showHalo, onClick, cursor }: Props) => {
+const PostTag = ({
+  tag,
+  Icon,
+  tagColor,
+  showHalo,
+  onClick,
+  cursor,
+  size,
+}: Props) => {
   // allows defining default for showHalo
   const showHaloActual = useMemo(() => showHalo ?? true, [showHalo])
 
   return (
     <Chip
       label={tag}
+      size={size}
       sx={{
         backgroundColor: "#ddb1e619",
         color: tagColor?.lighten(0.25).hex() ?? "#ddb1e6",

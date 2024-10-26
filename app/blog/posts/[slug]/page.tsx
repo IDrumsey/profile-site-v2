@@ -51,7 +51,7 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
           {moment(articleData.date).format("MMMM Do, YYYY")}
         </Typography>
 
-        {/* TODO: tags */}
+        {/* tags */}
         <Stack
           width="100%"
           direction="row"
