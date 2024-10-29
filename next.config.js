@@ -5,6 +5,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  transpilePackages: ['three'],
+
 
   webpack(config) {
     config.module.rules.push({

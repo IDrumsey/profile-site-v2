@@ -17,7 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.163",
     "@mui/material": "^5.15.7",
     "@react-three/drei": "^9.74.16",
-    "@react-three/fiber": "^8.13.9",
+    "@react-three/fiber": "^8.17.10",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "18.11.19",
     "@types/react": "18.0.38",
