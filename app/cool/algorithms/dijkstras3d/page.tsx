@@ -1,8 +1,15 @@
 "use client"
 
-import React, { useState, useEffect, ReactNode, CSSProperties } from "react"
+import React, {
+  useState,
+  useEffect,
+  ReactNode,
+  CSSProperties,
+  useMemo,
+} from "react"
 import { Canvas, useThree } from "@react-three/fiber"
 import {
+  GraphGenerator,
   ThreeDGraph,
   ThreejsGraphStrategy,
 } from "@/library/algorithms/graphs/3d/Graph"
@@ -27,12 +34,18 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer"
 import SettingsIcon from "@mui/icons-material/Settings"
 import { IoMdGrid } from "react-icons/io"
 import Slider from "@mui/material/Slider"
+import { genRandomInt } from "@/library/utility/general"
+import { Vector3 } from "three"
 
-function NumberOfNodesPicker() {
-  const [value, setValue] = React.useState<number[]>([5, 50])
-
+function NumberOfNodesPicker({
+  value,
+  setValue,
+}: {
+  value: [number, number]
+  setValue: (newValues: [number, number]) => void
+}) {
   const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[])
+    setValue(newValue as [number, number])
   }
 
   const theme = useTheme()
@@ -68,9 +81,13 @@ function NumberOfNodesPicker() {
   )
 }
 
-function MaxDistancePicker() {
-  const [value, setValue] = React.useState<number>(10)
-
+function MaxDistancePicker({
+  value,
+  setValue,
+}: {
+  value: number
+  setValue: React.Dispatch<React.SetStateAction<number>>
+}) {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number)
   }
@@ -95,7 +112,7 @@ function MaxDistancePicker() {
         Max: {value} units from origin
       </Typography>
       <Slider
-        min={1}
+        min={5}
         max={50}
         getAriaLabel={() => "Max distance from origin"}
         value={value}
@@ -304,6 +321,10 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   const [graphManager, graphManagerSetter] = useState<ThreeDGraph | null>(null)
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
+  const [minNumNodes, minNumNodesSetter] = useState<number>(5)
+  const [maxNumNodes, maxNumNodesSetter] = useState<number>(50)
+  const [maxDistanceFromOrigin, maxDistanceFromOriginSetter] =
+    useState<number>(50)
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
@@ -314,13 +335,44 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     }, 1000)
   }, [])
 
+  const graphGenerator = useMemo(() => new GraphGenerator(), [])
+
+  useEffect(() => {
+    if (!graphGenerator || !graphManager) return
+
+    // clear old nodes
+    graphGenerator.clearNodes()
+    graphManager.clearNodes()
+
+    const numNodesToGenerate = genRandomInt(minNumNodes, maxNumNodes)
+    for (let i = 0; i < numNodesToGenerate; i++) {
+      const generatedNode = graphGenerator.generateNode(maxDistanceFromOrigin)
+      graphManager.addNode({
+        location: new Vector3(
+          generatedNode.x,
+          generatedNode.y,
+          generatedNode.z
+        ),
+        radius: 0.5,
+      })
+    }
+  }, [
+    graphGenerator,
+    maxDistanceFromOrigin,
+    minNumNodes,
+    maxNumNodes,
+    graphManager,
+  ])
+
   return (
     <>
       <SwipeableEdgeDrawer>
         <Stack
-          direction="column"
+          direction={isMobile ? "column" : "row"}
           gap={8}
           color="#fff"
+          width="100%"
+          flexWrap="wrap"
         >
           {/* toggle grid lines */}
           <GridToggleButton
@@ -328,8 +380,17 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             showingGridSetter={showingGridLinesSetter}
             width={isMobile ? "100%" : "max-content"}
           />
-          <NumberOfNodesPicker />
-          <MaxDistancePicker />
+          <NumberOfNodesPicker
+            value={[minNumNodes, maxNumNodes]}
+            setValue={(newValues) => {
+              minNumNodesSetter(newValues[0])
+              maxNumNodesSetter(newValues[1])
+            }}
+          />
+          <MaxDistancePicker
+            value={maxDistanceFromOrigin}
+            setValue={maxDistanceFromOriginSetter}
+          />
         </Stack>
       </SwipeableEdgeDrawer>
       <Canvas
@@ -347,7 +408,13 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           position={[-5, 10, 20]}
         />
         <OrbitControls />
-        <NestedCanvasElement graphManagerSetter={graphManagerSetter} />
+        {!graphManager && (
+          <NestedCanvasElement
+            graphManagerSetter={(newGraphManager) => {
+              graphManagerSetter(newGraphManager)
+            }}
+          />
+        )}
         <MyGridHelper
           size={10}
           showing={showingGridLines}

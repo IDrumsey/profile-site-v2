@@ -12,21 +12,23 @@ import {
   Vector3,
 } from "three"
 
-export interface ISphere {
+export type I3DNode = Vector3
+
+export interface ISphere_Graphics {
   radius?: number
   color?: Color
-  location: Vector3
+  location: I3DNode
 }
 
-export type INode = ISphere
+export type INode_Graphics = ISphere_Graphics
 
-class ThreejsNode implements INode {
+class ThreejsNode implements INode_Graphics {
   private _sphereGeom: SphereGeometry
   radius: number
   color: Color
   location: Vector3
 
-  constructor(node: INode) {
+  constructor(node: INode_Graphics) {
     this.location = node.location
     if (node.radius) {
       this.radius = node.radius
@@ -86,8 +88,9 @@ class ThreejsEdge implements IEdge {
 }
 
 interface IGraphStrategy {
-  addNode: (node: INode) => void
+  addNode: (node: INode_Graphics) => void
   addCylinder: (cylinderData: ICylinder) => void
+  clearNodes: () => void
 }
 
 interface IGraph extends IGraphStrategy {}
@@ -99,23 +102,29 @@ export class ThreeDGraph implements IGraph {
     this.graphStrategy = graphStrategy
   }
 
-  addNode(node: INode): void {
+  addNode(node: INode_Graphics): void {
     this.graphStrategy.addNode(node)
   }
 
   addCylinder(cylinderData: ICylinder): void {
     this.graphStrategy.addCylinder(cylinderData)
   }
+
+  clearNodes(): void {
+    this.graphStrategy.clearNodes()
+  }
 }
 
 export class ThreejsGraphStrategy implements IGraphStrategy {
   private scene: Scene
 
+  private nodeMeshes: Array<Mesh> = []
+
   constructor(scene: Scene) {
     this.scene = scene
   }
 
-  addNode(node: INode): void {
+  addNode(node: INode_Graphics) {
     const threejsSphere = new ThreejsNode(node)
     const nodeMesh = new Mesh(
       threejsSphere.sphereMesh,
@@ -128,6 +137,8 @@ export class ThreejsGraphStrategy implements IGraphStrategy {
       threejsSphere.location.z
     )
     this.scene.add(nodeMesh)
+
+    this.nodeMeshes.push(nodeMesh)
   }
 
   // used gpt to help with this implementation
@@ -169,5 +180,54 @@ export class ThreejsGraphStrategy implements IGraphStrategy {
     cylinderMesh.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), direction)
 
     this.scene.add(cylinderMesh)
+  }
+
+  clearNodes() {
+    for (let i = 0; i < this.nodeMeshes.length; i++) {
+      const mesh = this.nodeMeshes[i]
+      this.scene.remove(mesh)
+
+      if (mesh.geometry) mesh.geometry.dispose()
+      if (mesh.material) {
+        if (Array.isArray(mesh.material)) {
+          // Dispose of each material if mesh has multiple materials
+          mesh.material.forEach((material) => material.dispose())
+        } else {
+          mesh.material.dispose()
+        }
+      }
+    }
+    this.nodeMeshes = []
+  }
+}
+
+export class GraphGenerator {
+  private nodes: Array<I3DNode> = []
+
+  generateNode(maxDistanceFromOrigin: number): I3DNode {
+    let generatedNode: I3DNode
+
+    // generate a random point in 3d space and then check that it fits the constraints
+    generatedNode = this.getRandomCoordinate(maxDistanceFromOrigin)
+
+    // add node to list of existing nodes
+    this.nodes.push(generatedNode)
+    return generatedNode
+  }
+
+  private getRandomCoordinate(max: number): I3DNode {
+    return new Vector3(
+      (Math.random() * 2 - 1) * max,
+      (Math.random() * 2 - 1) * max,
+      (Math.random() * 2 - 1) * max
+    )
+  }
+
+  clearNodes() {
+    this.nodes = []
+  }
+
+  get allNodes(): Array<I3DNode> {
+    return this.nodes
   }
 }
