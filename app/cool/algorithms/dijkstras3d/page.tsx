@@ -228,6 +228,12 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
+  useEffect(() => {
+    setTimeout(() => {
+      showingGridLinesSetter(true)
+    }, 1000)
+  }, [])
+
   return (
     <>
       <SwipeableEdgeDrawer>
@@ -249,7 +255,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         <ambientLight />
         <PerspectiveCamera
           makeDefault
-          position={[-1, -1, -1]}
+          position={[-5, 10, 20]}
         />
         <OrbitControls />
         <NestedCanvasElement graphManagerSetter={graphManagerSetter} />
