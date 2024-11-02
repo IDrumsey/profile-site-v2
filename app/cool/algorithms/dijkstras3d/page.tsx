@@ -68,6 +68,45 @@ function NumberOfNodesPicker() {
   )
 }
 
+function MaxDistancePicker() {
+  const [value, setValue] = React.useState<number>(10)
+
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number)
+  }
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  return (
+    <div>
+      <Typography
+        variant="body1"
+        fontSize={isMobile ? theme.typography.h5.fontSize : "auto"}
+        fontWeight="bold"
+        color="#fff"
+      >
+        Max distance from origin
+      </Typography>
+      <Typography
+        variant="caption"
+        color={new Color("#fff").alpha(0.5).toString()}
+      >
+        Max: {value} units from origin
+      </Typography>
+      <Slider
+        min={1}
+        max={50}
+        getAriaLabel={() => "Max distance from origin"}
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        getAriaValueText={(value) => `${value}`}
+      />
+    </div>
+  )
+}
+
 const AlwaysVisibleIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.grey[800], // Light background color
   "&:hover": {
@@ -290,6 +329,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             width={isMobile ? "100%" : "max-content"}
           />
           <NumberOfNodesPicker />
+          <MaxDistancePicker />
         </Stack>
       </SwipeableEdgeDrawer>
       <Canvas
