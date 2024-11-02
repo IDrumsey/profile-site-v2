@@ -26,6 +26,47 @@ import Typography from "@mui/material/Typography"
 import SwipeableDrawer from "@mui/material/SwipeableDrawer"
 import SettingsIcon from "@mui/icons-material/Settings"
 import { IoMdGrid } from "react-icons/io"
+import Slider from "@mui/material/Slider"
+
+function NumberOfNodesPicker() {
+  const [value, setValue] = React.useState<number[]>([5, 50])
+
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number[])
+  }
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  return (
+    <div>
+      {/* number of nodes to show on graph */}
+      <Typography
+        variant="body1"
+        fontSize={isMobile ? theme.typography.h5.fontSize : "auto"}
+        fontWeight="bold"
+        color="#fff"
+      >
+        Number of Nodes
+      </Typography>
+      <Typography
+        variant="caption"
+        color={new Color("#fff").alpha(0.5).toString()}
+      >
+        {value[0]} - {value[1]}
+      </Typography>
+      <Slider
+        min={5}
+        max={50}
+        getAriaLabel={() => "# of nodes"}
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        getAriaValueText={(value) => `${value}`}
+      />
+    </div>
+  )
+}
 
 const AlwaysVisibleIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.grey[800], // Light background color
@@ -237,11 +278,19 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   return (
     <>
       <SwipeableEdgeDrawer>
-        <GridToggleButton
-          showingGrid={showingGridLines}
-          showingGridSetter={showingGridLinesSetter}
-          width={isMobile ? "100%" : "max-content"}
-        />
+        <Stack
+          direction="column"
+          gap={8}
+          color="#fff"
+        >
+          {/* toggle grid lines */}
+          <GridToggleButton
+            showingGrid={showingGridLines}
+            showingGridSetter={showingGridLinesSetter}
+            width={isMobile ? "100%" : "max-content"}
+          />
+          <NumberOfNodesPicker />
+        </Stack>
       </SwipeableEdgeDrawer>
       <Canvas
         style={{
