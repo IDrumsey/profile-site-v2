@@ -369,6 +369,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
     // clear old nodes
     graphGenerator.clearNodes()
+    graphGenerator.clearEdges()
     graphManager.clearNodes()
     graphManager.clearEdges()
 
@@ -397,6 +398,21 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         radius: 0.05,
       })
     } while (graphGenerator.edgesNeededToConnect() > 0)
+
+    // generate more edges so that there are multiple paths to get somewhere in the graph
+
+    const numEdgesPossibleLeft =
+      graphGenerator.maxEdges - graphGenerator.allEdges.length
+    const numExtraEdgesToGenerate = genRandomInt(1, numEdgesPossibleLeft)
+
+    for (let i = 0; i < numExtraEdgesToGenerate; i++) {
+      const edgeGenerated = graphGenerator.generateEdge()
+      graphManager.addEdge({
+        end1Location: edgeGenerated[0],
+        end2Location: edgeGenerated[1],
+        radius: 0.05,
+      })
+    }
   }, [
     graphGenerator,
     maxDistanceFromOrigin,

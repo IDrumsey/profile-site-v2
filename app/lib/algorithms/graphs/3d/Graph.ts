@@ -263,6 +263,10 @@ export class GraphGenerator {
     this.nodes = []
   }
 
+  clearEdges() {
+    this.edges = []
+  }
+
   get allNodes(): Array<I3DNode> {
     return this.nodes
   }
