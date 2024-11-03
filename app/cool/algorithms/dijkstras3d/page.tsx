@@ -17,6 +17,7 @@ import {
 import {
   IconButton,
   IconButtonProps,
+  Snackbar,
   Stack,
   Switch,
   useMediaQuery,
@@ -37,6 +38,10 @@ import { IoMdGrid } from "react-icons/io"
 import Slider from "@mui/material/Slider"
 import { genRandomInt } from "@/library/utility/general"
 import { DirectionalLight, Vector3 } from "three"
+import {
+  DijkstraAlertGenerator,
+  DijkstrasAlgorithmManager,
+} from "@/library/algorithms/dijkstras/AlgorithmManager"
 
 function NumberOfNodesPicker({
   value,
@@ -347,6 +352,8 @@ const NestedCanvasElement = ({
 const DijkstrasAlgorithmVisualizationPage = () => {
   const [graphManager, graphManagerSetter] = useState<ThreeDGraph | null>(null)
   const graphGenerator = useMemo(() => new GraphGenerator(), [])
+  const algorithmManager = useMemo(() => new DijkstrasAlgorithmManager(), [])
+  const algorithmUIManager = useMemo(() => new DijkstraAlertGenerator(), [])
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
   const [minNumNodes, minNumNodesSetter] = useState<number>(5)
@@ -357,6 +364,16 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  const [stepAlertTitle, stepAlertTitleSetter] = useState<string>()
+  const [stepAlertDescription, stepAlertDescriptionSetter] = useState<string>()
+
+  useEffect(() => {
+    const newStepAlertData = algorithmUIManager.getCurrentStepAlert(
+      algorithmManager.step
+    )
+    stepAlertTitleSetter(newStepAlertData.title)
+  }, [algorithmManager.step, algorithmUIManager])
 
   useEffect(() => {
     setTimeout(() => {
@@ -451,6 +468,26 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           />
         </Stack>
       </SwipeableEdgeDrawer>
+
+      {/* alerts */}
+
+      {/* step alert */}
+      <Snackbar
+        open={true}
+        message={stepAlertTitle}
+        sx={{
+          bottom: isMobile ? "10vh" : "auto",
+          zIndex: 100,
+          ".MuiPaper-root": {
+            fontSize: isMobile
+              ? theme.typography.h5.fontSize
+              : theme.typography.body2.fontSize,
+            maxWidth: !isMobile ? "max-content" : undefined,
+            minWidth: !isMobile ? "unset" : "auto",
+          },
+        }}
+      />
+
       <Canvas
         style={{
           height: "100vh",
