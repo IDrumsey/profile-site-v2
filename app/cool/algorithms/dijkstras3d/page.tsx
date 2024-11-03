@@ -40,8 +40,11 @@ import { genRandomInt } from "@/library/utility/general"
 import { DirectionalLight, Vector3 } from "three"
 import {
   DijkstraAlertGenerator,
-  DijkstrasAlgorithmManager,
+  useDijkstraAlgorithmManager,
+  DijkstrasAlgorithmSteps,
 } from "@/library/algorithms/dijkstras/AlgorithmManager"
+import SphereNode from "@/components/3d/Nodes/SphereNode"
+import { isSamePoint } from "@/library/utility/threejs"
 
 function NumberOfNodesPicker({
   value,
@@ -352,7 +355,7 @@ const NestedCanvasElement = ({
 const DijkstrasAlgorithmVisualizationPage = () => {
   const [graphManager, graphManagerSetter] = useState<ThreeDGraph | null>(null)
   const graphGenerator = useMemo(() => new GraphGenerator(), [])
-  const algorithmManager = useMemo(() => new DijkstrasAlgorithmManager(), [])
+  const algorithmManager = useDijkstraAlgorithmManager()
   const algorithmUIManager = useMemo(() => new DijkstraAlertGenerator(), [])
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
@@ -393,15 +396,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     // generate the nodes
     const numNodesToGenerate = genRandomInt(minNumNodes, maxNumNodes)
     for (let i = 0; i < numNodesToGenerate; i++) {
-      const generatedNode = graphGenerator.generateNode(maxDistanceFromOrigin)
-      graphManager.addNode({
-        location: new Vector3(
-          generatedNode.x,
-          generatedNode.y,
-          generatedNode.z
-        ),
-        radius: 0.5,
-      })
+      graphGenerator.generateNode(maxDistanceFromOrigin)
     }
 
     // generate the edges
@@ -438,6 +433,23 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     graphManager,
     minNumEdges,
   ])
+
+  function onSphereClick(nodeCoords: Vector3) {
+    switch (algorithmManager.step) {
+      case DijkstrasAlgorithmSteps.PickStartingNode: {
+        algorithmManager.setSelectedNode(nodeCoords)
+        algorithmManager.nextStep()
+      }
+
+      default:
+        return
+    }
+  }
+
+  // if user changes any of the settings of the graph, restart the algorithm
+  useEffect(() => {
+    algorithmManager.resetAlgorithm()
+  }, [minNumNodes, maxNumNodes, maxDistanceFromOrigin])
 
   return (
     <>
@@ -513,6 +525,18 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           size={10}
           showing={showingGridLines}
         />
+        {graphGenerator.allNodes.map((node, i) => (
+          <SphereNode
+            position={node}
+            onSphereClick={onSphereClick}
+            color={
+              algorithmManager.selectedNode &&
+              isSamePoint(node, algorithmManager.selectedNode)
+                ? new Color("red")
+                : new Color("#fff")
+            }
+          />
+        ))}
       </Canvas>
     </>
   )
