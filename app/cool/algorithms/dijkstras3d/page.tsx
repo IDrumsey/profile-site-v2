@@ -45,6 +45,10 @@ import {
 } from "@/library/algorithms/dijkstras/AlgorithmManager"
 import SphereNode from "@/components/3d/Nodes/SphereNode"
 import { isSamePoint } from "@/library/utility/threejs"
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md"
 
 function NumberOfNodesPicker({
   value,
@@ -484,21 +488,55 @@ const DijkstrasAlgorithmVisualizationPage = () => {
       {/* alerts */}
 
       {/* step alert */}
-      <Snackbar
-        open={true}
-        message={stepAlertTitle}
-        sx={{
-          bottom: isMobile ? "10vh" : "auto",
-          zIndex: 100,
-          ".MuiPaper-root": {
-            fontSize: isMobile
-              ? theme.typography.h5.fontSize
-              : theme.typography.body2.fontSize,
-            maxWidth: !isMobile ? "max-content" : undefined,
-            minWidth: !isMobile ? "unset" : "auto",
-          },
+      <Stack
+        direction="column"
+        spacing={2}
+        style={{
+          width: isMobile ? "90vw" : "max-content",
+          position: "absolute",
+          bottom: isMobile
+            ? algorithmManager.step == DijkstrasAlgorithmSteps.PickStartingNode
+              ? theme.spacing(10)
+              : theme.spacing(4)
+            : theme.spacing(2),
+          left: isMobile ? "50%" : theme.spacing(2),
+          transform: isMobile ? "translateX(-50%)" : undefined,
+          zIndex: 101,
         }}
-      />
+      >
+        <Snackbar
+          open={true}
+          message={stepAlertTitle}
+          sx={{
+            position: "static",
+            zIndex: 100,
+            ".MuiPaper-root": {
+              fontSize: isMobile
+                ? theme.typography.h5.fontSize
+                : theme.typography.body2.fontSize,
+              maxWidth: !isMobile ? "max-content" : undefined,
+              minWidth: !isMobile ? "unset" : "auto",
+            },
+          }}
+        />
+
+        {/* arrows to control algorithm */}
+        {algorithmManager.step !== DijkstrasAlgorithmSteps.PickStartingNode && (
+          <Stack
+            direction="row"
+            sx={{ width: "100%", justifyContent: "space-between" }}
+          >
+            <MdOutlineKeyboardArrowLeft
+              size={40}
+              color="#fff"
+            />
+            <MdOutlineKeyboardArrowRight
+              size={40}
+              color="#fff"
+            />
+          </Stack>
+        )}
+      </Stack>
 
       <Canvas
         style={{
