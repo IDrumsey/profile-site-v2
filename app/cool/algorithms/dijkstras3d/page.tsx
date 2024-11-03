@@ -125,52 +125,6 @@ function MaxDistancePicker({
   )
 }
 
-function NumberOfEdgesPicker({
-  value,
-  setValue,
-  maxNumEdges,
-}: {
-  value: [number, number]
-  setValue: (newValues: [number, number]) => void
-  maxNumEdges: number
-}) {
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as [number, number])
-  }
-
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-
-  return (
-    <div>
-      {/* number of nodes to show on graph */}
-      <Typography
-        variant="body1"
-        fontSize={isMobile ? theme.typography.h5.fontSize : "auto"}
-        fontWeight="bold"
-        color="#fff"
-      >
-        Number of Edges
-      </Typography>
-      <Typography
-        variant="caption"
-        color={new Color("#fff").alpha(0.5).toString()}
-      >
-        {value[0]} - {maxNumEdges}
-      </Typography>
-      <Slider
-        min={5}
-        max={maxNumEdges}
-        getAriaLabel={() => "# of edges"}
-        value={value}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        getAriaValueText={(value) => `${value}`}
-      />
-    </div>
-  )
-}
-
 const AlwaysVisibleIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.grey[800], // Light background color
   "&:hover": {
@@ -400,9 +354,6 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   const [maxDistanceFromOrigin, maxDistanceFromOriginSetter] =
     useState<number>(7)
   const [minNumEdges, minNumEdgesSetter] = useState<number>(5)
-  const [maxNumEdges, maxNumEdgesSetter] = useState<number>(
-    50 > graphGenerator.maxEdges ? graphGenerator.maxEdges : 50
-  )
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
@@ -436,32 +387,22 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     }
 
     // generate the edges
-    const minNumEdgesToGenerate = numNodesToGenerate
-    const maxNumEdgesToGenerate = maxNumEdges
-    const numEdgesToGenerate = genRandomInt(
-      minNumEdgesToGenerate,
-      maxNumEdgesToGenerate
-    )
 
     // generate base edges (to make the graph connected)
-    const minNumberEdgesToMakeGraphConnected =
-      graphGenerator.edgesNeededToConnect()
-
-    for (let i = 0; i < minNumberEdgesToMakeGraphConnected; i++) {
+    do {
       const edgeGenerated = graphGenerator.generateEdge()
       graphManager.addEdge({
         end1Location: edgeGenerated[0],
         end2Location: edgeGenerated[1],
         radius: 0.05,
       })
-    }
+    } while (graphGenerator.edgesNeededToConnect() > 0)
   }, [
     graphGenerator,
     maxDistanceFromOrigin,
     minNumNodes,
     maxNumNodes,
     graphManager,
-    maxNumEdges,
     minNumEdges,
   ])
 
@@ -491,14 +432,6 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           <MaxDistancePicker
             value={maxDistanceFromOrigin}
             setValue={maxDistanceFromOriginSetter}
-          />
-          <NumberOfEdgesPicker
-            value={[minNumEdges, maxNumEdges]}
-            setValue={(newValues) => {
-              minNumEdgesSetter(newValues[0])
-              maxNumEdgesSetter(newValues[1])
-            }}
-            maxNumEdges={graphGenerator.maxEdges}
           />
         </Stack>
       </SwipeableEdgeDrawer>
