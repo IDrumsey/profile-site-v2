@@ -6,8 +6,9 @@ import React, {
   ReactNode,
   CSSProperties,
   useMemo,
+  useRef,
 } from "react"
-import { Canvas, useThree } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import {
   GraphGenerator,
   ThreeDGraph,
@@ -35,7 +36,7 @@ import SettingsIcon from "@mui/icons-material/Settings"
 import { IoMdGrid } from "react-icons/io"
 import Slider from "@mui/material/Slider"
 import { genRandomInt } from "@/library/utility/general"
-import { Vector3 } from "three"
+import { DirectionalLight, Vector3 } from "three"
 
 function NumberOfNodesPicker({
   value,
@@ -115,6 +116,52 @@ function MaxDistancePicker({
         min={5}
         max={50}
         getAriaLabel={() => "Max distance from origin"}
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        getAriaValueText={(value) => `${value}`}
+      />
+    </div>
+  )
+}
+
+function NumberOfEdgesPicker({
+  value,
+  setValue,
+  maxNumEdges,
+}: {
+  value: [number, number]
+  setValue: (newValues: [number, number]) => void
+  maxNumEdges: number
+}) {
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as [number, number])
+  }
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  return (
+    <div>
+      {/* number of nodes to show on graph */}
+      <Typography
+        variant="body1"
+        fontSize={isMobile ? theme.typography.h5.fontSize : "auto"}
+        fontWeight="bold"
+        color="#fff"
+      >
+        Number of Edges
+      </Typography>
+      <Typography
+        variant="caption"
+        color={new Color("#fff").alpha(0.5).toString()}
+      >
+        {value[0]} - {maxNumEdges}
+      </Typography>
+      <Slider
+        min={5}
+        max={maxNumEdges}
+        getAriaLabel={() => "# of edges"}
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
@@ -291,12 +338,9 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
         >
           {isMobile && <PullerTab />}
         </StyledBox>
-        <Box
-          padding={4}
-          sx={{ zIndex: 1000000 }}
-        >
+        <div style={{ padding: theme.spacing(4), zIndex: 1000000 }}>
           {children}
-        </Box>
+        </div>
       </SwipeableDrawer>
     </DrawerWrapper>
   )
@@ -305,26 +349,60 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
 // the whole purpose of this component is to be able to get the scene object for use in the graphManager
 const NestedCanvasElement = ({
   graphManagerSetter,
+  graphManagerDefined,
 }: {
   graphManagerSetter: (manager: ThreeDGraph) => void
+  graphManagerDefined: boolean
 }) => {
-  const { scene } = useThree()
+  const { scene, camera } = useThree()
+
+  const lightRef = useRef<DirectionalLight>(null)
+
+  useFrame(() => {
+    if (lightRef.current) {
+      // Offset the light slightly behind and above the camera
+      const offset = new Vector3(0, 0.5, 0.2) // Adjust offset values as needed
+      const lightPosition = camera.position.clone().add(offset)
+      lightRef.current.position.copy(lightPosition)
+
+      // Ensure the light still points in the same direction as the camera
+      const target = new Vector3()
+      camera.getWorldDirection(target)
+      lightRef.current.target.position.copy(camera.position.clone().add(target))
+      lightRef.current.target.updateMatrixWorld()
+    }
+  })
 
   useEffect(() => {
-    graphManagerSetter(new ThreeDGraph(new ThreejsGraphStrategy(scene)))
-  }, [scene, graphManagerSetter])
+    if (!graphManagerDefined)
+      graphManagerSetter(new ThreeDGraph(new ThreejsGraphStrategy(scene)))
+  }, [scene, graphManagerSetter, graphManagerDefined])
 
-  return <></>
+  return (
+    <>
+      <directionalLight
+        castShadow
+        position={[10, 10, 10]}
+        intensity={1}
+        ref={lightRef}
+      />
+    </>
+  )
 }
 
 const DijkstrasAlgorithmVisualizationPage = () => {
   const [graphManager, graphManagerSetter] = useState<ThreeDGraph | null>(null)
+  const graphGenerator = useMemo(() => new GraphGenerator(), [])
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
   const [minNumNodes, minNumNodesSetter] = useState<number>(5)
   const [maxNumNodes, maxNumNodesSetter] = useState<number>(50)
   const [maxDistanceFromOrigin, maxDistanceFromOriginSetter] =
-    useState<number>(50)
+    useState<number>(7)
+  const [minNumEdges, minNumEdgesSetter] = useState<number>(5)
+  const [maxNumEdges, maxNumEdgesSetter] = useState<number>(
+    50 > graphGenerator.maxEdges ? graphGenerator.maxEdges : 50
+  )
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
@@ -335,15 +413,15 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     }, 1000)
   }, [])
 
-  const graphGenerator = useMemo(() => new GraphGenerator(), [])
-
   useEffect(() => {
     if (!graphGenerator || !graphManager) return
 
     // clear old nodes
     graphGenerator.clearNodes()
     graphManager.clearNodes()
+    graphManager.clearEdges()
 
+    // generate the nodes
     const numNodesToGenerate = genRandomInt(minNumNodes, maxNumNodes)
     for (let i = 0; i < numNodesToGenerate; i++) {
       const generatedNode = graphGenerator.generateNode(maxDistanceFromOrigin)
@@ -356,12 +434,35 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         radius: 0.5,
       })
     }
+
+    // generate the edges
+    const minNumEdgesToGenerate = numNodesToGenerate
+    const maxNumEdgesToGenerate = maxNumEdges
+    const numEdgesToGenerate = genRandomInt(
+      minNumEdgesToGenerate,
+      maxNumEdgesToGenerate
+    )
+
+    // generate base edges (to make the graph connected)
+    const minNumberEdgesToMakeGraphConnected =
+      graphGenerator.edgesNeededToConnect()
+
+    for (let i = 0; i < minNumberEdgesToMakeGraphConnected; i++) {
+      const edgeGenerated = graphGenerator.generateEdge()
+      graphManager.addEdge({
+        end1Location: edgeGenerated[0],
+        end2Location: edgeGenerated[1],
+        radius: 0.05,
+      })
+    }
   }, [
     graphGenerator,
     maxDistanceFromOrigin,
     minNumNodes,
     maxNumNodes,
     graphManager,
+    maxNumEdges,
+    minNumEdges,
   ])
 
   return (
@@ -391,6 +492,14 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             value={maxDistanceFromOrigin}
             setValue={maxDistanceFromOriginSetter}
           />
+          <NumberOfEdgesPicker
+            value={[minNumEdges, maxNumEdges]}
+            setValue={(newValues) => {
+              minNumEdgesSetter(newValues[0])
+              maxNumEdgesSetter(newValues[1])
+            }}
+            maxNumEdges={graphGenerator.maxEdges}
+          />
         </Stack>
       </SwipeableEdgeDrawer>
       <Canvas
@@ -401,20 +510,19 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           top: 0,
           left: 0,
         }}
+        shadows
       >
-        <ambientLight />
         <PerspectiveCamera
           makeDefault
           position={[-5, 10, 20]}
         />
         <OrbitControls />
-        {!graphManager && (
-          <NestedCanvasElement
-            graphManagerSetter={(newGraphManager) => {
-              graphManagerSetter(newGraphManager)
-            }}
-          />
-        )}
+        <NestedCanvasElement
+          graphManagerDefined={!!graphManager}
+          graphManagerSetter={(newGraphManager) => {
+            graphManagerSetter(newGraphManager)
+          }}
+        />
         <MyGridHelper
           size={10}
           showing={showingGridLines}
