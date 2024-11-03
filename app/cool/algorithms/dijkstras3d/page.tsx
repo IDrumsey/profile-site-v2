@@ -403,7 +403,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
     const numEdgesPossibleLeft =
       graphGenerator.maxEdges - graphGenerator.allEdges.length
-    const numExtraEdgesToGenerate = genRandomInt(1, numEdgesPossibleLeft)
+    const numExtraEdgesToGenerate = genRandomInt(1, numEdgesPossibleLeft) / 2
 
     for (let i = 0; i < numExtraEdgesToGenerate; i++) {
       const edgeGenerated = graphGenerator.generateEdge()
