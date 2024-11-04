@@ -10,12 +10,14 @@
     "get-updates": "npx npm-check-updates"
   },
   "dependencies": {
+    "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.10.8",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.7",
     "@mui/lab": "^5.0.0-alpha.163",
     "@mui/material": "^5.16.7",
+    "@mui/material-nextjs": "^6.1.6",
     "@react-three/drei": "^9.115.0",
     "@react-three/fiber": "^8.17.10",
     "@types/markdown-it": "^14.1.2",

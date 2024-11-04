@@ -4,7 +4,9 @@ import "./styles/globals.scss"
 import { Roboto } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import Navbar from "@/components/navbar/navbar"
-import { Box } from "@mui/material"
+import { Box, ThemeProvider } from "@mui/material"
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
+import theme from "./styles/theme"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -45,7 +47,9 @@ export default function RootLayout({
             id="top-gradient"
           />
           {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
-          {children}
+          <AppRouterCacheProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </AppRouterCacheProvider>
         </div>
         <Analytics />
       </body>
