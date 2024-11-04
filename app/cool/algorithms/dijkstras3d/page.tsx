@@ -100,7 +100,7 @@ function NumberOfNodesPicker({
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
-        getAriaValueText={(value) => `${value}`}
+        getAriaValueText={(value: any) => `${value}`}
       />
     </div>
   )
@@ -143,7 +143,7 @@ function MaxDistancePicker({
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
-        getAriaValueText={(value) => `${value}`}
+        getAriaValueText={(value: any) => `${value}`}
       />
     </div>
   )
@@ -337,7 +337,7 @@ type AlgorithmTrackingTableProps = {
   nodes: Array<{
     label: TableCell<string>
     minDistance: TableCell<number>
-    prevNodeLabel: TableCell<string>
+    prevNodeLabel: TableCell<string | null>
   }>
 }
 
@@ -425,6 +425,62 @@ const AlgorithmTrackingTable = (props: AlgorithmTrackingTableProps) => {
         </TableBody>
       </Table>
     </TableContainer>
+  )
+}
+
+// ----------------------------- Algorithm Steps list component -----------------------------
+
+type AlgorithmStepListProps = {
+  items: Array<string>
+}
+const AlgorithmStepList = (props: AlgorithmStepListProps) => {
+  const theme = useTheme()
+
+  return (
+    <Box
+      sx={{
+        backgroundColor: "rgba(0, 0, 0, .2)",
+        position: "absolute",
+        right: theme.spacing(2),
+        bottom: "50%",
+        transform: "translateY(25%)",
+        width: "30vw",
+        maxHeight: "50vh",
+        overflowY: "scroll",
+        zIndex: 10000000,
+        "&::-webkit-scrollbar": {
+          display: "none", // Hide scrollbar in Chrome, Safari, and Edge
+        },
+        borderRadius: 1,
+      }}
+    >
+      <Stack
+        direction="column"
+        spacing={2}
+        paddingBlock={2}
+      >
+        {props.items.map((item, i) => (
+          <Typography
+            paddingInline={4}
+            variant="body2"
+            sx={{ userSelect: "none" }}
+          >
+            {item}
+          </Typography>
+        ))}
+      </Stack>
+      <Box
+        sx={{
+          position: "sticky",
+          bottom: 0,
+          width: "100%",
+          height: "20vh",
+          backgroundImage:
+            "linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))",
+          pointerEvents: "none", // Ensures the overlay does not interfere with scroll or clicks
+        }}
+      />
+    </Box>
   )
 }
 
@@ -606,40 +662,39 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         </Stack>
       </SwipeableEdgeDrawer>
 
-      <div
-        style={{
-          width: "25vw",
+      <Box
+        sx={{
+          width: "max-content",
           position: "absolute",
           left: theme.spacing(2),
           bottom: "50%",
           maxHeight: "50vh",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none", // Hide scrollbar in Chrome, Safari, and Edge
+          },
+          transform: "translateY(50%)",
           zIndex: 10000000,
         }}
       >
         <AlgorithmTrackingTable
-          nodes={[
-            {
+          nodes={graphManager.allNodes.map((node) => {
+            return {
               label: {
-                data: "A",
-                backgroundHighlight: {
-                  highlighted: true,
-                  color: new Color("yellow"),
-                },
+                data: node.label,
               },
               minDistance: {
-                data: 1,
+                data: Infinity,
               },
               prevNodeLabel: {
-                data: "B",
-                backgroundHighlight: {
-                  highlighted: true,
-                  color: new Color("green"),
-                },
+                data: null,
               },
-            },
-          ]}
+            }
+          })}
         />
-      </div>
+      </Box>
+
+      <AlgorithmStepList items={[]} />
 
       {/* user steps */}
 
