@@ -10,19 +10,31 @@ import React, {
 } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import {
-  GraphGenerator,
-  ThreeDGraph,
-  ThreejsGraphStrategy,
+  AlphabetGraphManager,
+  ThreeDGraphRenderer,
+  ThreejsGraphRenderingStrategy,
 } from "@/library/algorithms/graphs/3d/Graph"
 import {
   IconButton,
   IconButtonProps,
+  Paper,
   Snackbar,
   Stack,
   Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   useMediaQuery,
 } from "@mui/material"
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei"
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  Text,
+  Text3D,
+} from "@react-three/drei"
 import { MyGridHelper } from "@/components/3d/MyGridHelper/MyGridHelper"
 import Color from "color"
 
@@ -83,7 +95,7 @@ function NumberOfNodesPicker({
       </Typography>
       <Slider
         min={5}
-        max={50}
+        max={26}
         getAriaLabel={() => "# of nodes"}
         value={value}
         onChange={handleChange}
@@ -312,13 +324,119 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
   )
 }
 
+// ------------------------------------ DIJKSTRAS TRACKING TABLE COMPONENT ------------------------------------
+
+type TableCell<T> = {
+  data: T
+  backgroundHighlight?: {
+    highlighted: boolean
+    color: Color
+  }
+}
+type AlgorithmTrackingTableProps = {
+  nodes: Array<{
+    label: TableCell<string>
+    minDistance: TableCell<number>
+    prevNodeLabel: TableCell<string>
+  }>
+}
+
+const AlgorithmTrackingTable = (props: AlgorithmTrackingTableProps) => {
+  const theme = useTheme()
+
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{ width: "max-content" }}
+    >
+      <Table
+        sx={{
+          minWidth: "auto",
+          width: "auto",
+          tableLayout: "auto",
+          border: "1px solid rgba(224, 224, 224, 1)",
+          ".MuiTableCell-root": {
+            paddingInline: theme.spacing(1),
+          },
+        }}
+        aria-label="algorithm tracking table"
+        size="small"
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell
+              align="center"
+              sx={{ borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              Node
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              Min
+            </TableCell>
+            <TableCell align="center">Prev</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.nodes.map((node, index) => (
+            <TableRow
+              key={index}
+              sx={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              <TableCell
+                align="center"
+                sx={{
+                  borderRight: "1px solid rgba(224, 224, 224, 1)",
+                  backgroundColor: node.label.backgroundHighlight?.highlighted
+                    ? node.label.backgroundHighlight.color.toString()
+                    : "transparent",
+                }}
+              >
+                {node.label.data}
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  borderRight: "1px solid rgba(224, 224, 224, 1)",
+                  backgroundColor: node.minDistance.backgroundHighlight
+                    ?.highlighted
+                    ? node.minDistance.backgroundHighlight.color.toString()
+                    : "transparent",
+                }}
+              >
+                {node.minDistance.data}
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  borderRight: "1px solid rgba(224, 224, 224, 1)",
+                  backgroundColor: node.prevNodeLabel.backgroundHighlight
+                    ?.highlighted
+                    ? node.prevNodeLabel.backgroundHighlight.color.toString()
+                    : "transparent",
+                }}
+              >
+                {node.prevNodeLabel.data}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+// ------------------------------------ PAGE COMPONENTS ------------------------------------
+
 // the whole purpose of this component is to be able to get the scene object for use in the graphManager
 const NestedCanvasElement = ({
-  graphManagerSetter,
-  graphManagerDefined,
+  graphRendererSetter,
+  graphRendererDefined,
 }: {
-  graphManagerSetter: (manager: ThreeDGraph) => void
-  graphManagerDefined: boolean
+  graphRendererSetter: (manager: ThreeDGraphRenderer) => void
+  graphRendererDefined: boolean
 }) => {
   const { scene, camera } = useThree()
 
@@ -340,9 +458,11 @@ const NestedCanvasElement = ({
   })
 
   useEffect(() => {
-    if (!graphManagerDefined)
-      graphManagerSetter(new ThreeDGraph(new ThreejsGraphStrategy(scene)))
-  }, [scene, graphManagerSetter, graphManagerDefined])
+    if (!graphRendererDefined)
+      graphRendererSetter(
+        new ThreeDGraphRenderer(new ThreejsGraphRenderingStrategy(scene))
+      )
+  }, [scene, graphRendererSetter, graphRendererDefined])
 
   return (
     <>
@@ -357,14 +477,15 @@ const NestedCanvasElement = ({
 }
 
 const DijkstrasAlgorithmVisualizationPage = () => {
-  const [graphManager, graphManagerSetter] = useState<ThreeDGraph | null>(null)
-  const graphGenerator = useMemo(() => new GraphGenerator(), [])
+  const [graphRenderer, graphRendererSetter] =
+    useState<ThreeDGraphRenderer | null>(null)
+  const graphManager = useMemo(() => new AlphabetGraphManager(), [])
   const algorithmManager = useDijkstraAlgorithmManager()
   const algorithmUIManager = useMemo(() => new DijkstraAlertGenerator(), [])
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
   const [minNumNodes, minNumNodesSetter] = useState<number>(5)
-  const [maxNumNodes, maxNumNodesSetter] = useState<number>(50)
+  const [maxNumNodes, maxNumNodesSetter] = useState<number>(26)
   const [maxDistanceFromOrigin, maxDistanceFromOriginSetter] =
     useState<number>(7)
   const [minNumEdges, minNumEdgesSetter] = useState<number>(5)
@@ -377,10 +498,10 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
   useEffect(() => {
     const newStepAlertData = algorithmUIManager.getCurrentStepAlert(
-      algorithmManager.step
+      algorithmManager.userStep
     )
     stepAlertTitleSetter(newStepAlertData.title)
-  }, [algorithmManager.step, algorithmUIManager])
+  }, [algorithmManager.userStep, algorithmUIManager])
 
   useEffect(() => {
     setTimeout(() => {
@@ -389,60 +510,60 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   }, [])
 
   useEffect(() => {
-    if (!graphGenerator || !graphManager) return
+    if (!graphManager || !graphRenderer) return
 
     // clear old nodes
-    graphGenerator.clearNodes()
-    graphGenerator.clearEdges()
     graphManager.clearNodes()
     graphManager.clearEdges()
+    graphRenderer.clearNodeMeshes()
+    graphRenderer.clearEdgeMeshes()
 
     // generate the nodes
     const numNodesToGenerate = genRandomInt(minNumNodes, maxNumNodes)
     for (let i = 0; i < numNodesToGenerate; i++) {
-      graphGenerator.generateNode(maxDistanceFromOrigin)
+      graphManager.generateNode(maxDistanceFromOrigin)
     }
 
     // generate the edges
 
     // generate base edges (to make the graph connected)
     do {
-      const edgeGenerated = graphGenerator.generateEdge()
-      graphManager.addEdge({
+      const edgeGenerated = graphManager.generateEdge()
+      graphRenderer.addEdge({
         end1Location: edgeGenerated[0],
         end2Location: edgeGenerated[1],
         radius: 0.05,
       })
-    } while (graphGenerator.edgesNeededToConnect() > 0)
+    } while (graphManager.edgesNeededToConnect() > 0)
 
     // generate more edges so that there are multiple paths to get somewhere in the graph
 
     const numEdgesPossibleLeft =
-      graphGenerator.maxEdges - graphGenerator.allEdges.length
+      graphManager.maxEdges - graphManager.allEdges.length
     const numExtraEdgesToGenerate = genRandomInt(1, numEdgesPossibleLeft) / 2
 
     for (let i = 0; i < numExtraEdgesToGenerate; i++) {
-      const edgeGenerated = graphGenerator.generateEdge()
-      graphManager.addEdge({
+      const edgeGenerated = graphManager.generateEdge()
+      graphRenderer.addEdge({
         end1Location: edgeGenerated[0],
         end2Location: edgeGenerated[1],
         radius: 0.05,
       })
     }
   }, [
-    graphGenerator,
+    graphManager,
     maxDistanceFromOrigin,
     minNumNodes,
     maxNumNodes,
-    graphManager,
+    graphRenderer,
     minNumEdges,
   ])
 
   function onSphereClick(nodeCoords: Vector3) {
-    switch (algorithmManager.step) {
+    switch (algorithmManager.userStep) {
       case DijkstrasAlgorithmSteps.PickStartingNode: {
-        algorithmManager.setSelectedNode(nodeCoords)
-        algorithmManager.nextStep()
+        algorithmManager.setStartNode(nodeCoords)
+        algorithmManager.nextUserStep()
       }
 
       default:
@@ -485,7 +606,42 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         </Stack>
       </SwipeableEdgeDrawer>
 
-      {/* alerts */}
+      <div
+        style={{
+          width: "25vw",
+          position: "absolute",
+          left: theme.spacing(2),
+          bottom: "50%",
+          maxHeight: "50vh",
+          zIndex: 10000000,
+        }}
+      >
+        <AlgorithmTrackingTable
+          nodes={[
+            {
+              label: {
+                data: "A",
+                backgroundHighlight: {
+                  highlighted: true,
+                  color: new Color("yellow"),
+                },
+              },
+              minDistance: {
+                data: 1,
+              },
+              prevNodeLabel: {
+                data: "B",
+                backgroundHighlight: {
+                  highlighted: true,
+                  color: new Color("green"),
+                },
+              },
+            },
+          ]}
+        />
+      </div>
+
+      {/* user steps */}
 
       {/* step alert */}
       <Stack
@@ -495,7 +651,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
           width: isMobile ? "90vw" : "max-content",
           position: "absolute",
           bottom: isMobile
-            ? algorithmManager.step == DijkstrasAlgorithmSteps.PickStartingNode
+            ? algorithmManager.userStep ==
+              DijkstrasAlgorithmSteps.PickStartingNode
               ? theme.spacing(10)
               : theme.spacing(4)
             : theme.spacing(2),
@@ -521,7 +678,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         />
 
         {/* arrows to control algorithm */}
-        {algorithmManager.step !== DijkstrasAlgorithmSteps.PickStartingNode && (
+        {algorithmManager.userStep !==
+          DijkstrasAlgorithmSteps.PickStartingNode && (
           <Stack
             direction="row"
             sx={{ width: "100%", justifyContent: "space-between" }}
@@ -554,26 +712,43 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         />
         <OrbitControls />
         <NestedCanvasElement
-          graphManagerDefined={!!graphManager}
-          graphManagerSetter={(newGraphManager) => {
-            graphManagerSetter(newGraphManager)
+          graphRendererDefined={!!graphRenderer}
+          graphRendererSetter={(newGraphManager) => {
+            graphRendererSetter(newGraphManager)
           }}
         />
         <MyGridHelper
           size={10}
           showing={showingGridLines}
         />
-        {graphGenerator.allNodes.map((node, i) => (
-          <SphereNode
-            position={node}
-            onSphereClick={onSphereClick}
-            color={
-              algorithmManager.selectedNode &&
-              isSamePoint(node, algorithmManager.selectedNode)
-                ? new Color("red")
-                : new Color("#fff")
-            }
-          />
+        {graphManager.allNodes.map((node, i) => (
+          <>
+            <SphereNode
+              position={node.location}
+              onSphereClick={onSphereClick}
+              color={
+                algorithmManager.selectedNode &&
+                isSamePoint(node.location, algorithmManager.selectedNode)
+                  ? new Color("red")
+                  : new Color("#fff")
+              }
+            />
+            {/* label for node */}
+            <Text3D
+              font="/Roboto_Bold.json"
+              key={node.label}
+              position={[
+                node.location.x - 0.15,
+                node.location.y + 0.75,
+                node.location.z,
+              ]}
+              size={0.3}
+              height={0.1}
+            >
+              {node.label}
+              <meshStandardMaterial color="#ffa724" />
+            </Text3D>
+          </>
         ))}
       </Canvas>
     </>

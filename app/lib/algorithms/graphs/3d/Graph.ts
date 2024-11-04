@@ -4,6 +4,7 @@
 
 import { getRandomElement } from "@/library/utility/general"
 import Color from "color"
+import { randomUUID } from "crypto"
 import {
   CylinderGeometry,
   Mesh,
@@ -15,6 +16,7 @@ import {
 } from "three"
 
 export type I3DNode = Vector3
+export type LabeledNode = { location: I3DNode; label: string }
 export type I3DEdge = [I3DNode, I3DNode]
 
 export interface ISphere_Graphics {
@@ -90,40 +92,40 @@ class ThreejsEdge implements IEdge {
   }
 }
 
-interface IGraphStrategy {
+interface IGraphRenderingStrategy {
   addNode: (node: INode_Graphics) => void
   addEdge: (cylinderData: ICylinder) => void
-  clearNodes: () => void
-  clearEdges: () => void
+  clearNodeMeshes: () => void
+  clearEdgeMeshes: () => void
 }
 
-interface IGraph extends IGraphStrategy {}
+interface IGraphRenderer extends IGraphRenderingStrategy {}
 
-export class ThreeDGraph implements IGraph {
-  private graphStrategy: IGraphStrategy
+export class ThreeDGraphRenderer implements IGraphRenderer {
+  private renderStrategy: IGraphRenderingStrategy
 
-  constructor(graphStrategy: IGraphStrategy) {
-    this.graphStrategy = graphStrategy
+  constructor(graphStrategy: IGraphRenderingStrategy) {
+    this.renderStrategy = graphStrategy
   }
 
   addNode(node: INode_Graphics): void {
-    this.graphStrategy.addNode(node)
+    this.renderStrategy.addNode(node)
   }
 
   addEdge(cylinderData: ICylinder): void {
-    this.graphStrategy.addEdge(cylinderData)
+    this.renderStrategy.addEdge(cylinderData)
   }
 
-  clearNodes(): void {
-    this.graphStrategy.clearNodes()
+  clearNodeMeshes(): void {
+    this.renderStrategy.clearNodeMeshes()
   }
 
-  clearEdges(): void {
-    this.graphStrategy.clearEdges()
+  clearEdgeMeshes(): void {
+    this.renderStrategy.clearEdgeMeshes()
   }
 }
 
-export class ThreejsGraphStrategy implements IGraphStrategy {
+export class ThreejsGraphRenderingStrategy implements IGraphRenderingStrategy {
   private scene: Scene
 
   private nodeMeshes: Array<Mesh> = []
@@ -199,7 +201,7 @@ export class ThreejsGraphStrategy implements IGraphStrategy {
     this.edgeMeshes.push(cylinderMesh)
   }
 
-  clearNodes() {
+  clearNodeMeshes() {
     for (let i = 0; i < this.nodeMeshes.length; i++) {
       const mesh = this.nodeMeshes[i]
       this.scene.remove(mesh)
@@ -217,7 +219,7 @@ export class ThreejsGraphStrategy implements IGraphStrategy {
     this.nodeMeshes = []
   }
 
-  clearEdges() {
+  clearEdgeMeshes() {
     for (let i = 0; i < this.edgeMeshes.length; i++) {
       const mesh = this.edgeMeshes[i]
       this.scene.remove(mesh)
@@ -236,8 +238,8 @@ export class ThreejsGraphStrategy implements IGraphStrategy {
   }
 }
 
-export class GraphGenerator {
-  private nodes: Array<I3DNode> = []
+export class GraphManager {
+  private nodes: Array<LabeledNode> = []
   private edges: Array<I3DEdge> = []
 
   generateNode(maxDistanceFromOrigin: number): I3DNode {
@@ -247,8 +249,12 @@ export class GraphGenerator {
     generatedNode = this.getRandomCoordinate(maxDistanceFromOrigin)
 
     // add node to list of existing nodes
-    this.nodes.push(generatedNode)
+    this.nodes.push({ location: generatedNode, label: this.getLabel() })
     return generatedNode
+  }
+
+  protected getLabel(): string {
+    return randomUUID()
   }
 
   private getRandomCoordinate(max: number): I3DNode {
@@ -267,7 +273,7 @@ export class GraphGenerator {
     this.edges = []
   }
 
-  get allNodes(): Array<I3DNode> {
+  get allNodes(): Array<LabeledNode> {
     return this.nodes
   }
 
@@ -291,43 +297,43 @@ export class GraphGenerator {
       throw new Error("Out of possible edges.")
     }
 
-    let nodeA: I3DNode
-    let nodeB: I3DNode
+    let nodeA: LabeledNode
+    let nodeB: LabeledNode
     let edgeAlreadyExists: boolean
 
     // Ensure the graph remains connected by creating edges between unconnected nodes
     const unconnectedNodes = this.nodes.filter(
-      (node) => !this.isNodeConnected(node)
+      (node) => !this.isNodeConnected(node.location)
     )
     const connectedNodes = this.nodes.filter((node) =>
-      this.isNodeConnected(node)
+      this.isNodeConnected(node.location)
     )
 
     // If there are unconnected nodes, pick one and connect it to an already connected node
     if (unconnectedNodes.length > 0) {
-      nodeA = getRandomElement(unconnectedNodes) as I3DNode
+      nodeA = getRandomElement(unconnectedNodes) as LabeledNode
       nodeB = getRandomElement(
         connectedNodes.length > 0 ? connectedNodes : unconnectedNodes
-      ) as I3DNode
+      ) as LabeledNode
     } else {
       // Pick two random nodes for additional edges if all nodes are already connected
       do {
-        nodeA = getRandomElement(this.nodes) as I3DNode
-        nodeB = getRandomElement(this.nodes) as I3DNode
+        nodeA = getRandomElement(this.nodes) as LabeledNode
+        nodeB = getRandomElement(this.nodes) as LabeledNode
 
         // Check to make sure this edge doesn't already exist
         const hasMatchCheck1 = this.edges.some(
-          (edge) => edge[0] === nodeA && edge[1] === nodeB
+          (edge) => edge[0] === nodeA.location && edge[1] === nodeB.location
         )
         const hasMatchCheck2 = this.edges.some(
-          (edge) => edge[0] === nodeB && edge[1] === nodeA
+          (edge) => edge[0] === nodeB.location && edge[1] === nodeA.location
         )
 
         edgeAlreadyExists = hasMatchCheck1 || hasMatchCheck2
       } while (nodeB === nodeA || edgeAlreadyExists)
     }
 
-    const generatedEdge: I3DEdge = [nodeA, nodeB]
+    const generatedEdge: I3DEdge = [nodeA.location, nodeB.location]
     this.edges.push(generatedEdge)
 
     return generatedEdge
@@ -340,7 +346,7 @@ export class GraphGenerator {
 
   // checks if the graph is connected or not
   isConnectedGraph(): boolean {
-    return this.allNodes.every((node) => this.isNodeConnected(node))
+    return this.allNodes.every((node) => this.isNodeConnected(node.location))
   }
 
   public edgesNeededToConnect(): number {
@@ -359,9 +365,9 @@ export class GraphGenerator {
 
     // go through each node and find unvisited components
     for (const node of this.nodes) {
-      if (!visited.has(node)) {
+      if (!visited.has(node.location)) {
         componentCount++
-        this.traverseComponent(node, visited)
+        this.traverseComponent(node.location, visited)
       }
     }
 
@@ -386,5 +392,24 @@ export class GraphGenerator {
         }
       }
     }
+  }
+}
+
+export class AlphabetGraphManager extends GraphManager {
+  getLabel(): string {
+    // Extract labels from existing nodes and convert to a Set for quick lookup
+    const existingLabels = new Set(
+      this.allNodes.map((node) => node.label.toUpperCase())
+    )
+
+    // Loop through the alphabet to find the first available letter
+    for (let i = 0; i <= 26; i++) {
+      const letter = String.fromCharCode(65 + i) // 'A' is 65 in ASCII
+      if (!existingLabels.has(letter)) {
+        return letter // Return the first available letter
+      }
+    }
+
+    throw new Error("out of letters to use as labels")
   }
 }
