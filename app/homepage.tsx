@@ -33,6 +33,8 @@ import {
   FaAngular,
   FaLaravel,
   FaAws,
+  FaLongArrowAltRight,
+  FaArrowAltCircleRight,
 } from "react-icons/fa"
 import {
   SiBlender,
@@ -54,8 +56,11 @@ import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
 import Navbar from "@/components/navbar/navbar"
-import { Typography } from "@mui/material"
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { ProtestStrikeFont } from "./styles/fonts/fonts"
+import Alert from "@/components/Alert/Alert"
+import Color from "color"
+import { useRouter } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "IDrumsey",
@@ -385,6 +390,9 @@ export default function HomePage() {
     Array(featuredProjects.length).fill(false)
   )
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
   useEffect(() => {
     const timers: NodeJS.Timeout[] = []
 
@@ -424,6 +432,8 @@ export default function HomePage() {
       typed.destroy()
     }
   }, [])
+
+  const router = useRouter()
 
   return (
     <>
@@ -607,6 +617,40 @@ export default function HomePage() {
             )}
           </div>
         </div>
+
+        <Alert
+          bgColor={new Color("#4287f5")}
+          onClick={() => router.push("/cool/algorithms/dijkstras3d")}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: isMobile ? "100%" : "max-content",
+              maxWidth: "100%",
+              marginInline: "auto",
+            }}
+          >
+            <Typography
+              variant="body1"
+              fontWeight="bold"
+              lineHeight={2}
+            >
+              Check out this cool 3d interactive Dijkstras algorithm
+            </Typography>
+            {isMobile ? (
+              <FaArrowAltCircleRight
+                size={30}
+                style={{ marginLeft: 36 }}
+              />
+            ) : (
+              <FaLongArrowAltRight
+                style={{ paddingLeft: 8 }}
+                size={30}
+              />
+            )}
+          </Box>
+        </Alert>
       </main>
     </>
   )
