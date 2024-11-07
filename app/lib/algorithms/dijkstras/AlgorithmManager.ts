@@ -126,7 +126,7 @@ export const useDijkstraAlgorithmManager = () => {
     } catch (e) {
       return []
     }
-  }, [unvisitedNodes])
+  }, [getVisitedNodes])
 
   const [unvisitedCurrentNodeNeighbors, unvisitedCurrentNodeNeighborsSetter] =
     useState<Array<LabeledNode>>([])
@@ -225,9 +225,6 @@ export const useDijkstraAlgorithmManager = () => {
           unvisitedNeighborsDiscovered: unvisitedConnectedNodes,
         }
         unvisitedCurrentNodeNeighborsSetter(unvisitedConnectedNodes)
-        break
-
-      case "selectNewCurrentNode":
         break
       case "checkCanContinue":
         throw new Error("Algorithm done")

@@ -525,7 +525,12 @@ const AlgorithmStepList = (props: AlgorithmStepListProps) => {
         paddingBlock={2}
       >
         {props.Items.map((Item, i) => (
-          <Box paddingInline={4}>{Item}</Box>
+          <Box
+            key={i}
+            paddingInline={4}
+          >
+            {Item}
+          </Box>
         ))}
         <Box
           ref={endOfContentRef}
@@ -818,6 +823,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     maxNumNodes,
     graphRenderer,
     minNumEdges,
+    algorithmManager,
+    tableMetaManager,
   ])
 
   function onSphereClick(nodeCoords: Vector3) {
@@ -849,7 +856,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   // if user changes any of the settings of the graph, restart the algorithm
   useEffect(() => {
     algorithmManager.resetAlgorithm()
-  }, [minNumNodes, maxNumNodes, maxDistanceFromOrigin])
+  }, [minNumNodes, maxNumNodes, maxDistanceFromOrigin, algorithmManager])
 
   function takeNextInternalStep() {
     const stepTaken = algorithmManager.takeNextStep()
@@ -1185,8 +1192,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
               sx={{ color: new Color("#fff").alpha(0.5).toString() }}
             >
               Since the new distance is larger than the one in the table, we
-              keep the already existing distance since we're trying to find the
-              SHORTEST path.
+              keep the already existing distance since we&apos;re trying to find
+              the SHORTEST path.
             </Typography>
           )
 
@@ -1228,11 +1235,15 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         ]
       case "determineUnvisitedNeighbors":
         return [
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            key="determineUnvisitedNeighbors-stepmessage-1"
+          >
             Found {step.unvisitedNeighborsDiscovered!.length} unvisited neighbor
             nodes:{" "}
             {step.unvisitedNeighborsDiscovered?.map((node, i) => (
               <Typography
+                key={i}
                 variant="body2"
                 component="span"
                 sx={{ color: UNVISITED_NEIGHBOR_NODE_COLOR.toString() }}
@@ -1253,7 +1264,10 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         return []
       case "pickOneOfTheNeighborNodesToCalcDistance":
         return [
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            key="pickOneOfTheNeighborNodesToCalcDistance-stepmessage-1"
+          >
             Picked node{" "}
             <Typography
               variant="body2"
