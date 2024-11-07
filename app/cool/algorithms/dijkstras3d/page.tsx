@@ -1425,11 +1425,11 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             direction="row"
             sx={{ width: "100%", justifyContent: "space-between" }}
           >
-            {/* <MdOutlineKeyboardArrowLeft
+            <MdOutlineKeyboardArrowLeft
               size={40}
               color="#fff"
               cursor="pointer"
-            /> */}
+            />
             <MdOutlineKeyboardArrowRight
               size={40}
               color="#fff"
