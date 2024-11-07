@@ -321,7 +321,7 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
   }
 
   // This is used only for the example
-  const container = window.document.body
+  const container = window?.document.body ?? undefined
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
