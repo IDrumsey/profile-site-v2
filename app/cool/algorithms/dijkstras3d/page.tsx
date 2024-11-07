@@ -11,6 +11,7 @@ import React, {
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import {
   AlphabetGraphManager,
+  LabeledNode,
   ThreeDGraphRenderer,
   ThreejsGraphRenderingStrategy,
 } from "@/library/algorithms/graphs/3d/Graph"
@@ -46,21 +47,43 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import SwipeableDrawer from "@mui/material/SwipeableDrawer"
 import SettingsIcon from "@mui/icons-material/Settings"
-import { IoMdGrid } from "react-icons/io"
+import { IoMdCloseCircle, IoMdGrid } from "react-icons/io"
 import Slider from "@mui/material/Slider"
-import { genRandomInt } from "@/library/utility/general"
+import {
+  genRandomInt,
+  getContrastingTextColor,
+  roundNumber,
+} from "@/library/utility/general"
 import { DirectionalLight, Vector3 } from "three"
 import {
   DijkstraAlertGenerator,
   useDijkstraAlgorithmManager,
   DijkstrasAlgorithmSteps,
+  DijkstraAlgStep,
 } from "@/library/algorithms/dijkstras/AlgorithmManager"
 import SphereNode from "@/components/3d/Nodes/SphereNode"
-import { isSamePoint } from "@/library/utility/threejs"
+import { distanceBetweenPoints, isSamePoint } from "@/library/utility/threejs"
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md"
+import Alert from "@/components/Alert/Alert"
+import { useRouter } from "next/navigation"
+import { FaWrench } from "react-icons/fa"
+import CloseIcon from "@mui/icons-material/Close"
+
+const VISITED_NODE_COLOR = new Color("purple")
+const CURRENT_NODE_COLOR = new Color("blue")
+const UNVISITED_NEIGHBOR_NODE_COLOR = new Color("green")
+const SELECTED_NEIGHBOR_NODE_COLOR = new Color("yellow")
+const EDGE_CALC_DISTANCE_COLOR = new Color("#ff0370")
+const STARTING_NODE_COLOR = new Color("#0392ff")
+const ALREADY_KNOWN_CURRENT_NODE_DISTANCE_COLOR = new Color("#fa9c05")
+const COMPARE_MIN_DISTANCE_COLOR = new Color("#0cf518")
+const NEW_DISTANCE_TO_COMPARE_COLOR = new Color("yellow")
+const IN_DEVELOPMENT_ALERT_TEXT_COLOR = new Color("#473d33")
+
+type SubroutineType = "calcDistance"
 
 function NumberOfNodesPicker({
   value,
@@ -333,12 +356,15 @@ type TableCell<T> = {
     color: Color
   }
 }
+
+type DijkstraTrackingTableRowData = {
+  label: TableCell<string>
+  minDistance: TableCell<number>
+  prevNodeLabel: TableCell<string | null>
+}
+
 type AlgorithmTrackingTableProps = {
-  nodes: Array<{
-    label: TableCell<string>
-    minDistance: TableCell<number>
-    prevNodeLabel: TableCell<string | null>
-  }>
+  nodes: Array<DijkstraTrackingTableRowData>
 }
 
 const AlgorithmTrackingTable = (props: AlgorithmTrackingTableProps) => {
@@ -431,10 +457,22 @@ const AlgorithmTrackingTable = (props: AlgorithmTrackingTableProps) => {
 // ----------------------------- Algorithm Steps list component -----------------------------
 
 type AlgorithmStepListProps = {
-  items: Array<string>
+  Items: Array<ReactNode>
 }
 const AlgorithmStepList = (props: AlgorithmStepListProps) => {
   const theme = useTheme()
+
+  const endOfContentRef = useRef<HTMLDivElement>(null) // Create a ref for the dummy div
+
+  // Scroll to the end of the content when Items changes
+  useEffect(() => {
+    if (endOfContentRef.current) {
+      endOfContentRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      })
+    }
+  }, [props.Items])
 
   return (
     <Box
@@ -459,15 +497,13 @@ const AlgorithmStepList = (props: AlgorithmStepListProps) => {
         spacing={2}
         paddingBlock={2}
       >
-        {props.items.map((item, i) => (
-          <Typography
-            paddingInline={4}
-            variant="body2"
-            sx={{ userSelect: "none" }}
-          >
-            {item}
-          </Typography>
+        {props.Items.map((Item, i) => (
+          <Box paddingInline={4}>{Item}</Box>
         ))}
+        <Box
+          ref={endOfContentRef}
+          paddingBottom={theme.spacing(8)}
+        />
       </Stack>
       <Box
         sx={{
@@ -482,6 +518,122 @@ const AlgorithmStepList = (props: AlgorithmStepListProps) => {
       />
     </Box>
   )
+}
+
+// --------------------------------- TABLE HIGHLIGHT TRACKER HOOK ---------------------------------
+
+type TrackedCellMeta = {
+  highlighted: boolean
+  color: Color
+}
+
+type TrackedCell<IdType, ColumnNames extends string> = {
+  idValue: IdType
+  columnName: ColumnNames
+  cellMeta: TrackedCellMeta
+}
+
+const useGenericTableMetaTracker = <IdType, ColumnNames extends string>() => {
+  const [cells, setCells] = useState<Array<
+    TrackedCell<IdType, ColumnNames>
+  > | null>(null)
+
+  // highlight a cell
+  function highlightCell(
+    targetId: IdType,
+    columnToHighlight: ColumnNames,
+    color: Color
+  ) {
+    if (cells == null) return
+
+    // look for the row with this id
+    const foundCellIndex = cells.findIndex(
+      (cell) => cell.idValue == targetId && cell.columnName == columnToHighlight
+    )
+
+    if (foundCellIndex == -1) return
+
+    // found the cell -> updated to include column highlighted
+    const newObj = cells[foundCellIndex]
+
+    newObj.cellMeta = {
+      ...newObj.cellMeta,
+      highlighted: true,
+      color: color,
+    }
+
+    // drop the old cell data and add the new data
+    setCells((oldCells) =>
+      oldCells!
+        .filter(
+          (cell) =>
+            cell.idValue !== targetId || cell.columnName !== columnToHighlight
+        )
+        .concat([newObj])
+    )
+  }
+
+  function unhighlightCell(targetId: IdType, column: ColumnNames) {
+    if (cells == null) return
+
+    // look for the row with this id
+    const foundCellIndex = cells.findIndex(
+      (cell) => cell.idValue == targetId && cell.columnName == column
+    )
+
+    if (foundCellIndex == -1) return
+
+    // found the cell -> updated to include column highlighted
+    const newObj = cells[foundCellIndex]
+
+    newObj.cellMeta = {
+      ...newObj.cellMeta,
+      highlighted: false,
+    }
+
+    // drop the old cell data and add the new data
+    setCells((oldCells) =>
+      oldCells!
+        .filter(
+          (cell) => cell.idValue !== targetId || cell.columnName !== column
+        )
+        .concat([newObj])
+    )
+  }
+
+  function getCellMeta(
+    targetId: IdType,
+    columnToHighlight: ColumnNames
+  ): TrackedCellMeta | undefined {
+    return cells?.find(
+      (cell) => cell.idValue == targetId && cell.columnName == columnToHighlight
+    )?.cellMeta
+  }
+
+  return {
+    defineCells(ids: Array<IdType>, columnNames: Array<ColumnNames>) {
+      if (cells) throw new Error("rows already defined. Cannot change")
+
+      const newCells: Array<TrackedCell<IdType, ColumnNames>> = []
+
+      ids.forEach((id) => {
+        columnNames.forEach((columnName) => {
+          newCells.push({
+            idValue: id,
+            columnName: columnName,
+            cellMeta: {
+              highlighted: false,
+              color: new Color("white"),
+            },
+          })
+        })
+      })
+      setCells(newCells)
+    },
+    highlightCell,
+    getCellMeta,
+    unhighlightCell,
+  }
 }
 
 // ------------------------------------ PAGE COMPONENTS ------------------------------------
@@ -538,6 +690,10 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   const graphManager = useMemo(() => new AlphabetGraphManager(), [])
   const algorithmManager = useDijkstraAlgorithmManager()
   const algorithmUIManager = useMemo(() => new DijkstraAlertGenerator(), [])
+  const tableMetaManager = useGenericTableMetaTracker<
+    DijkstraTrackingTableRowData["label"]["data"],
+    keyof DijkstraTrackingTableRowData
+  >()
 
   const [showingGridLines, showingGridLinesSetter] = useState<boolean>(false)
   const [minNumNodes, minNumNodesSetter] = useState<number>(5)
@@ -551,6 +707,13 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
   const [stepAlertTitle, stepAlertTitleSetter] = useState<string>()
   const [stepAlertDescription, stepAlertDescriptionSetter] = useState<string>()
+
+  const [messagesToShowInLog, messagesToShowInLogSetter] = useState<
+    Array<ReactNode>
+  >([])
+
+  const [subroutineStepNum, subroutineStepNumSetter] = useState<number>(0)
+  const [runningSubroutine, runningSubroutineSetter] = useState<boolean>(false)
 
   useEffect(() => {
     const newStepAlertData = algorithmUIManager.getCurrentStepAlert(
@@ -586,8 +749,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     do {
       const edgeGenerated = graphManager.generateEdge()
       graphRenderer.addEdge({
-        end1Location: edgeGenerated[0],
-        end2Location: edgeGenerated[1],
+        end1Location: edgeGenerated[0].location,
+        end2Location: edgeGenerated[1].location,
         radius: 0.05,
       })
     } while (graphManager.edgesNeededToConnect() > 0)
@@ -601,11 +764,26 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     for (let i = 0; i < numExtraEdgesToGenerate; i++) {
       const edgeGenerated = graphManager.generateEdge()
       graphRenderer.addEdge({
-        end1Location: edgeGenerated[0],
-        end2Location: edgeGenerated[1],
+        end1Location: edgeGenerated[0].location,
+        end2Location: edgeGenerated[1].location,
         radius: 0.05,
       })
     }
+
+    // pass the nodes and edges to the algorithm manager
+    algorithmManager.defineNodes(graphManager.allNodes)
+
+    algorithmManager.defineEdges(
+      graphManager.allEdges.map((edge) => {
+        return [edge[0], edge[1]]
+      })
+    )
+
+    // when the nodes become defined, relay them to the table meta manager
+    tableMetaManager.defineCells(
+      graphManager.allNodes.map((node) => node.label),
+      ["label", "minDistance", "prevNodeLabel"]
+    )
   }, [
     graphManager,
     maxDistanceFromOrigin,
@@ -618,7 +796,21 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   function onSphereClick(nodeCoords: Vector3) {
     switch (algorithmManager.userStep) {
       case DijkstrasAlgorithmSteps.PickStartingNode: {
-        algorithmManager.setStartNode(nodeCoords)
+        const firstNode_labeled = graphManager.getNodeByCoordinates(nodeCoords)
+        if (!firstNode_labeled) return
+        algorithmManager.setStartNode(firstNode_labeled)
+        addLogMessage(
+          <Typography variant="body2">
+            Picked starting node:{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: STARTING_NODE_COLOR.toString() }}
+            >
+              {firstNode_labeled.label}
+            </Typography>
+          </Typography>
+        )
         algorithmManager.nextUserStep()
       }
 
@@ -631,6 +823,446 @@ const DijkstrasAlgorithmVisualizationPage = () => {
   useEffect(() => {
     algorithmManager.resetAlgorithm()
   }, [minNumNodes, maxNumNodes, maxDistanceFromOrigin])
+
+  function takeNextInternalStep() {
+    const stepTaken = algorithmManager.takeNextStep()
+
+    messagesToShowInLogSetter((prev) => [
+      ...prev,
+      ...getStepMessages(stepTaken),
+    ])
+    const shouldRunSubroutineNext = getSubroutineTypeToRun(stepTaken) !== null
+    runningSubroutineSetter(shouldRunSubroutineNext)
+  }
+
+  function onNextAlgorithmStep() {
+    if (runningSubroutine) {
+      const subroutineTypeToRun = getSubroutineTypeToRun(
+        algorithmManager.stepsTaken[algorithmManager.currentlyShowingStepIndex]
+      )
+      runSubroutine(subroutineTypeToRun!)
+    } else {
+      takeNextInternalStep()
+    }
+  }
+
+  function getSubroutineTypeToRun(
+    lastStepShowing: DijkstraAlgStep
+  ): SubroutineType | null {
+    switch (lastStepShowing.stepType) {
+      case "selectNewCurrentNode":
+        return null
+      case "determineUnvisitedNeighbors":
+        return null
+      case "calcNewDistance":
+        return null
+      case "checkCanContinue":
+        return null
+      case "compareNewDistance":
+        return null
+      case "pickOneOfTheNeighborNodesToCalcDistance":
+        return "calcDistance"
+    }
+  }
+
+  function addLogMessage(message: ReactNode) {
+    messagesToShowInLogSetter((prev) => [...prev, message])
+  }
+
+  function runSubroutine(subroutineTypeToRun: SubroutineType): void {
+    switch (subroutineTypeToRun) {
+      case "calcDistance":
+        runCalcDistanceSubroutine()
+        break
+    }
+  }
+
+  function runCalcDistanceSubroutine() {
+    const neighborNode =
+      algorithmManager.stepsTaken[algorithmManager.stepsTaken.length - 1]!
+        .neighborNodeSelected
+    const currentNode =
+      algorithmManager.stepsTaken[algorithmManager.stepsTaken.length - 3]!
+        .newCurrentNodeSelected
+
+    const currentNodeNeighborDistance = roundNumber(
+      distanceBetweenPoints(currentNode!.location, neighborNode!.location),
+      2
+    )
+
+    const currentNodeMinDistanceKnown =
+      algorithmManager.trackingTable.rows.find(
+        (row) => row.node == currentNode
+      )!.minDistance
+
+    const neighborNodeMinDistanceKnown =
+      algorithmManager.trackingTable.rows.find(
+        (row) => row.node == neighborNode
+      )!.minDistance
+
+    const newDistanceToCompare =
+      currentNodeNeighborDistance + currentNodeMinDistanceKnown
+
+    // figure out which substep should run
+    switch (subroutineStepNum) {
+      case 0:
+        // sending message to log that we're calculating distance between the two nodes
+        addLogMessage(
+          <Typography variant="body2">
+            Calculating the path distance to node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: SELECTED_NEIGHBOR_NODE_COLOR.toString() }}
+            >
+              {neighborNode!.label}
+            </Typography>{" "}
+            through the current node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: CURRENT_NODE_COLOR.toString() }}
+            >
+              {currentNode!.label}
+            </Typography>
+          </Typography>
+        )
+
+        // change the color of the edge
+        graphRenderer?.updateEdge({
+          end1Location: neighborNode!.location,
+          end2Location: currentNode!.location,
+          color: EDGE_CALC_DISTANCE_COLOR,
+          radius: 0.05,
+        })
+        break
+      case 1:
+        // add message about calculating the distance JUST between the current node and the neighbor node
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            First step is to calculate the distance just between the current
+            node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: CURRENT_NODE_COLOR.toString() }}
+            >
+              {currentNode!.label}
+            </Typography>{" "}
+            and the neighbor node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: SELECTED_NEIGHBOR_NODE_COLOR.toString() }}
+            >
+              {neighborNode!.label}
+            </Typography>
+          </Typography>
+        )
+
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            The distance between the current node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: CURRENT_NODE_COLOR.toString() }}
+            >
+              {currentNode!.label}
+            </Typography>{" "}
+            and the neighbor node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: SELECTED_NEIGHBOR_NODE_COLOR.toString() }}
+            >
+              {neighborNode!.label}
+            </Typography>{" "}
+            is{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: EDGE_CALC_DISTANCE_COLOR.toString() }}
+              fontWeight="bold"
+            >
+              {currentNodeNeighborDistance} units
+            </Typography>
+          </Typography>
+        )
+        break
+      case 2:
+        // show message about adding distance tracked for current node
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            Now we need to add this distance onto{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{
+                color: ALREADY_KNOWN_CURRENT_NODE_DISTANCE_COLOR.toString(),
+              }}
+            >
+              the already known shortest distance to the current node
+            </Typography>{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: CURRENT_NODE_COLOR.toString() }}
+            >
+              {currentNode!.label}
+            </Typography>{" "}
+            which we can find by looking in the table on the left.
+          </Typography>
+        )
+
+        // highlight the cell in the table that is the minDistance for the current node
+        tableMetaManager.highlightCell(
+          currentNode!.label,
+          "minDistance",
+          ALREADY_KNOWN_CURRENT_NODE_DISTANCE_COLOR.darken(0.3)
+        )
+
+        // add the new distance equation to the log
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            The new total min distance contender length is{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: EDGE_CALC_DISTANCE_COLOR.toString() }}
+            >
+              {currentNodeNeighborDistance}
+            </Typography>{" "}
+            +{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{
+                color: ALREADY_KNOWN_CURRENT_NODE_DISTANCE_COLOR.toString(),
+              }}
+            >
+              {currentNodeMinDistanceKnown}
+            </Typography>{" "}
+            ={" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{
+                color: NEW_DISTANCE_TO_COMPARE_COLOR.toString(),
+              }}
+            >
+              {newDistanceToCompare}
+            </Typography>{" "}
+            units
+          </Typography>
+        )
+        break
+      case 3:
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            The next step is to compare this contender distance with the{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: COMPARE_MIN_DISTANCE_COLOR.toString() }}
+            >
+              currently known min distance for the neighbor node
+            </Typography>{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: SELECTED_NEIGHBOR_NODE_COLOR.toString() }}
+            >
+              {neighborNode!.label}
+            </Typography>{" "}
+            which is now highlighted in the table.
+          </Typography>
+        )
+
+        // highlight the mindistance cell for the neighbor node
+        tableMetaManager.highlightCell(
+          neighborNode!.label,
+          "minDistance",
+          COMPARE_MIN_DISTANCE_COLOR.darken(0.5)
+        )
+
+        addLogMessage(
+          <Typography
+            variant="body2"
+            paddingLeft={1}
+            sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+          >
+            The minDistance already known is{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: COMPARE_MIN_DISTANCE_COLOR.toString() }}
+            >
+              {neighborNodeMinDistanceKnown}
+            </Typography>{" "}
+            and the new distance to compare is{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: NEW_DISTANCE_TO_COMPARE_COLOR.toString() }}
+            >
+              {newDistanceToCompare}
+            </Typography>
+            .
+          </Typography>
+        )
+
+        if (newDistanceToCompare < neighborNodeMinDistanceKnown) {
+          // replace
+          addLogMessage(
+            <Typography
+              variant="body2"
+              paddingLeft={1}
+              sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+            >
+              Since the new distance is smaller than the one in the table, we
+              replace the one in the table for the smaller distance.{" "}
+              <Typography
+                variant="body2"
+                sx={{ textDecoration: "underline" }}
+              >
+                Click the arrow to see this happen.
+              </Typography>
+            </Typography>
+          )
+        } else {
+          addLogMessage(
+            <Typography
+              variant="body2"
+              paddingLeft={1}
+              sx={{ color: new Color("#fff").alpha(0.5).toString() }}
+            >
+              Since the new distance is larger than the one in the table, we
+              keep the already existing distance since we're trying to find the
+              SHORTEST path.
+            </Typography>
+          )
+
+          // skip step 4 since that's only if the new distance was smaller
+          subroutineStepNumSetter((prev) => prev + 1)
+        }
+        break
+      case 4:
+        // update the table if necessary
+        // plug in the newDistanceToCompare into the neighbor node min distance
+        algorithmManager.trackingTable.updateNodeRow(neighborNode!, {
+          minDistance: newDistanceToCompare,
+        })
+        break
+      case 5:
+        // remove the highlights
+        tableMetaManager.unhighlightCell(currentNode!.label, "minDistance")
+        tableMetaManager.unhighlightCell(neighborNode!.label, "minDistance")
+
+        // run next internal step
+        takeNextInternalStep()
+        break
+      case 6:
+        runningSubroutineSetter(false)
+        subroutineStepNumSetter(0)
+        return
+    }
+
+    subroutineStepNumSetter((prev) => prev + 1)
+  }
+
+  function getStepMessages(step: DijkstraAlgStep): Array<ReactNode> {
+    switch (step.stepType) {
+      case "selectNewCurrentNode":
+        return [
+          `Selected ${
+            step.newCurrentNodeSelected!.label
+          } as the new current node`,
+        ]
+      case "determineUnvisitedNeighbors":
+        return [
+          <Typography variant="body2">
+            Found {step.unvisitedNeighborsDiscovered!.length} unvisited neighbor
+            nodes:{" "}
+            {step.unvisitedNeighborsDiscovered?.map((node, i) => (
+              <Typography
+                variant="body2"
+                component="span"
+                sx={{ color: UNVISITED_NEIGHBOR_NODE_COLOR.toString() }}
+              >
+                {node.label}
+                {i !== step.unvisitedNeighborsDiscovered!.length - 1
+                  ? ", "
+                  : ""}
+              </Typography>
+            ))}
+          </Typography>,
+        ]
+      case "calcNewDistance":
+        return []
+      case "checkCanContinue":
+        return []
+      case "compareNewDistance":
+        return []
+      case "pickOneOfTheNeighborNodesToCalcDistance":
+        return [
+          <Typography variant="body2">
+            Picked node{" "}
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ color: SELECTED_NEIGHBOR_NODE_COLOR.toString() }}
+            >
+              {step.neighborNodeSelected!.label}
+            </Typography>{" "}
+            as the next unvisited neighbor
+          </Typography>,
+        ]
+    }
+  }
+
+  function getSphereColor(node: LabeledNode): Color {
+    // if it's a visited node -> VISITED_NODE_COLOR
+    const isVisitedNode = algorithmManager.visitedNodes?.includes(node)
+    const isUnvisitedCurrentNodeNeighboer =
+      algorithmManager.unvisitedCurrentNodeNeighbors?.includes(node)
+    const isSelectedNeighborNode =
+      algorithmManager.currentlySelectedNeighborNode == node
+    const isCurrentNode = node == algorithmManager.getCurrentNode()
+
+    return isCurrentNode
+      ? CURRENT_NODE_COLOR
+      : isVisitedNode
+      ? VISITED_NODE_COLOR
+      : isSelectedNeighborNode
+      ? SELECTED_NEIGHBOR_NODE_COLOR
+      : isUnvisitedCurrentNodeNeighboer
+      ? UNVISITED_NEIGHBOR_NODE_COLOR
+      : new Color("#fff")
+  }
+
+  const [showingDevelopmentAlert, showingDevelopmentAlertSetter] =
+    useState<boolean>(true)
 
   return (
     <>
@@ -678,23 +1310,51 @@ const DijkstrasAlgorithmVisualizationPage = () => {
         }}
       >
         <AlgorithmTrackingTable
-          nodes={graphManager.allNodes.map((node) => {
+          nodes={algorithmManager.trackingTable.rows.map((row) => {
             return {
               label: {
-                data: node.label,
+                data: row.node.label,
+                backgroundHighlight: {
+                  highlighted:
+                    tableMetaManager.getCellMeta(row.node.label, "label")
+                      ?.highlighted ?? false,
+                  color:
+                    tableMetaManager.getCellMeta(row.node.label, "label")
+                      ?.color ?? new Color("#fff"),
+                },
               },
               minDistance: {
-                data: Infinity,
+                data: row.minDistance,
+                backgroundHighlight: {
+                  highlighted:
+                    tableMetaManager.getCellMeta(row.node.label, "minDistance")
+                      ?.highlighted ?? false,
+                  color:
+                    tableMetaManager.getCellMeta(row.node.label, "minDistance")
+                      ?.color ?? new Color("#fff"),
+                },
               },
               prevNodeLabel: {
-                data: null,
+                data: row.prevNode?.label ?? null,
+                backgroundHighlight: {
+                  highlighted:
+                    tableMetaManager.getCellMeta(
+                      row.node.label,
+                      "prevNodeLabel"
+                    )?.highlighted ?? false,
+                  color:
+                    tableMetaManager.getCellMeta(
+                      row.node.label,
+                      "prevNodeLabel"
+                    )?.color ?? new Color("#fff"),
+                },
               },
             }
           })}
         />
       </Box>
 
-      <AlgorithmStepList items={[]} />
+      <AlgorithmStepList Items={messagesToShowInLog} />
 
       {/* user steps */}
 
@@ -739,17 +1399,67 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             direction="row"
             sx={{ width: "100%", justifyContent: "space-between" }}
           >
-            <MdOutlineKeyboardArrowLeft
+            {/* <MdOutlineKeyboardArrowLeft
               size={40}
               color="#fff"
-            />
+              cursor="pointer"
+            /> */}
             <MdOutlineKeyboardArrowRight
               size={40}
               color="#fff"
+              onClick={() => onNextAlgorithmStep()}
+              cursor="pointer"
             />
           </Stack>
         )}
       </Stack>
+
+      {showingDevelopmentAlert && (
+        <Alert
+          bgColor={new Color("#fcba03").alpha(0.8)}
+          showShimmer={false}
+          textColor={IN_DEVELOPMENT_ALERT_TEXT_COLOR}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: isMobile ? "100%" : "max-content",
+              maxWidth: "100%",
+              marginInline: "auto",
+            }}
+          >
+            <FaWrench
+              size={16}
+              style={{ marginRight: 8 }}
+            />
+            <Typography
+              variant="body1"
+              fontWeight="bold"
+              lineHeight={2}
+            >
+              In Development
+            </Typography>
+          </Box>
+          <IconButton
+            sx={{
+              width: "max-content",
+              height: "max-content",
+              position: "absolute",
+              right: theme.spacing(2),
+              bottom: "50%",
+              transform: "translateY(50%)",
+            }}
+            onClick={() => showingDevelopmentAlertSetter(false)}
+          >
+            <CloseIcon
+              sx={{
+                color: IN_DEVELOPMENT_ALERT_TEXT_COLOR.toString(),
+              }}
+            />
+          </IconButton>
+        </Alert>
+      )}
 
       <Canvas
         style={{
@@ -781,12 +1491,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             <SphereNode
               position={node.location}
               onSphereClick={onSphereClick}
-              color={
-                algorithmManager.selectedNode &&
-                isSamePoint(node.location, algorithmManager.selectedNode)
-                  ? new Color("red")
-                  : new Color("#fff")
-              }
+              color={getSphereColor(node)}
             />
             {/* label for node */}
             <Text3D

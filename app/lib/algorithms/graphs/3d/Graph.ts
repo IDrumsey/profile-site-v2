@@ -3,6 +3,7 @@
  */
 
 import { getRandomElement } from "@/library/utility/general"
+import { isSamePoint } from "@/library/utility/threejs"
 import Color from "color"
 import { randomUUID } from "crypto"
 import {
@@ -17,7 +18,7 @@ import {
 
 export type I3DNode = Vector3
 export type LabeledNode = { location: I3DNode; label: string }
-export type I3DEdge = [I3DNode, I3DNode]
+export type I3DEdge = [LabeledNode, LabeledNode]
 
 export interface ISphere_Graphics {
   radius?: number
@@ -79,7 +80,7 @@ class ThreejsEdge implements IEdge {
     if (edge.radius) {
       this.radius = edge.radius
     } else {
-      this.radius = 1
+      this.radius = 0.05
     }
 
     if (edge.color) {
@@ -97,6 +98,7 @@ interface IGraphRenderingStrategy {
   addEdge: (cylinderData: ICylinder) => void
   clearNodeMeshes: () => void
   clearEdgeMeshes: () => void
+  updateEdge: (cylinderData: ICylinder) => void
 }
 
 interface IGraphRenderer extends IGraphRenderingStrategy {}
@@ -122,6 +124,10 @@ export class ThreeDGraphRenderer implements IGraphRenderer {
 
   clearEdgeMeshes(): void {
     this.renderStrategy.clearEdgeMeshes()
+  }
+
+  updateEdge(cylinderData: ICylinder): void {
+    this.renderStrategy.updateEdge(cylinderData)
   }
 }
 
@@ -196,6 +202,11 @@ export class ThreejsGraphRenderingStrategy implements IGraphRenderingStrategy {
 
     cylinderMesh.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), direction)
 
+    cylinderMesh.userData = {
+      end1Location: cylinderData.end1Location,
+      end2Location: cylinderData.end2Location,
+    }
+
     this.scene.add(cylinderMesh)
 
     this.edgeMeshes.push(cylinderMesh)
@@ -217,6 +228,52 @@ export class ThreejsGraphRenderingStrategy implements IGraphRenderingStrategy {
       }
     }
     this.nodeMeshes = []
+  }
+
+  updateEdge(edge: ICylinder) {
+    // remove the old one and replace with new one
+    this.removeEdge(edge)
+    this.addEdge(edge)
+  }
+
+  private removeEdge(targetEdge: ICylinder): void {
+    // Find the matching cylinder in edgeMeshes based on endpoints
+    const index = this.edgeMeshes.findIndex((mesh) => {
+      const { end1Location: meshEnd1, end2Location: meshEnd2 } = mesh.userData
+
+      // Check if both endpoints match
+      const isMatch =
+        (meshEnd1.x === targetEdge.end1Location.x &&
+          meshEnd1.y === targetEdge.end1Location.y &&
+          meshEnd1.z === targetEdge.end1Location.z &&
+          meshEnd2.x === targetEdge.end2Location.x &&
+          meshEnd2.y === targetEdge.end2Location.y &&
+          meshEnd2.z === targetEdge.end2Location.z) ||
+        (meshEnd1.x === targetEdge.end2Location.x &&
+          meshEnd1.y === targetEdge.end2Location.y &&
+          meshEnd1.z === targetEdge.end2Location.z &&
+          meshEnd2.x === targetEdge.end1Location.x &&
+          meshEnd2.y === targetEdge.end1Location.y &&
+          meshEnd2.z === targetEdge.end1Location.z)
+
+      return isMatch
+    })
+
+    // If a matching edge is found, remove it
+    if (index !== -1) {
+      const cylinderMesh = this.edgeMeshes[index]
+      this.scene.remove(cylinderMesh)
+      this.edgeMeshes.splice(index, 1)
+
+      // Dispose of geometry and material to free memory
+      cylinderMesh.geometry.dispose()
+      if (Array.isArray(cylinderMesh.material)) {
+        // Dispose of each material if cylinderMesh has multiple materials
+        cylinderMesh.material.forEach((material) => material.dispose())
+      } else {
+        cylinderMesh.material.dispose()
+      }
+    }
   }
 
   clearEdgeMeshes() {
@@ -323,25 +380,33 @@ export class GraphManager {
 
         // Check to make sure this edge doesn't already exist
         const hasMatchCheck1 = this.edges.some(
-          (edge) => edge[0] === nodeA.location && edge[1] === nodeB.location
+          (edge) =>
+            edge[0].location === nodeA.location &&
+            edge[1].location === nodeB.location
         )
         const hasMatchCheck2 = this.edges.some(
-          (edge) => edge[0] === nodeB.location && edge[1] === nodeA.location
+          (edge) =>
+            edge[0].location === nodeB.location &&
+            edge[1].location === nodeA.location
         )
 
         edgeAlreadyExists = hasMatchCheck1 || hasMatchCheck2
       } while (nodeB === nodeA || edgeAlreadyExists)
     }
 
-    const generatedEdge: I3DEdge = [nodeA.location, nodeB.location]
+    const generatedEdge: I3DEdge = [nodeA, nodeB]
     this.edges.push(generatedEdge)
 
     return generatedEdge
   }
 
   // Helper method to check if a node is connected
-  isNodeConnected(node: I3DNode): boolean {
-    return this.edges.some((edge) => edge[0] === node || edge[1] === node)
+  isNodeConnected(targetNodeLocation: I3DNode): boolean {
+    return this.edges.some(
+      (edge) =>
+        edge[0].location === targetNodeLocation ||
+        edge[1].location === targetNodeLocation
+    )
   }
 
   // checks if the graph is connected or not
@@ -385,13 +450,23 @@ export class GraphManager {
         // Add all unvisited neighbors to the queue
         for (const edge of this.edges) {
           const neighbor =
-            edge[0] === node ? edge[1] : edge[1] === node ? edge[0] : null
+            edge[0].location === node
+              ? edge[1].location
+              : edge[1].location === node
+              ? edge[0].location
+              : null
           if (neighbor && !visited.has(neighbor)) {
             queue.push(neighbor)
           }
         }
       }
     }
+  }
+
+  getNodeByCoordinates(coords: Vector3): LabeledNode | undefined {
+    return this.allNodes.find((labeledNode) =>
+      isSamePoint(labeledNode.location, coords)
+    )
   }
 }
 

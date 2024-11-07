@@ -7,7 +7,9 @@ import { ReactNode, useState } from "react"
 type AlertProps = {
   children: ReactNode
   bgColor: Color
-  onClick: () => void
+  onClick?: () => void
+  showShimmer?: boolean
+  textColor?: Color
 }
 
 const shimmer = keyframes`
@@ -25,33 +27,42 @@ const Alert = (props: AlertProps) => {
   return (
     <Box
       component={motion.div}
-      whileHover={{ scale: 1.05 }} // Adjust the scale value as desired
+      whileHover={{ scale: props.onClick ? 1.05 : 1 }} // Adjust the scale value as desired
       transition={{ type: "just", damping: 20 }}
       onMouseEnter={() => hoveringSetter(true)}
       onMouseLeave={() => hoveringSetter(false)}
       sx={{
-        position: "sticky",
+        position: "fixed",
         bottom: 0,
         left: 0,
         width: "100vw",
         padding: 2,
-        backgroundColor: props.bgColor.darken(hovering ? 0.2 : 0).toString(),
+        backgroundColor: props.bgColor
+          .darken(hovering && props.onClick ? 0.2 : 0)
+          .toString(),
         transition: "background-color linear 80ms",
-        color: getContrastingTextColor(props.bgColor).toString(),
-        cursor: "pointer",
-        backgroundImage: `linear-gradient(
+        color: props.textColor
+          ? props.textColor.toString()
+          : getContrastingTextColor(props.bgColor).toString(),
+        cursor: props.onClick ? "pointer" : undefined,
+        backgroundImage: props.showShimmer
+          ? `linear-gradient(
           90deg,
           rgba(255, 255, 255, 0) 0px,
           rgba(255, 255, 255, 0.3) 25%,
           rgba(255, 255, 255, 0) 75%
-        )`,
-        backgroundSize: "200% 100%",
-        animation: `${shimmer} 3s infinite`,
+        )`
+          : undefined,
+        backgroundSize: props.showShimmer ? "200% 100%" : undefined,
+        animation: props.showShimmer ? `${shimmer} 3s infinite` : undefined,
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
+        zIndex: 10000000000,
       }}
       onClick={() => {
-        props.onClick()
+        if (props.onClick) {
+          props.onClick()
+        }
       }}
     >
       {props.children}
