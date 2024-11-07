@@ -29,6 +29,7 @@ import {
   TableHead,
   TableRow,
   useMediaQuery,
+  keyframes,
 } from "@mui/material"
 import {
   OrbitControls,
@@ -85,6 +86,30 @@ const NEW_DISTANCE_TO_COMPARE_COLOR = new Color("yellow")
 const IN_DEVELOPMENT_ALERT_TEXT_COLOR = new Color("#473d33")
 
 type SubroutineType = "calcDistance"
+
+const inDevelopmentAlertCloseButtonPulseAnimation = keyframes`
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    background-color: transparent; // No background change at the start
+  }
+  20% {
+    transform: scale(1.2) rotate(0deg);
+    opacity: 0.8;
+    background-color: rgba(255, 255, 255, .1); // Example pulse color (light orange)
+  }
+  40% {
+    transform: scale(1) rotate(90deg);
+    opacity: 1;
+    background-color: transparent;
+  }
+
+  100% {
+    transform: scale(1) rotate(90deg);
+    opacity: 1;
+    background-color: transparent;
+  }
+`
 
 function NumberOfNodesPicker({
   value,
@@ -1460,7 +1485,15 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             </Typography>
             <IconButton
               onClick={() => showingDevelopmentAlertSetter(false)}
-              sx={{ marginLeft: 2 }}
+              sx={{
+                marginLeft: 2,
+                animation: `${inDevelopmentAlertCloseButtonPulseAnimation} 3s infinite forwards`,
+                animationDelay: "2s",
+                transition: "background-color 80ms linear",
+                ":hover": {
+                  backgroundColor: "rgba(255, 255, 255, .2) !important",
+                },
+              }}
             >
               <CloseIcon
                 sx={{
