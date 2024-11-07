@@ -320,9 +320,6 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
     setOpen(newOpen)
   }
 
-  // This is used only for the example
-  const container = window?.document.body ?? undefined
-
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
@@ -342,7 +339,7 @@ function SwipeableEdgeDrawer({ children }: { children: ReactNode }) {
         <DesktopPullerToggle onClick={toggleDrawer(true)} />
       )}
       <SwipeableDrawer
-        container={container}
+        container={undefined}
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
@@ -760,8 +757,10 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     }, 1000)
   }, [])
 
+  const [generatedGraph, generatedGraphSetter] = useState<boolean>(false)
+
   useEffect(() => {
-    if (!graphManager || !graphRenderer) return
+    if (!graphManager || !graphRenderer || generatedGraph) return
 
     // clear old nodes
     graphManager.clearNodes()
@@ -816,6 +815,8 @@ const DijkstrasAlgorithmVisualizationPage = () => {
       graphManager.allNodes.map((node) => node.label),
       ["label", "minDistance", "prevNodeLabel"]
     )
+
+    generatedGraphSetter(true)
   }, [
     graphManager,
     maxDistanceFromOrigin,
@@ -825,6 +826,7 @@ const DijkstrasAlgorithmVisualizationPage = () => {
     minNumEdges,
     algorithmManager,
     tableMetaManager,
+    generatedGraph,
   ])
 
   function onSphereClick(nodeCoords: Vector3) {
