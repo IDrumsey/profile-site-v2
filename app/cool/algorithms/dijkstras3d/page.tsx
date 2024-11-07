@@ -71,6 +71,7 @@ import Alert from "@/components/Alert/Alert"
 import { useRouter } from "next/navigation"
 import { FaWrench } from "react-icons/fa"
 import CloseIcon from "@mui/icons-material/Close"
+import { FaGear } from "react-icons/fa6"
 
 const VISITED_NODE_COLOR = new Color("purple")
 const CURRENT_NODE_COLOR = new Color("blue")
@@ -1416,48 +1417,59 @@ const DijkstrasAlgorithmVisualizationPage = () => {
 
       {showingDevelopmentAlert && (
         <Alert
-          bgColor={new Color("#fcba03").alpha(0.8)}
+          bgColor={new Color("#fcba03").alpha(0.9)}
           showShimmer={false}
           textColor={IN_DEVELOPMENT_ALERT_TEXT_COLOR}
+          height="75vh"
         >
+          <FaWrench
+            size={475}
+            style={{
+              position: "absolute",
+              color: "#deb547",
+              left: -175,
+              zIndex: -1,
+            }}
+          />
+          <FaGear
+            size={400}
+            style={{
+              position: "absolute",
+              color: "#deb547",
+              right: -100,
+              bottom: -100,
+              zIndex: -1,
+            }}
+          />
           <Box
             sx={{
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               width: isMobile ? "100%" : "max-content",
               maxWidth: "100%",
               marginInline: "auto",
             }}
           >
-            <FaWrench
-              size={16}
-              style={{ marginRight: 8 }}
-            />
             <Typography
-              variant="body1"
+              variant="h3"
               fontWeight="bold"
               lineHeight={2}
             >
               In Development
             </Typography>
+            <IconButton
+              onClick={() => showingDevelopmentAlertSetter(false)}
+              sx={{ marginLeft: 2 }}
+            >
+              <CloseIcon
+                sx={{
+                  color:
+                    IN_DEVELOPMENT_ALERT_TEXT_COLOR.lighten(0.5).toString(),
+                }}
+              />
+            </IconButton>
           </Box>
-          <IconButton
-            sx={{
-              width: "max-content",
-              height: "max-content",
-              position: "absolute",
-              right: theme.spacing(2),
-              bottom: "50%",
-              transform: "translateY(50%)",
-            }}
-            onClick={() => showingDevelopmentAlertSetter(false)}
-          >
-            <CloseIcon
-              sx={{
-                color: IN_DEVELOPMENT_ALERT_TEXT_COLOR.toString(),
-              }}
-            />
-          </IconButton>
         </Alert>
       )}
 

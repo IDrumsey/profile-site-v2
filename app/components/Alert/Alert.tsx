@@ -2,7 +2,7 @@ import { getContrastingTextColor } from "@/library/utility/general"
 import { Box, keyframes } from "@mui/material"
 import Color from "color"
 import { motion } from "framer-motion"
-import { ReactNode, useState } from "react"
+import { CSSProperties, ReactNode, useState } from "react"
 
 type AlertProps = {
   children: ReactNode
@@ -10,6 +10,7 @@ type AlertProps = {
   onClick?: () => void
   showShimmer?: boolean
   textColor?: Color
+  height?: CSSProperties["height"]
 }
 
 const shimmer = keyframes`
@@ -32,10 +33,13 @@ const Alert = (props: AlertProps) => {
       onMouseEnter={() => hoveringSetter(true)}
       onMouseLeave={() => hoveringSetter(false)}
       sx={{
+        display: "flex",
+        alignItems: "center",
         position: "fixed",
         bottom: 0,
         left: 0,
         width: "100vw",
+        height: props.height ?? undefined,
         padding: 2,
         backgroundColor: props.bgColor
           .darken(hovering && props.onClick ? 0.2 : 0)
@@ -58,6 +62,7 @@ const Alert = (props: AlertProps) => {
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
         zIndex: 10000000000,
+        overflow: "hidden",
       }}
       onClick={() => {
         if (props.onClick) {
