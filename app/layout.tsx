@@ -48,7 +48,9 @@ export default function RootLayout({
           />
           {/* <MotionConfig reducedMotion="user">{children}</MotionConfig> */}
           <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <div style={{ padding: "100px" }}>{children}</div>
+            </ThemeProvider>
           </AppRouterCacheProvider>
         </div>
         <Analytics />

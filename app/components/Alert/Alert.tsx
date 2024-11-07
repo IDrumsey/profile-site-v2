@@ -30,7 +30,7 @@ const Alert = (props: AlertProps) => {
       onMouseEnter={() => hoveringSetter(true)}
       onMouseLeave={() => hoveringSetter(false)}
       sx={{
-        position: "absolute",
+        position: "sticky",
         bottom: 0,
         left: 0,
         width: "100vw",

@@ -6,6 +6,8 @@
   align-items: center;
   padding-top: 20px;
   box-sizing: unset;
+  z-index: 10000000;
+  position: relative;
 }
 
 #main-nav {

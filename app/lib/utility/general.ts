@@ -16,3 +16,8 @@ export function getContrastingTextColor(backgroundColor: Color) {
   // Decide text color based on luminance threshold (e.g., 0.5)
   return luminance > 0.5 ? new Color("#000000") : new Color("#FFFFFF")
 }
+
+export function roundNumber(num: number, decimals: number) {
+  const factor = Math.pow(10, decimals)
+  return Math.round(num * factor) / factor
+}
