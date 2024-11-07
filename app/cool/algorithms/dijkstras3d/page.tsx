@@ -73,6 +73,7 @@ import { useRouter } from "next/navigation"
 import { FaWrench } from "react-icons/fa"
 import CloseIcon from "@mui/icons-material/Close"
 import { FaGear } from "react-icons/fa6"
+import { motion } from "framer-motion"
 
 const VISITED_NODE_COLOR = new Color("purple")
 const CURRENT_NODE_COLOR = new Color("blue")
@@ -1483,6 +1484,18 @@ const DijkstrasAlgorithmVisualizationPage = () => {
             >
               In Development
             </Typography>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 1.5 }} // Duration of fade-in (in seconds)
+            >
+              <Typography
+                variant="body2"
+                marginBottom={2}
+              >
+                Close to see this feature in its current state
+              </Typography>
+            </motion.div>
             <IconButton
               onClick={() => showingDevelopmentAlertSetter(false)}
               sx={{
