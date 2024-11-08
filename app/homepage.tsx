@@ -56,11 +56,21 @@ import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
 import Navbar from "@/components/navbar/navbar"
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { ProtestStrikeFont } from "./styles/fonts/fonts"
 import Alert from "@/components/Alert/Alert"
 import Color from "color"
 import { useRouter } from "next/navigation"
+import { LeetCodeProblemSolution, Loading } from "./types"
+import axios from "axios"
+import { Doughnut } from "react-chartjs-2"
+import { ArcElement, Chart, Legend, Tooltip } from "chart.js"
+
+Chart.register(ArcElement, Tooltip, Legend)
+
+const LEETCODE_EASY_COLOR = new Color("#46D19A")
+const LEETCODE_MEDIUM_COLOR = new Color("#D1C346")
+const LEETCODE_HARD_COLOR = new Color("#D14685")
 
 export const metadata: Metadata = {
   title: "IDrumsey",
@@ -435,6 +445,29 @@ export default function HomePage() {
 
   const router = useRouter()
 
+  // leet code stuff
+
+  const [leetCodeSolutions, setLeetCodeSolutions] = useState<
+    Array<LeetCodeProblemSolution> | "loading"
+  >("loading")
+
+  // load the leet code solutions
+  useEffect(() => {
+    const loader = async () => {
+      const response = await axios.get<{
+        solutions: Array<LeetCodeProblemSolution>
+      }>("/api/leetcode/solved")
+
+      if (response.status != 200) {
+        return
+      }
+
+      setLeetCodeSolutions(response.data.solutions)
+    }
+
+    loader()
+  }, [])
+
   return (
     <>
       <main id={styles["main-wrapper"]}>
@@ -618,6 +651,18 @@ export default function HomePage() {
           </div>
         </div>
 
+        <div
+          style={{
+            height: 2,
+            width: "100%",
+            marginTop: 64,
+            marginBottom: 32,
+            backgroundColor: "#393939",
+          }}
+        ></div>
+        {/* leet code section */}
+        <LeetCodeSection leetCodeSolutions={leetCodeSolutions} />
+
         <Alert
           bgColor={new Color("#4287f5")}
           onClick={() => router.push("/cool/algorithms/dijkstras3d")}
@@ -659,4 +704,183 @@ export default function HomePage() {
 const getRandomBool = () => {
   // https://stackoverflow.com/a/36756480/17712310
   return Math.random() < 0.5
+}
+
+type LeetCodeSectionProps = {
+  leetCodeSolutions: Array<LeetCodeProblemSolution> | "loading"
+}
+
+const LeetCodeSection = (props: LeetCodeSectionProps) => {
+  // figure out how many per difficulty level have been solved
+  const numPerDifficulty = useMemo<{
+    easy: Loading<number>
+    medium: Loading<number>
+    hard: Loading<number>
+  }>(() => {
+    if (props.leetCodeSolutions == "loading") {
+      return {
+        easy: "loading",
+        medium: "loading",
+        hard: "loading",
+      }
+    }
+
+    return {
+      easy: props.leetCodeSolutions.filter(
+        (solution) => solution.problem.difficulty == "Easy"
+      ).length,
+      medium: props.leetCodeSolutions.filter(
+        (solution) => solution.problem.difficulty == "Medium"
+      ).length,
+      hard: props.leetCodeSolutions.filter(
+        (solution) => solution.problem.difficulty == "Hard"
+      ).length,
+    }
+  }, [props.leetCodeSolutions])
+
+  return (
+    <Box>
+      <Typography
+        variant="h4"
+        component={motion.h4}
+        className={ProtestStrikeFont.className}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.5 }}
+        sx={{ marginBottom: 4 }}
+      >
+        Leet Code
+      </Typography>
+
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          marginBottom: 6,
+        }}
+      >
+        <DifficultyLvlIndicator
+          color={LEETCODE_EASY_COLOR}
+          title="Easy"
+        />
+        <DifficultyLvlIndicator
+          color={LEETCODE_MEDIUM_COLOR}
+          title="Medium"
+        />
+        <DifficultyLvlIndicator
+          color={LEETCODE_HARD_COLOR}
+          title="Hard"
+        />
+      </Stack>
+      <SmoothDonutChart
+        numEasy={numPerDifficulty.easy}
+        numMedium={numPerDifficulty.medium}
+        numHard={numPerDifficulty.hard}
+      />
+    </Box>
+  )
+}
+
+type SmoothDonutChartProps = {
+  numEasy: Loading<number>
+  numMedium: Loading<number>
+  numHard: Loading<number>
+}
+
+const SmoothDonutChart = (props: SmoothDonutChartProps) => {
+  const { numEasy, numMedium, numHard } = props
+
+  // Check if any of the values are null (loading state)
+  const isLoading =
+    numEasy === "loading" || numMedium === "loading" || numHard === "loading"
+
+  // Calculate total only if all values are loaded
+  const total = isLoading ? 0 : numEasy + numMedium + numHard
+
+  const data = {
+    labels: ["Easy", "Medium", "Hard"],
+    datasets: [
+      {
+        data: isLoading ? [0, 0, 0] : [numEasy, numMedium, numHard],
+        backgroundColor: [
+          LEETCODE_EASY_COLOR.alpha(0.5).toString(),
+          LEETCODE_MEDIUM_COLOR.alpha(0.5).toString(),
+          LEETCODE_HARD_COLOR.alpha(0.5).toString(),
+        ],
+        borderColor: [
+          LEETCODE_EASY_COLOR.toString(),
+          LEETCODE_MEDIUM_COLOR.toString(),
+          LEETCODE_HARD_COLOR.toString(),
+        ],
+        cutout: "90%", // Makes it a donut
+        spacing: 16,
+        borderWidth: 2,
+        borderRadius: 4,
+      },
+    ],
+  }
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        enabled: !isLoading, // Disable tooltip if loading
+      },
+      legend: {
+        display: false,
+      },
+    },
+  }
+
+  return (
+    <div style={{ position: "relative", width: 200, height: 200 }}>
+      <Doughnut
+        data={data}
+        options={options}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          textAlign: "center",
+          fontSize: "18px",
+          fontWeight: "bold",
+        }}
+      >
+        {!isLoading && (
+          <>
+            <div>Total {total}</div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+type DifficultyLvlIndicatorProps = {
+  color: Color
+  title: string
+}
+
+const DifficultyLvlIndicator = (props: DifficultyLvlIndicatorProps) => {
+  return (
+    <Stack
+      direction="row"
+      spacing={2}
+    >
+      <Box
+        sx={{
+          border: `2px solid ${props.color.toString()}`,
+          width: "16px",
+          height: "16px",
+          borderRadius: "100%",
+          backgroundColor: props.color.alpha(0.2).toString(),
+        }}
+      ></Box>
+      <Typography variant="body2">{props.title}</Typography>
+    </Stack>
+  )
 }
