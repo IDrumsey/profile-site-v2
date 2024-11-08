@@ -62,12 +62,11 @@ export async function GET(request: Request) {
         id: solution.titleSlug,
         title: solution.title,
         problemStatement: staticData.shortFormDescription,
-        category: staticData.problemCategory,
         lang: solution.lang,
         difficulty: questionDetails.difficulty,
       },
       codeSolution: staticData.codeSolution,
-      solutionAcceptedTimestamp: solution.timestamp,
+      solutionAcceptedTimestamp: solution.timestamp * 1000,
     })
   }
 

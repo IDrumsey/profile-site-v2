@@ -65,6 +65,7 @@ import { LeetCodeProblemSolution, Loading } from "./types"
 import axios from "axios"
 import { Doughnut } from "react-chartjs-2"
 import { ArcElement, Chart, Legend, Tooltip } from "chart.js"
+import { format } from "date-fns"
 
 Chart.register(ArcElement, Tooltip, Legend)
 
@@ -777,6 +778,24 @@ const LeetCodeSection = (props: LeetCodeSectionProps) => {
         numMedium={numPerDifficulty.medium}
         numHard={numPerDifficulty.hard}
       />
+
+      {/* cards */}
+      <Stack
+        direction="column"
+        spacing={4}
+        sx={{ marginTop: 8 }}
+      >
+        {props.leetCodeSolutions == "loading" ? (
+          <></>
+        ) : (
+          props.leetCodeSolutions.map((solution, i) => (
+            <LeetCodeSolutionCard
+              solution={solution}
+              key={i}
+            />
+          ))
+        )}
+      </Stack>
     </Box>
   )
 }
@@ -882,5 +901,50 @@ const DifficultyLvlIndicator = (props: DifficultyLvlIndicatorProps) => {
       ></Box>
       <Typography variant="body2">{props.title}</Typography>
     </Stack>
+  )
+}
+
+type LeetCodeSolutionCardProps = {
+  solution: LeetCodeProblemSolution
+}
+
+const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
+  function getSubmittedDateAsStr(): string {
+    return format(
+      new Date(props.solution.solutionAcceptedTimestamp),
+      "MMMM dd, yyyy 'at' h:mma"
+    )
+  }
+
+  const theme = useTheme()
+
+  return (
+    <Box
+      paddingY={2}
+      paddingX={4}
+      sx={{ backgroundColor: new Color("#282828").toString(), borderRadius: 1 }}
+    >
+      <Typography
+        variant="h6"
+        marginBottom={1}
+      >
+        {props.solution.problem.title}
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{ color: new Color("#747474").toString() }}
+      >
+        {props.solution.problem.problemStatement}
+      </Typography>
+      <Typography
+        sx={{
+          color: new Color("#71FF71").toString(),
+          fontSize: theme.typography.caption.fontSize,
+          marginTop: theme.spacing(2),
+        }}
+      >
+        Submitted on {getSubmittedDateAsStr()}
+      </Typography>
+    </Box>
   )
 }
