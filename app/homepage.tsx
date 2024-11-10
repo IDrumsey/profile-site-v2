@@ -56,18 +56,46 @@ import { Project } from "@/models/project"
 import Image from "next/legacy/image"
 import { Metadata } from "next"
 import Navbar from "@/components/navbar/navbar"
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
+import {
+  Box,
+  Grid,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
 import { ProtestStrikeFont } from "./styles/fonts/fonts"
 import Alert from "@/components/Alert/Alert"
 import Color from "color"
 import { useRouter } from "next/navigation"
 import { LeetCodeProblemSolution, Loading } from "./types"
 import axios from "axios"
-import { Doughnut } from "react-chartjs-2"
-import { ArcElement, Chart, Legend, Tooltip } from "chart.js"
-import { format } from "date-fns"
+import { Doughnut, Line } from "react-chartjs-2"
+import {
+  ArcElement,
+  Chart,
+  Legend,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+} from "chart.js"
+import { format, startOfWeek } from "date-fns"
 
-Chart.register(ArcElement, Tooltip, Legend)
+Chart.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 const LEETCODE_EASY_COLOR = new Color("#46D19A")
 const LEETCODE_MEDIUM_COLOR = new Color("#D1C346")
@@ -739,6 +767,9 @@ const LeetCodeSection = (props: LeetCodeSectionProps) => {
     }
   }, [props.leetCodeSolutions])
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
   return (
     <Box>
       <Typography
@@ -748,36 +779,61 @@ const LeetCodeSection = (props: LeetCodeSectionProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.5 }}
-        sx={{ marginBottom: 4 }}
+        sx={{ marginBottom: 4, textAlign: isMobile ? "center" : "auto" }}
       >
         Leet Code
       </Typography>
 
       <Stack
-        direction="row"
-        spacing={2}
-        sx={{
-          marginBottom: 6,
-        }}
+        direction={isMobile ? "column" : "row"}
+        sx={{ width: "100%" }}
       >
-        <DifficultyLvlIndicator
-          color={LEETCODE_EASY_COLOR}
-          title="Easy"
-        />
-        <DifficultyLvlIndicator
-          color={LEETCODE_MEDIUM_COLOR}
-          title="Medium"
-        />
-        <DifficultyLvlIndicator
-          color={LEETCODE_HARD_COLOR}
-          title="Hard"
-        />
+        <Stack
+          direction="column"
+          sx={{ flexShrink: 0 }}
+        >
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              marginBottom: 6,
+              marginInline: isMobile ? "auto" : undefined,
+            }}
+          >
+            <DifficultyLvlIndicator
+              color={LEETCODE_EASY_COLOR}
+              title="Easy"
+            />
+            <DifficultyLvlIndicator
+              color={LEETCODE_MEDIUM_COLOR}
+              title="Medium"
+            />
+            <DifficultyLvlIndicator
+              color={LEETCODE_HARD_COLOR}
+              title="Hard"
+            />
+          </Stack>
+          <SmoothDonutChart
+            numEasy={numPerDifficulty.easy}
+            numMedium={numPerDifficulty.medium}
+            numHard={numPerDifficulty.hard}
+          />
+        </Stack>
+
+        <Box
+          sx={{
+            flex: 1,
+            marginY: isMobile ? 6 : 0,
+            justifySelf: "flex-end",
+          }}
+        >
+          {props.leetCodeSolutions !== "loading" && (
+            <LeetCodeTotalSolutionsLineGraph
+              solutions={props.leetCodeSolutions}
+            />
+          )}
+        </Box>
       </Stack>
-      <SmoothDonutChart
-        numEasy={numPerDifficulty.easy}
-        numMedium={numPerDifficulty.medium}
-        numHard={numPerDifficulty.hard}
-      />
 
       {/* cards */}
       <Stack
@@ -852,8 +908,18 @@ const SmoothDonutChart = (props: SmoothDonutChartProps) => {
     },
   }
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
   return (
-    <div style={{ position: "relative", width: 200, height: 200 }}>
+    <div
+      style={{
+        position: "relative",
+        width: 150,
+        height: 150,
+        marginInline: isMobile ? "auto" : undefined,
+      }}
+    >
       <Doughnut
         data={data}
         options={options}
@@ -946,5 +1012,97 @@ const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
         Submitted on {getSubmittedDateAsStr()}
       </Typography>
     </Box>
+  )
+}
+
+type LeetCodeTotalSolutionsLineGraphProps = {
+  solutions: Array<LeetCodeProblemSolution>
+}
+
+const LEETCODE_TOTALS_GRAPH_COLOR = new Color("#8403fc")
+
+const LeetCodeTotalSolutionsLineGraph = ({
+  solutions,
+}: LeetCodeTotalSolutionsLineGraphProps) => {
+  const [chartData, setChartData] = useState<any>()
+
+  useEffect(() => {
+    // Sort solutions by the accepted timestamp
+    const sortedSolutions = [...solutions].sort(
+      (a, b) => a.solutionAcceptedTimestamp - b.solutionAcceptedTimestamp
+    )
+
+    // Aggregate solutions by week
+    const weeklyTotals: Record<string, number> = {}
+    sortedSolutions.forEach((sol) => {
+      const weekStart = format(
+        startOfWeek(new Date(sol.solutionAcceptedTimestamp)),
+        "MMMM dd, yyyy"
+      )
+      weeklyTotals[weekStart] = (weeklyTotals[weekStart] || 0) + 1 // Increment count for the week
+    })
+
+    // Prepare data for the chart
+    let cumulativeTotal = 0
+    const labels: string[] = []
+    const dataPoints: number[] = []
+
+    Object.keys(weeklyTotals)
+      .sort()
+      .forEach((week) => {
+        cumulativeTotal += weeklyTotals[week]
+        labels.push(week)
+        dataPoints.push(cumulativeTotal)
+      })
+
+    // Set up chart data
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: "Total Solutions Over Time (Weekly)",
+          data: dataPoints,
+          borderColor: LEETCODE_TOTALS_GRAPH_COLOR.alpha(0.3).toString(), // Bright purple for the line
+          pointBackgroundColor:
+            LEETCODE_TOTALS_GRAPH_COLOR.alpha(0.3).toString(), // Bright purple for the points
+          pointBorderColor: LEETCODE_TOTALS_GRAPH_COLOR.toString(), // Border color of the points
+          pointBorderWidth: 2,
+          fill: true,
+          tension: 0.1, // Optional: Makes the line a bit smoother
+        },
+      ],
+    })
+  }, [solutions])
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  if (!chartData) {
+    return <p>Loading...</p>
+  }
+
+  return (
+    <Line
+      data={chartData}
+      options={{
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: !isMobile ? "Week of" : "",
+              font: {
+                weight: "bold",
+                size: 16,
+              },
+            },
+            ticks: {
+              autoSkip: true,
+              maxRotation: isMobile ? 80 : 30,
+              minRotation: isMobile ? 80 : 30,
+            },
+          },
+        },
+      }}
+    />
   )
 }

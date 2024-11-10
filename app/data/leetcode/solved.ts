@@ -303,4 +303,14 @@ def hasComplement(c: str, foundChars: dict):
         return count
                 `,
   },
+
+  {
+    problemSlug: "duplicate-emails",
+    shortFormDescription:
+      'Identify and report all duplicate emails from a table called "Person," where each row has an ID and an email. The goal is to find emails that appear more than once and return a table listing those emails.',
+    codeSolution: `SELECT Email FROM Person
+
+GROUP BY email
+HAVING COUNT(email) > 1`,
+  },
 ]
