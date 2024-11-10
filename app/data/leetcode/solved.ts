@@ -313,4 +313,12 @@ def hasComplement(c: str, foundChars: dict):
 GROUP BY email
 HAVING COUNT(email) > 1`,
   },
+
+  {
+    problemSlug: "customers-who-never-order",
+    shortFormDescription:
+      'Find all customers who have never placed any orders. Given two tables, "Customers" and "Orders," it uses customer IDs as primary and foreign keys respectively. The solution should identify customers not present in the "Orders" table based on their IDs and return their names.',
+    codeSolution: `SELECT Customers.name AS Customers FROM Customers
+WHERE Customers.id NOT IN (SELECT Orders.customerId FROM Orders INNER JOIN Customers ON Orders.customerId = Customers.id)`,
+  },
 ]
