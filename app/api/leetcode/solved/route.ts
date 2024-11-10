@@ -54,18 +54,24 @@ export async function GET(request: Request) {
 
   for (let i = 0; i < latestSolutionsResponse.data.submission.length; i++) {
     const solution = latestSolutionsResponse.data.submission[i]
-    const staticData = getSolutionStaticData(solution.titleSlug)
+    let staticData: SolvedProblemGeneratedMeta | undefined
+    try {
+      staticData = getSolutionStaticData(solution.titleSlug)
+    } catch (e) {
+      // quiet catch
+    }
+
     const questionDetails = await getQuestionDetails(solution.titleSlug)
 
     latestSolutions.push({
       problem: {
         id: solution.titleSlug,
         title: solution.title,
-        problemStatement: staticData.shortFormDescription,
+        description: staticData?.shortFormDescription,
         lang: solution.lang,
         difficulty: questionDetails.difficulty,
       },
-      codeSolution: staticData.codeSolution,
+      codeSolution: staticData?.codeSolution,
       solutionAcceptedTimestamp: solution.timestamp * 1000,
     })
   }

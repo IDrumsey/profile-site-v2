@@ -11,14 +11,14 @@ export type PostItem = {
 export type LeetCodeProblem = {
   id: string
   title: string
-  problemStatement: string
+  description?: string
   lang: string
   difficulty: "Easy" | "Medium" | "Hard"
 }
 
 export type LeetCodeProblemSolution = {
   problem: LeetCodeProblem
-  codeSolution: string
+  codeSolution?: string
   solutionAcceptedTimestamp: number
 }
 
