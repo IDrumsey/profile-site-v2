@@ -14,6 +14,7 @@ export type LeetCodeProblem = {
   description?: string
   lang: string
   difficulty: "Easy" | "Medium" | "Hard"
+  link: string
 }
 
 export type LeetCodeProblemSolution = {

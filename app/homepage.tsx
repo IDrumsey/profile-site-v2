@@ -84,6 +84,7 @@ import {
 } from "chart.js"
 import { format, startOfWeek } from "date-fns"
 import { CiBookmarkCheck } from "react-icons/ci"
+import { FiExternalLink } from "react-icons/fi"
 
 Chart.register(
   ArcElement,
@@ -987,11 +988,27 @@ const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
 
   const theme = useTheme()
 
+  const [isHovering, isHoveringSetter] = useState<boolean>(false)
+
   return (
     <Box
+      component={motion.div}
       paddingY={2}
       paddingX={4}
       sx={{ backgroundColor: new Color("#282828").toString(), borderRadius: 1 }}
+      whileHover={{
+        scale: 1.01,
+        cursor: "pointer",
+      }}
+      onMouseEnter={() => isHoveringSetter(true)}
+      onMouseLeave={() => isHoveringSetter(false)}
+      onClick={() => {
+        window.open(
+          props.solution.problem.link,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }}
     >
       <Stack direction="row">
         <Box>
@@ -1010,14 +1027,26 @@ const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
             Submitted on {getSubmittedDateAsStr()}
           </Typography>
         </Box>
-        <CiBookmarkCheck
-          size={30}
-          color={CHECKMARK_COLOR.toString()}
-          style={{
-            alignSelf: "center",
-            marginLeft: "auto",
-          }}
-        />
+
+        {!isHovering ? (
+          <CiBookmarkCheck
+            size={30}
+            color={CHECKMARK_COLOR.toString()}
+            style={{
+              alignSelf: "center",
+              marginLeft: "auto",
+            }}
+          />
+        ) : (
+          <FiExternalLink
+            size={30}
+            color={CHECKMARK_COLOR.toString()}
+            style={{
+              alignSelf: "center",
+              marginLeft: "auto",
+            }}
+          />
+        )}
       </Stack>
     </Box>
   )

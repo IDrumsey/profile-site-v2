@@ -70,6 +70,7 @@ export async function GET(request: Request) {
         description: staticData?.shortFormDescription,
         lang: solution.lang,
         difficulty: questionDetails.difficulty,
+        link: questionDetails.link,
       },
       codeSolution: staticData?.codeSolution,
       solutionAcceptedTimestamp: solution.timestamp * 1000,
