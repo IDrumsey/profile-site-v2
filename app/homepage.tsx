@@ -83,6 +83,7 @@ import {
   Title,
 } from "chart.js"
 import { format, startOfWeek } from "date-fns"
+import { CiBookmarkCheck } from "react-icons/ci"
 
 Chart.register(
   ArcElement,
@@ -974,6 +975,8 @@ type LeetCodeSolutionCardProps = {
   solution: LeetCodeProblemSolution
 }
 
+const CHECKMARK_COLOR = new Color("#B0B0B0")
+
 const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
   function getSubmittedDateAsStr(): string {
     return format(
@@ -990,27 +993,32 @@ const LeetCodeSolutionCard = (props: LeetCodeSolutionCardProps) => {
       paddingX={4}
       sx={{ backgroundColor: new Color("#282828").toString(), borderRadius: 1 }}
     >
-      <Typography
-        variant="h6"
-        marginBottom={1}
-      >
-        {props.solution.problem.title}
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{ color: new Color("#747474").toString() }}
-      >
-        {props.solution.problem.problemStatement}
-      </Typography>
-      <Typography
-        sx={{
-          color: new Color("#71FF71").toString(),
-          fontSize: theme.typography.caption.fontSize,
-          marginTop: theme.spacing(2),
-        }}
-      >
-        Submitted on {getSubmittedDateAsStr()}
-      </Typography>
+      <Stack direction="row">
+        <Box>
+          <Typography
+            variant="h6"
+            marginBottom={1}
+          >
+            {props.solution.problem.title}
+          </Typography>
+          <Typography
+            sx={{
+              color: new Color("#71FF71").toString(),
+              fontSize: theme.typography.caption.fontSize,
+            }}
+          >
+            Submitted on {getSubmittedDateAsStr()}
+          </Typography>
+        </Box>
+        <CiBookmarkCheck
+          size={30}
+          color={CHECKMARK_COLOR.toString()}
+          style={{
+            alignSelf: "center",
+            marginLeft: "auto",
+          }}
+        />
+      </Stack>
     </Box>
   )
 }
