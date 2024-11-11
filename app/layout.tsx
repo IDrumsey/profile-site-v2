@@ -1,5 +1,5 @@
 import { MotionConfig } from "framer-motion"
-import { Metadata } from "next"
+import { Viewport } from "next"
 import "./styles/globals.scss"
 import { Roboto } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
@@ -20,11 +20,10 @@ const roboto = Roboto({
 // https://webmasters.stackexchange.com/a/138119
 // https://stackoverflow.com/questions/26572138/meta-viewport-and-width-device-width-vs-percent-dimentions#:~:text=Yes%2C%20you%20are%20on%20the%20right%20track%3A%20setting%20width%3Ddevice%2Dwidth%20means%20that%20the%20device%20gets%20to%20choose%20how%20%22big%22%20the%20viewport%20is%20in%20terms%20of%20pixels%2C%20e.g.%20for%20responsive%20layouts.
 // https://web.dev/responsive-web-design-basics/
-export const metadata: Metadata = {
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
+export const viewport: Viewport = {
+  themeColor: "black",
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({
