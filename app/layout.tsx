@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar/navbar"
 import { Box, ThemeProvider } from "@mui/material"
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
 import theme from "./styles/theme"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
         </div>
         <Analytics />
       </body>
+      <GoogleAnalytics gaId="G-1SCMBMP7P4" />
     </html>
   )
 }
