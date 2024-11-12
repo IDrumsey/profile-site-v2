@@ -696,6 +696,78 @@ export default function HomePage() {
             backgroundColor: "#393939",
           }}
         ></div>
+
+        <Typography
+          variant="h4"
+          component={motion.h4}
+          className={ProtestStrikeFont.className}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.5 }}
+          sx={{ marginBottom: 4, textAlign: isMobile ? "center" : "auto" }}
+        >
+          Other work
+        </Typography>
+
+        <Grid
+          container
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={4}
+          >
+            <Box
+              sx={{ backgroundColor: "#363636" }}
+              paddingX={4}
+              paddingY={2}
+              borderRadius={1}
+            >
+              <Typography
+                variant="h6"
+                sx={{ textAlign: isMobile ? "center" : "auto" }}
+              >
+                Business cards for Hinzman Enterprises
+              </Typography>
+              <hr />
+              <Box sx={{ paddingY: 2 }}>
+                <Image
+                  src="/business-card-showcase1.png"
+                  width={1148}
+                  height={886}
+                />
+              </Box>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{
+                  color: new Color("#fff").darken(0.4).toString(),
+                }}
+              >
+                Designing in Figma is great. Plus it&apos;s free! I designed
+                these business cards for Hinzman Enterprises with what I believe
+                to be two powerful features. 1) A colorful depictive picture of
+                a plumber so that the client can easily find the card using the
+                color and know what they&apos;re looking at by seeing a plumber.
+                2) Using a QR code with utm Google Analytics tracking so we can
+                see how well the card does.
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+
+        <div
+          style={{
+            height: 2,
+            width: "100%",
+            marginTop: 64,
+            marginBottom: 32,
+            backgroundColor: "#393939",
+          }}
+        ></div>
+
         {/* leet code section */}
         <LeetCodeSection leetCodeSolutions={leetCodeSolutions} />
 
