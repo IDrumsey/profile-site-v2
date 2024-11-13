@@ -721,9 +721,8 @@ export default function HomePage() {
             lg={4}
           >
             <Box
-              sx={{ backgroundColor: "#363636" }}
-              paddingX={4}
-              paddingY={2}
+              sx={{ backgroundColor: "#171717" }}
+              padding={4}
               borderRadius={1}
             >
               <Typography
@@ -766,9 +765,8 @@ export default function HomePage() {
             lg={4}
           >
             <Box
-              sx={{ backgroundColor: "#363636" }}
-              paddingX={4}
-              paddingY={2}
+              sx={{ backgroundColor: "#171717" }}
+              padding={4}
               borderRadius={1}
             >
               <Typography
@@ -809,9 +807,8 @@ export default function HomePage() {
             lg={4}
           >
             <Box
-              sx={{ backgroundColor: "#363636" }}
-              paddingX={4}
-              paddingY={2}
+              sx={{ backgroundColor: "#171717" }}
+              padding={4}
               borderRadius={1}
             >
               <Typography
