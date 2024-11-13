@@ -777,11 +777,14 @@ export default function HomePage() {
                 Cleveland GiveCamp 2023 Blossom Hill website upgrades
               </Typography>
               <hr />
-              <Box sx={{ paddingY: 2 }}>
+              <Box
+                sx={{ paddingY: 2, marginInline: "auto", width: "max-content" }}
+              >
                 <Image
                   src="/cleveland_givecamp_logo.jpg"
-                  width={1148}
-                  height={886}
+                  width={180}
+                  height={180}
+                  style={{ borderRadius: 5 }}
                 />
               </Box>
               <Typography
@@ -793,6 +796,49 @@ export default function HomePage() {
               >
                 Working with a team of volunteers, I helped work through some
                 website updates for the Blossom Hill website.
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* new linkedin banner design */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={4}
+          >
+            <Box
+              sx={{ backgroundColor: "#363636" }}
+              paddingX={4}
+              paddingY={2}
+              borderRadius={1}
+            >
+              <Typography
+                variant="h6"
+                sx={{ textAlign: isMobile ? "center" : "auto" }}
+              >
+                New LinkedIn Banner Design
+              </Typography>
+              <hr />
+              <Box sx={{ paddingY: 2 }}>
+                <Image
+                  src="/new-linkedin-banner.jfif"
+                  width={1400}
+                  height={350}
+                />
+              </Box>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{
+                  color: new Color("#fff").darken(0.4).toString(),
+                }}
+              >
+                After talking with David Roberts, he pointed out some issues
+                with my LinkedIn profile, so I took it upon myself to more
+                efficiently use the real estate offered by the LinkedIn profile
+                banner with this new design that effectively communicates my
+                brand and my tech stack.
               </Typography>
             </Box>
           </Grid>
