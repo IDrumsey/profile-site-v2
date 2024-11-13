@@ -372,6 +372,7 @@ export default function HomePage() {
         description: "Copy the URLs of all Chrome tabs currently open.",
         repoLink: "https://github.com/IDrumsey/tab-url-collector",
         hosted: false,
+        videoLink: "https://www.youtube.com/shorts/5OkmzUasmNY",
       },
       {
         title: "RoadtripsIO",
