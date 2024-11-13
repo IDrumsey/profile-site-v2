@@ -756,6 +756,46 @@ export default function HomePage() {
               </Typography>
             </Box>
           </Grid>
+
+          {/* blossom hill cleveland givecamp 2023 */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={4}
+          >
+            <Box
+              sx={{ backgroundColor: "#363636" }}
+              paddingX={4}
+              paddingY={2}
+              borderRadius={1}
+            >
+              <Typography
+                variant="h6"
+                sx={{ textAlign: isMobile ? "center" : "auto" }}
+              >
+                Cleveland GiveCamp 2023 Blossom Hill website upgrades
+              </Typography>
+              <hr />
+              <Box sx={{ paddingY: 2 }}>
+                <Image
+                  src="/cleveland_givecamp_logo.jpg"
+                  width={1148}
+                  height={886}
+                />
+              </Box>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{
+                  color: new Color("#fff").darken(0.4).toString(),
+                }}
+              >
+                Working with a team of volunteers, I helped work through some
+                website updates for the Blossom Hill website.
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
 
         <div
