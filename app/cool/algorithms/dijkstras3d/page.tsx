@@ -74,6 +74,7 @@ import { FaWrench } from "react-icons/fa"
 import CloseIcon from "@mui/icons-material/Close"
 import { FaGear } from "react-icons/fa6"
 import { motion } from "framer-motion"
+import AlwaysVisibleIconButton from "@/components/AlwaysVisibleIconButton"
 
 const VISITED_NODE_COLOR = new Color("purple")
 const CURRENT_NODE_COLOR = new Color("blue")
@@ -198,14 +199,6 @@ function MaxDistancePicker({
     </div>
   )
 }
-
-const AlwaysVisibleIconButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[800], // Light background color
-  "&:hover": {
-    backgroundColor: theme.palette.grey[700], // Darker on hover
-  },
-  padding: theme.spacing(3),
-}))
 
 // -------------------------- draggable window -------------------------------
 

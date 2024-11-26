@@ -24,3 +24,10 @@ export type LeetCodeProblemSolution = {
 }
 
 export type Loading<T> = T | "loading"
+
+export type PhotoMeta = {
+  url: string
+  orientation: "landscape" | "portrait" | "unknown"
+  height?: number
+  width?: number
+}
